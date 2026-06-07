@@ -884,633 +884,7 @@ button,input,select,textarea{font-family:var(--f);}
   </div>
 </div>
 
-    </div><!-- /pages -->
-  </div><!-- /main -->
-</div><!-- /app -->
-
-<!-- ═══ MODAIS ════════════════════════════════════════════════════ -->
-
-<!-- Modal obra -->
-<div class="ov" id="m-obra"><div class="modal">
-  <div class="mh"><span class="mt" id="m-obra-titulo">Nova obra iForms ICF</span><div class="mx" onclick="fechar('m-obra')">✕</div></div>
-  <div class="mb">
-    <div class="fg"><label>Nome da obra *</label><input id="o-nome" placeholder="Ex: Residencial das Palmeiras — Lote 03"></div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Cliente</label><input id="o-cli" placeholder="Nome do cliente"></div>
-      <div class="fg"><label>Cidade / Unidade</label><input id="o-cid" placeholder="Ex: Soledade"></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Sistema iForms</label>
-        <select id="o-sis"><option>iForms 18+12</option><option>iForms 18</option><option>iForms 12</option></select></div>
-      <div class="fg"><label>Status</label>
-        <select id="o-stat"><option>Em execução</option><option>Assinando</option><option>Planejamento</option><option>Atrasado</option><option>Concluindo</option><option>Concluída</option></select></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="fg"><label>Área (m²)</label><input type="number" id="o-area" placeholder="187"></div>
-      <div class="fg"><label>Fiadas previstas</label><input type="number" id="o-fiad" value="6"></div>
-      <div class="fg"><label>Valor (R$)</label><input type="number" id="o-val" placeholder="680000"></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Data início</label><input type="date" id="o-ini"></div>
-      <div class="fg"><label>Previsão entrega</label><input type="date" id="o-prev"></div>
-    </div>
-    <div class="fg"><label>Progresso atual (%)</label>
-      <input type="range" id="o-prog" min="0" max="100" value="0" step="1" style="accent-color:var(--tl)" oninput="document.getElementById('o-prog-v').textContent=this.value+'%'">
-      <span id="o-prog-v" style="font-size:12px;color:var(--tl)">0%</span>
-    </div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-obra')">Cancelar</button><button class="btn p" id="o-btn" onclick="salvarObra()">Cadastrar obra →</button></div>
-</div></div>
-
-<!-- Modal lead -->
-<div class="ov" id="m-lead"><div class="modal">
-  <div class="mh"><span class="mt" id="m-lead-titulo">Novo lead</span><div class="mx" onclick="fechar('m-lead')">✕</div></div>
-  <div class="mb">
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Nome *</label><input id="ld-nome" placeholder="Nome do contato"></div>
-      <div class="fg"><label>Telefone</label><input id="ld-tel" placeholder="(54) 9 9999-0000"></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>E-mail</label><input id="ld-email" type="email" placeholder="contato@email.com"></div>
-      <div class="fg"><label>Cidade</label><input id="ld-cid" placeholder="Soledade"></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="fg"><label>Tipo de obra</label>
-        <select id="ld-tipo"><option>Residencial</option><option>Comercial</option><option>Industrial</option><option>Galpão</option><option>Público</option></select></div>
-      <div class="fg"><label>Valor estimado (R$)</label><input type="number" id="ld-val" placeholder="500000"></div>
-      <div class="fg"><label>Origem</label>
-        <select id="ld-orig"><option>Indicação</option><option>Instagram</option><option>Site</option><option>WhatsApp</option><option>Feira</option><option>Outro</option></select></div>
-    </div>
-    <div class="fg"><label>Status</label>
-      <select id="ld-stat"><option>Prospecção</option><option>Contato feito</option><option>Reunião agendada</option><option>Proposta enviada</option><option>Negociação</option><option>Fechado</option><option>Perdido</option></select></div>
-    <div class="fg"><label>Próxima ação</label><input id="ld-acao" placeholder="Ex: Ligar segunda-feira 14h"></div>
-    <div class="fg"><label>Observações</label><textarea id="ld-obs" rows="2" placeholder="Detalhes do lead..."></textarea></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-lead')">Cancelar</button><button class="btn p" id="ld-btn" onclick="salvarLead()">Salvar lead →</button></div>
-</div></div>
-
-<!-- Modal NC -->
-<div class="ov" id="m-nc"><div class="modal">
-  <div class="mh"><span class="mt">Registrar não conformidade</span><div class="mx" onclick="fechar('m-nc')">✕</div></div>
-  <div class="mb">
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Obra *</label><select id="nc-obra"></select></div>
-      <div class="fg"><label>Fiada</label>
-        <select id="nc-fiada"><option>F1</option><option>F2</option><option>F3</option><option>F4</option><option>F5</option><option>F6</option><option>Geral</option></select></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Tipo</label>
-        <select id="nc-tipo"><option>Desalinhamento</option><option>Prumo/Nível</option><option>Escoramento</option><option>Concretagem</option><option>Cura insuficiente</option><option>Armação</option><option>Corrugados</option><option>Outro</option></select></div>
-      <div class="fg"><label>Gravidade</label>
-        <select id="nc-grav"><option>Menor</option><option>Moderada</option><option>Crítica</option></select></div>
-    </div>
-    <div class="fg"><label>Título / descrição *</label><input id="nc-titulo" placeholder="Ex: Desvio de 3cm na fiada 3, parede norte"></div>
-    <div class="fg"><label>Localização na obra</label><input id="nc-loc" placeholder="Ex: Parede Norte, trecho A-B, entre eixos 2-3"></div>
-    <div class="fg"><label>Ação corretiva</label><textarea id="nc-acao" rows="2" placeholder="Descreva a ação a ser tomada..."></textarea></div>
-    <div class="fg"><label>Responsável pela correção</label><input id="nc-resp" placeholder="Nome do responsável"></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-nc')">Cancelar</button><button class="btn danger" onclick="salvarNC()">⚠ Registrar NC</button></div>
-</div></div>
-
-<!-- Modal orçamento -->
-<div class="ov" id="m-orc"><div class="modal">
-  <div class="mh"><span class="mt">Novo orçamento iForms ICF</span><div class="mx" onclick="fechar('m-orc')">✕</div></div>
-  <div class="mb">
-    <div class="fg"><label>Nome / cliente *</label><input id="orc-nome" placeholder="Ex: Família Rodrigues — Casa 3 quartos"></div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Sistema iForms</label>
-        <select id="orc-sis" onchange="calcOrc()"><option>iForms 18+12</option><option>iForms 18</option><option>iForms 12</option></select></div>
-      <div class="fg"><label>Cidade</label><input id="orc-cid" placeholder="Soledade"></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="fg"><label>Área de paredes (m²) *</label><input type="number" id="orc-area" placeholder="187" oninput="calcOrc()"></div>
-      <div class="fg"><label>Fiadas previstas</label><input type="number" id="orc-fiad" value="6" oninput="calcOrc()"></div>
-      <div class="fg"><label>BDI (%)</label><input type="number" id="orc-bdi" value="28" step="0.5" oninput="calcOrc()"></div>
-    </div>
-    <div class="fg"><label>Prazo estimado (dias)</label><input type="number" id="orc-prazo" placeholder="90"></div>
-    <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:14px;margin-top:6px" id="orc-preview">
-      <div style="font-family:var(--f2);font-size:12px;font-weight:700;color:var(--tl);margin-bottom:10px">Prévia do orçamento</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px" id="orc-calc"></div>
-    </div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-orc')">Cancelar</button><button class="btn p" onclick="salvarOrc()">Gerar orçamento →</button></div>
-</div></div>
-
-<!-- Modal lançamento -->
-<div class="ov" id="m-lanc"><div class="modal">
-  <div class="mh"><span class="mt" id="m-lanc-titulo">Novo lançamento</span><div class="mx" onclick="fechar('m-lanc')">✕</div></div>
-  <div class="mb">
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Tipo</label>
-        <select id="lan-tipo"><option value="entrada">Entrada (receita)</option><option value="saida">Saída (despesa)</option></select></div>
-      <div class="fg"><label>Obra</label><select id="lan-obra"><option value="">Geral (empresa)</option></select></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Valor (R$) *</label><input type="number" id="lan-val" placeholder="0" min="0"></div>
-      <div class="fg"><label>Data</label><input type="date" id="lan-data"></div>
-    </div>
-    <div class="fg"><label>Categoria</label>
-      <select id="lan-cat"><option>Medição</option><option>Material</option><option>Mão de obra</option><option>Equipamento</option><option>Subempreiteiro</option><option>Administrativo</option><option>Financeiro</option><option>Outro</option></select></div>
-    <div class="fg"><label>Descrição *</label><input id="lan-desc" placeholder="Descreva o lançamento"></div>
-    <div class="fg"><label>Documento / NF</label><input id="lan-doc" placeholder="Número da nota ou documento"></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-lanc')">Cancelar</button><button class="btn p" id="lan-btn" onclick="salvarLanc()">Salvar →</button></div>
-</div></div>
-
-<!-- Modal contrato -->
-<div class="ov" id="m-contrato"><div class="modal">
-  <div class="mh"><span class="mt" id="m-ct-titulo">Novo contrato</span><div class="mx" onclick="fechar('m-contrato')">✕</div></div>
-  <div class="mb">
-    <div class="fg"><label>Contratado *</label><input id="ct-nome" placeholder="Nome ou razão social"></div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Obra</label><select id="ct-obra"></select></div>
-      <div class="fg"><label>Tipo</label>
-        <select id="ct-tipo"><option>Empreitada global</option><option>Empreitada parcial</option><option>Fornecimento</option><option>Prestação de serviço</option><option>Locação de equipamento</option></select></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="fg"><label>Valor (R$)</label><input type="number" id="ct-val" placeholder="0"></div>
-      <div class="fg"><label>Regime</label>
-        <select id="ct-reg"><option>MEI</option><option>PJ</option><option>PF/RPA</option><option>CLT</option></select></div>
-      <div class="fg"><label>Status</label>
-        <select id="ct-stat"><option>Ativo</option><option>Rascunho</option><option>Concluído</option><option>Cancelado</option></select></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Data início</label><input type="date" id="ct-ini"></div>
-      <div class="fg"><label>Previsão término</label><input type="date" id="ct-fim"></div>
-    </div>
-    <div class="fg"><label>Objeto do contrato</label><textarea id="ct-obj" rows="2" placeholder="Descreva o serviço ou fornecimento contratado..."></textarea></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-contrato')">Cancelar</button><button class="btn p" id="ct-btn" onclick="salvarContrato()">Salvar contrato →</button></div>
-</div></div>
-
-<!-- Modal compra -->
-<div class="ov" id="m-compra"><div class="modal">
-  <div class="mh"><span class="mt" id="m-cp-titulo">Nova solicitação de compra</span><div class="mx" onclick="fechar('m-compra')">✕</div></div>
-  <div class="mb">
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Obra</label><select id="cp-obra"></select></div>
-      <div class="fg"><label>Urgência</label>
-        <select id="cp-urg"><option>Normal</option><option>Urgente</option><option>Crítico</option></select></div>
-    </div>
-    <div class="fg"><label>Material *</label><input id="cp-mat" placeholder="Ex: Bloco iForms 18 · Armadura CA-50"></div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Quantidade</label><input type="number" id="cp-qtd" placeholder="100"></div>
-      <div class="fg"><label>Unidade</label>
-        <select id="cp-un"><option>un</option><option>m²</option><option>kg</option><option>m³</option><option>sacos</option><option>barras</option><option>rolos</option><option>litros</option></select></div>
-    </div>
-    <div class="fg"><label>Necessário para</label><input type="date" id="cp-data"></div>
-    <div class="fg"><label>Observação / especificação</label><input id="cp-obs" placeholder="Marca preferida, dimensões específicas..."></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-compra')">Cancelar</button><button class="btn p" id="cp-btn" onclick="salvarCompra()">Solicitar →</button></div>
-</div></div>
-
-<!-- Modal funcionário -->
-<div class="ov" id="m-func"><div class="modal">
-  <div class="mh"><span class="mt" id="m-fn-titulo">Novo funcionário</span><div class="mx" onclick="fechar('m-func')">✕</div></div>
-  <div class="mb">
-    <div class="fg"><label>Nome completo *</label><input id="fn-nome" placeholder="Nome completo"></div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Cargo</label>
-        <select id="fn-cargo"><option>Mestre iForms</option><option>Montador iForms</option><option>Armador</option><option>Concreteiro</option><option>Pedreiro</option><option>Servente</option><option>Encarregado</option><option>Engenheiro</option><option>Técnico</option></select></div>
-      <div class="fg"><label>Regime</label>
-        <select id="fn-reg"><option>CLT</option><option>MEI</option><option>PF/RPA</option><option>Empreiteiro</option><option>Estagiário</option></select></div>
-    </div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Valor/hora (R$)</label><input type="number" id="fn-hora" placeholder="18" value="18" step="0.5"></div>
-      <div class="fg"><label>Telefone</label><input id="fn-tel" placeholder="(54) 9 9999-0000"></div>
-    </div>
-    <div class="fg"><label>CPF / CNPJ</label><input id="fn-doc" placeholder="000.000.000-00"></div>
-    <div class="fg"><label>Certificação iForms</label>
-      <select id="fn-cert"><option>Sem certificação</option><option>Nível I — Montador</option><option>Nível II — Encarregado</option><option>Nível III — Mestre</option></select></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-func')">Cancelar</button><button class="btn p" id="fn-btn" onclick="salvarFunc()">Adicionar →</button></div>
-</div></div>
-
-<!-- Modal medição -->
-<div class="ov" id="m-medicao"><div class="modal">
-  <div class="mh"><span class="mt" id="m-med-titulo">Nova medição</span><div class="mx" onclick="fechar('m-medicao')">✕</div></div>
-  <div class="mb">
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Obra *</label><select id="med-obra"></select></div>
-      <div class="fg"><label>Número da medição</label><input type="number" id="med-num" placeholder="1"></div>
-    </div>
-    <div class="fg"><label>Período de referência</label><input id="med-per" placeholder="Ex: Maio/2026 · F3 e F4"></div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Valor (R$) *</label><input type="number" id="med-val" placeholder="0"></div>
-      <div class="fg"><label>Vencimento</label><input type="date" id="med-venc"></div>
-    </div>
-    <div class="fg"><label>Status</label>
-      <select id="med-stat"><option>Aguardando aprovação</option><option>Aprovada</option><option>Paga</option><option>Rejeitada</option></select></div>
-    <div class="fg"><label>Descrição dos serviços</label><textarea id="med-desc" rows="2" placeholder="Serviços executados neste período..."></textarea></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-medicao')">Cancelar</button><button class="btn p" id="med-btn" onclick="salvarMedicao()">Salvar medição →</button></div>
-</div></div>
-
-<!-- Modal unidade -->
-<div class="ov" id="m-unidade"><div class="modal">
-  <div class="mh"><span class="mt">Nova unidade Alpha</span><div class="mx" onclick="fechar('m-unidade')">✕</div></div>
-  <div class="mb">
-    <div class="fg"><label>Nome da unidade *</label><input id="un-nome" placeholder="Ex: Filial Cruz Alta"></div>
-    <div class="fg-row" style="grid-template-columns:1fr 1fr">
-      <div class="fg"><label>Cidade</label><input id="un-cid" placeholder="Cruz Alta"></div>
-      <div class="fg"><label>Tipo</label>
-        <select id="un-tipo"><option>Sede</option><option>Filial</option><option>Implantação</option><option>Parceiro</option></select></div>
-    </div>
-    <div class="fg"><label>Responsável</label><input id="un-resp" placeholder="Nome do responsável local"></div>
-    <div class="fg"><label>Telefone</label><input id="un-tel" placeholder="(54) 9 9999-0000"></div>
-  </div>
-  <div class="mf"><button class="btn" onclick="fechar('m-unidade')">Cancelar</button><button class="btn p" onclick="salvarUnidade()">Adicionar →</button></div>
-</div></div>
-
-<!-- Modal confirmar exclusão -->
-<div class="ov" id="m-del"><div class="modal" style="width:380px">
-  <div class="mh"><span class="mt">Confirmar exclusão</span><div class="mx" onclick="fechar('m-del')">✕</div></div>
-  <div class="mb"><p style="font-size:13px;color:var(--tx2)" id="del-msg">Tem certeza que deseja excluir este item?</p></div>
-  <div class="mf"><button class="btn" onclick="fechar('m-del')">Cancelar</button><button class="btn danger" id="del-btn">Excluir</button></div>
-</div></div>
-
-<!-- Modal logout -->
-<div class="ov" id="m-logout"><div class="modal" style="width:380px">
-  <div class="mh"><span class="mt">Sair do sistema</span><div class="mx" onclick="fechar('m-logout')">✕</div></div>
-  <div class="mb"><p style="font-size:13px;color:var(--tx2)">Deseja sair do Alpha Obras? Os dados locais serão preservados.</p></div>
-  <div class="mf"><button class="btn" onclick="fechar('m-logout')">Cancelar</button><button class="btn danger" onclick="doLogout()">Sair</button></div>
-</div></div>
-
-<div class="toast" id="toast"></div>
-<script>
-// ════════════════════════════════════════════════════════════════════
-// ALPHA OBRAS — ENGINE COMPLETO v3.0
-// localStorage + Supabase opcional · Sem iframes · Tudo funcional
-// ════════════════════════════════════════════════════════════════════
-
-// ── BANCO LOCAL ──────────────────────────────────────────────────────
-var DB = {
-  obras:[],leads:[],ncs:[],rdos:[],checklists:[],
-  lancamentos:[],contratos:[],compras:[],funcionarios:[],
-  medicoes:[],orcamentos:[],unidades:[],fotos:[]
-};
-var sb = null; // Supabase client
-var session = null;
-var gpsCoords = null;
-var editId = null; // ID do item em edição
-
-function loadDB(){
-  try{ var s=localStorage.getItem('ao3_db'); if(s) DB=Object.assign(DB,JSON.parse(s)); }catch(e){}
-  Object.keys(DB).forEach(k=>{ if(!Array.isArray(DB[k])) DB[k]=[]; });
-}
-function saveDB(){ try{ localStorage.setItem('ao3_db',JSON.stringify(DB)); }catch(e){} }
-function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2); }
-
-// ── USUÁRIOS ─────────────────────────────────────────────────────────
-var USERS=[
-  {e:'admin@alphaobras.com.br',s:'admin123',n:'Admin Alpha',r:'Administrador',i:'AL',c:'linear-gradient(135deg,#00cba8,#5b9cf6)'},
-  {e:'marcos@alphaobras.com.br',s:'eng123',n:'Marcos Lima',r:'Engenheiro',i:'ML',c:'linear-gradient(135deg,#5b9cf6,#9f8cf5)'},
-  {e:'roberto@alphaobras.com.br',s:'mestre123',n:'Roberto Oliveira',r:'Mestre iForms',i:'RO',c:'linear-gradient(135deg,#f6b93b,#00cba8)'},
-  {e:'cliente@email.com',s:'cliente123',n:'Roberto Costa',r:'Cliente',i:'RC',c:'linear-gradient(135deg,#9f8cf5,#5b9cf6)'},
-];
-
-// ── LOGIN ─────────────────────────────────────────────────────────────
-function doLogin(){
-  var e=(document.getElementById('le').value||'').trim().toLowerCase();
-  var s=(document.getElementById('ls').value||'').trim();
-  var err=document.getElementById('lerr');
-  if(!e||!s){err.textContent='Preencha e-mail e senha.';err.style.display='block';return;}
-  // Busca ignorando maiúsculas/minúsculas na senha também
-  var u=USERS.find(function(x){
-    return x.e===e && (x.s===s || x.s.toLowerCase()===s.toLowerCase());
-  });
-  if(!u){
-    err.textContent='E-mail ou senha incorretos. Tente: admin@alphaobras.com.br / admin123';
-    err.style.display='block';
-    document.getElementById('ls').value='';
-    return;
-  }
-  err.style.display='none';
-  session={email:u.e,nome:u.n,role:u.r,ini:u.i,cor:u.c};
-  localStorage.setItem('ao3_sess',JSON.stringify(session));
-  mostrarApp();
-}
-function ql(e,s){
-  document.getElementById('le').value=e;
-  document.getElementById('ls').value=s;
-  doLogin();
-}
-function ql(e,s){document.getElementById('le').value=e;document.getElementById('ls').value=s;doLogin();}
-function confirmarLogout(){abrirModal('logout');}
-function doLogout(){localStorage.removeItem('ao3_sess');session=null;fechar('m-logout');document.getElementById('login').style.display='flex';document.getElementById('app').className='';toast('Até logo! 👋','ok');}
-
-function mostrarApp(){
-  document.getElementById('login').style.display='none';
-  document.getElementById('app').className='on';
-  document.getElementById('sb-avt').textContent=session.ini;
-  document.getElementById('sb-avt').style.background=session.cor;
-  document.getElementById('sb-uname').textContent=session.nome;
-  document.getElementById('sb-urole').textContent=session.role;
-  // Carregar config salva
-  var cfg=localStorage.getItem('ao3_cfg');
-  if(cfg){try{var c=JSON.parse(cfg);Object.keys(c).forEach(k=>{var el=document.getElementById(k);if(el)el.value=c[k];});
-    if(c['cfg-cid']) document.getElementById('sb-sub').textContent='iForms ICF · '+c['cfg-cid'];
-    if(c['cfg-emp']) document.getElementById('sb-uname') && (document.querySelectorAll('.sb-name')[0].textContent=c['cfg-emp']||'Alpha Obras');
-  }catch(e){}}
-  // Tentar reconectar Supabase
-  var sbUrl=localStorage.getItem('ao3_sb_url');
-  var sbKey=localStorage.getItem('ao3_sb_key');
-  if(sbUrl&&sbKey) setTimeout(()=>conectarSBsilent(sbUrl,sbKey),500);
-  else { setConn(false); renderTudo(); }
-  // Inicializar datas
-  document.getElementById('rdo-data').value=today();
-  document.getElementById('ck-data').value=today();
-  document.getElementById('lan-data').value=today();
-  document.getElementById('rdo-dt').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  // Inicializar btn topbar
-  setTopBtn('obra','+ Nova obra');
-  // GPS
-  obterGPS();
-  // Checklist iForms
-  renderChecklists();
-  toast('Bem-vindo, '+session.nome.split(' ')[0]+'! 🚀','ok');
-}
-
-// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────
-var CONF = {
-  dashboard:  {t:'Dashboard',         btn:'obra',  btxt:'+ Nova obra'},
-  ecossistema:{t:'Ecossistema Alpha',  btn:'unidade',btxt:'+ Nova unidade'},
-  crm:        {t:'CRM — Oportunidades',btn:'lead',  btxt:'+ Novo lead'},
-  qualidade:  {t:'Qualidade iForms',   btn:'nc',    btxt:'+ Registrar NC'},
-  checklist:  {t:'Checklist iForms',   btn:null,    btxt:''},
-  rdo:        {t:'Diário (RDO)',        btn:null,    btxt:''},
-  orcamento:  {t:'Orçamento iForms',   btn:'orc',   btxt:'+ Novo orçamento'},
-  cronograma: {t:'Cronograma',         btn:'obra',  btxt:'+ Nova obra'},
-  medicoes:   {t:'Medições',           btn:'medicao',btxt:'+ Nova medição'},
-  fotos:      {t:'Fotos com GPS',      btn:null,    btxt:''},
-  portal:     {t:'Portal do Cliente',  btn:null,    btxt:''},
-  financeiro: {t:'Financeiro',         btn:'lanc',  btxt:'+ Lançamento'},
-  contratos:  {t:'Contratos',          btn:'contrato',btxt:'+ Novo contrato'},
-  compras:    {t:'Compras',            btn:'compra',btxt:'+ Solicitação'},
-  equipes:    {t:'Equipes',            btn:'func',  btxt:'+ Funcionário'},
-  relatorios: {t:'Relatórios',         btn:null,    btxt:''},
-  ia:         {t:'IA de Captação',     btn:null,    btxt:''},
-  configuracoes:{t:'Configurações',    btn:null,    btxt:''},
-};
-
-function ir(id,el){
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
-  if(el){el.classList.add('act');}
-  else {var ni=document.querySelector(`[data-p="${id}"]`);if(ni)ni.classList.add('act');}
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  var pg=document.getElementById('p-'+id);if(pg)pg.classList.add('on');
-  var conf=CONF[id]||{t:id,btn:null,btxt:''};
-  document.getElementById('ptitle').textContent=conf.t;
-  var tb=document.getElementById('topbtns');tb.innerHTML='';
-  if(conf.btn){
-    var b=document.createElement('button');b.className='btn p';b.textContent=conf.btxt;
-    b.onclick=()=>abrirModal(conf.btn);tb.appendChild(b);
-  }
-  // Populate selects de obra
-  ['rdo-obra','nc-obra','lan-obra','ct-obra','cp-obra','med-obra','gantt-obra','ck-obra',
-   'portal-obra','f-fotos-obra'].forEach(populateObraSelect);
-  // Render específico
-  if(id==='dashboard')   renderObras();
-  if(id==='crm')         renderLeads();
-  if(id==='qualidade')   renderNCs();
-  if(id==='financeiro')  {renderLanc();renderFinCats();}
-  if(id==='compras')     renderCompras();
-  if(id==='equipes')     renderEquipes();
-  if(id==='contratos')   renderContratos();
-  if(id==='medicoes')    renderMedicoes();
-  if(id==='orcamento')   renderOrcs();
-  if(id==='ecossistema') renderEcossistema();
-  if(id==='cronograma')  renderGantt();
-  if(id==='fotos')       renderFotos();
-  if(id==='portal')      renderPortal();
-  if(id==='relatorios')  {}
-}
-
-function setTopBtn(modal,txt){
-  var tb=document.getElementById('topbtns');tb.innerHTML='';
-  if(modal){var b=document.createElement('button');b.className='btn p';b.textContent=txt;b.onclick=()=>abrirModal(modal);tb.appendChild(b);}
-}
-
-function renderTudo(){
-  renderObras();renderLeads();renderNCs();renderLanc();renderFinCats();
-  renderCompras();renderEquipes();renderContratos();renderMedicoes();
-  renderOrcs();renderEcossistema();renderFotos();
-  atualizarKPIs();
-  ['rdo-obra','nc-obra','lan-obra','ct-obra','cp-obra','med-obra','gantt-obra','ck-obra',
-   'portal-obra','f-fotos-obra'].forEach(populateObraSelect);
-}
-
-// ── KPIs ──────────────────────────────────────────────────────────────
-function atualizarKPIs(){
-  var ativas=DB.obras.filter(o=>o.status==='Em execução').length;
-  var receita=DB.obras.reduce((s,o)=>s+(+o.valor||0),0);
-  var ncAb=DB.ncs.filter(n=>n.status==='Aberta').length;
-  var leads=DB.leads.length;
-  var medAp=DB.medicoes.filter(m=>m.status==='Aprovada').reduce((s,m)=>s+(+m.valor||0),0);
-  document.getElementById('k-obras').textContent=ativas;
-  document.getElementById('k-obras-s').textContent=DB.obras.length+' no total';
-  document.getElementById('k-receita').textContent=mk(receita);
-  document.getElementById('k-ncs').textContent=ncAb;
-  document.getElementById('k-leads').textContent=leads;
-  document.getElementById('k-receber').textContent=mk(medAp);
-  // Badges sidebar
-  set('nb-crm',leads||'');
-  set('nb-nc',ncAb||'');
-  set('nb-ct',DB.contratos.filter(c=>c.status==='Ativo').length||'');
-  set('nb-cp',DB.compras.filter(c=>c.status==='Pendente').length||'');
-  set('nb-unid',DB.unidades.length||'');
-  // Qualidade KPIs
-  set('q-ab',DB.ncs.filter(n=>n.status==='Aberta').length);
-  set('q-em',DB.ncs.filter(n=>n.status==='Em tratamento').length);
-  set('q-fe',DB.ncs.filter(n=>n.status==='Fechada').length);
-  set('q-tot',DB.ncs.length);
-  // Compras
-  set('cp-pend',DB.compras.filter(c=>c.status==='Pendente').length);
-  set('cp-apro',DB.compras.filter(c=>c.status==='Aprovada').length);
-  set('cp-entr',DB.compras.filter(c=>c.status==='Entregue').length);
-  // Equipes
-  set('eq-tot',DB.funcionarios.length);
-  set('eq-clt',DB.funcionarios.filter(f=>f.regime==='CLT').length);
-  set('eq-mei',DB.funcionarios.filter(f=>f.regime==='MEI'||f.regime==='PF/RPA').length);
-  // Financeiro
-  var ent=DB.lancamentos.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+(+l.valor||0),0);
-  var sai=DB.lancamentos.filter(l=>l.tipo==='saida').reduce((s,l)=>s+(+l.valor||0),0);
-  set('fin-ent',mk(ent));set('fin-sai',mk(sai));set('fin-sal',mk(ent-sai));set('fin-ar',mk(medAp));
-  // Medições
-  set('med-tot',mk(DB.medicoes.reduce((s,m)=>s+(+m.valor||0),0)));
-  set('med-ag',DB.medicoes.filter(m=>m.status==='Aguardando aprovação').length);
-  set('med-ap',DB.medicoes.filter(m=>m.status==='Aprovada'||m.status==='Paga').length);
-  // RDO count
-  set('rdo-count',DB.rdos.length+' registros');
-}
-
-function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
-
-// ── CORES STATUS ─────────────────────────────────────────────────────
-var COR  ={'Em execução':'var(--tl)','Atrasado':'var(--rd)','Concluindo':'var(--gn)','Assinando':'var(--am)','Concluída':'var(--tx3)','Planejamento':'var(--bl)','Aberta':'var(--rd)','Em tratamento':'var(--am)','Fechada':'var(--gn)','Ativo':'var(--tl)','Rascunho':'var(--tx2)','Cancelado':'var(--rd)','Pendente':'var(--am)','Aprovada':'var(--tl)','Paga':'var(--gn)','Rejeitada':'var(--rd)','Entregue':'var(--gn)','Normal':'var(--tx2)','Urgente':'var(--am)','Crítico':'var(--rd)','Fechado':'var(--gn)','Perdido':'var(--tx3)'};
-var COR_BG={'Em execução':'var(--tld)','Atrasado':'var(--rdd)','Concluindo':'var(--gnd)','Assinando':'var(--amd)','Concluída':'var(--bg4)','Planejamento':'var(--bld)','Aberta':'var(--rdd)','Em tratamento':'var(--amd)','Fechada':'var(--gnd)','Ativo':'var(--tld)','Rascunho':'var(--bg4)','Cancelado':'var(--rdd)','Pendente':'var(--amd)','Aprovada':'var(--tld)','Paga':'var(--gnd)','Rejeitada':'var(--rdd)','Entregue':'var(--gnd)','Normal':'var(--bg3)','Urgente':'var(--amd)','Crítico':'var(--rdd)','Fechado':'var(--gnd)','Perdido':'var(--bg4)'};
-function cor(s){return COR[s]||'var(--tx2)';}
-function corBg(s){return COR_BG[s]||'var(--bg4)';}
-function badge(s){return `<span class="card-badge" style="color:${cor(s)};background:${corBg(s)}">${s}</span>`;}
-
-// ── HELPERS ───────────────────────────────────────────────────────────
-function mk(v){v=+v||0;if(v>=1e6)return 'R$ '+(v/1e6).toFixed(1).replace('.',',')+'M';if(v>=1000)return 'R$ '+(v/1000).toFixed(0)+'k';return 'R$ '+v.toFixed(0);}
-function today(){return new Date().toISOString().slice(0,10);}
-function fmtDate(d){if(!d)return'—';var dt=new Date(d+'T12:00:00');return dt.toLocaleDateString('pt-BR');}
-function populateObraSelect(id){
-  var sel=document.getElementById(id);if(!sel)return;
-  var v=sel.value;
-  while(sel.options.length>1)sel.remove(1);
-  DB.obras.forEach(o=>{var opt=document.createElement('option');opt.value=o.id;opt.textContent=o.nome;sel.appendChild(opt);});
-  if(v)sel.value=v;
-}
-
-// ── RENDER OBRAS ──────────────────────────────────────────────────────
-function renderObras(){
-  var g=document.getElementById('obras-grid');if(!g)return;
-  g.innerHTML='';
-  var filt=document.getElementById('f-obras')?.value||'';
-  var list=filt?DB.obras.filter(o=>o.status===filt):DB.obras;
-
-  // Atualizar contador
-  var cnt=document.getElementById('dash-obras-count');
-  if(cnt) cnt.textContent=list.length+(list.length!==DB.obras.length?' de '+DB.obras.length+' obras':'') + ' obra'+(list.length!==1?'s':'');
-
-  if(!list.length){
-    var e=document.createElement('div');e.className='empty';
-    e.innerHTML='<div class="empty-ico">🏗️</div><div class="empty-t">Nenhuma obra cadastrada</div><div class="empty-s">Cadastre sua primeira obra iForms ICF para começar a usar o sistema.</div><button class="btn p" onclick="abrirModal('obra')" style="margin-top:8px">+ Cadastrar primeira obra</button>';
-    g.appendChild(e);
-  } else {
-    list.forEach(o=>{
-      var c=document.createElement('div');c.className='card';
-      var prog=+o.progresso||0;
-      var nFiadas=+o.n_fiadas||6;
-      var fiadaAtual=Math.ceil(prog/100*nFiadas)||1;
-      c.innerHTML=`<div class="card-top">
-          <div class="card-dot" style="background:${cor(o.status)}"></div>
-          <span class="card-name" title="${o.nome}">${o.nome}</span>
-          ${badge(o.status)}
-        </div>
-        <div class="card-body">
-          <div class="cr"><span>Cliente</span><span>${o.cliente||'—'}</span></div>
-          <div class="cr"><span>Sistema</span><span>${o.sistema||'iForms'}</span></div>
-          <div class="cr"><span>Área</span><span>${o.area?o.area+' m²':'—'}</span></div>
-          <div class="cr"><span>Fiadas</span><span>${fiadaAtual} / ${nFiadas}</span></div>
-          <div class="cr"><span>Valor</span><span style="font-weight:700;color:${cor(o.status)}">${mk(o.valor)}</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;margin-bottom:4px">
-            <span style="font-size:10px;color:var(--tx3)">Progresso</span>
-            <span style="font-size:11px;font-weight:600;color:${cor(o.status)}">${prog}%</span>
-          </div>
-          <div class="card-prog"><div class="card-prog-f" style="background:${cor(o.status)};width:${prog}%"></div></div>
-        </div>
-        <div class="card-actions">
-          <button class="btn sm" onclick="editarObra('${o.id}')">✏ Editar</button>
-          <button class="btn sm" onclick="excluirItem('obras','${o.id}','obra \"${o.nome}\"')">🗑 Excluir</button>
-        </div>`;
-      g.appendChild(c);
-    });
-  }
-  // Card Nova obra sempre visível
-  var add=document.createElement('div');add.className='add-card';
-  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova obra</span>';
-  add.onclick=()=>abrirModal('obra');
-  g.appendChild(add);
-  atualizarKPIs();
-  renderAlertas();
-  renderRDOsRecentes();
-  renderFinMini();
-  renderCuraAtiva();
-}
-
-function renderAlertas(){
-  var div=document.getElementById('alertas-lista');if(!div)return;
-  var alertas=[];
-  // NCs abertas
-  DB.ncs.filter(n=>n.status==='Aberta').forEach(n=>{
-    var obra=DB.obras.find(o=>o.id===n.obra_id);
-    alertas.push({tipo:'nc',cor:'var(--rd)',ico:'⚠',txt:'NC: '+n.titulo,sub:obra?.nome||'—',id:n.id});
-  });
-  // Compras pendentes
-  DB.compras.filter(c=>c.status==='Pendente').forEach(cp=>{
-    var obra=DB.obras.find(o=>o.id===cp.obra_id);
-    alertas.push({tipo:'compra',cor:'var(--am)',ico:'📦',txt:cp.material,sub:(obra?.nome||'Geral')+' · '+cp.quantidade+' '+cp.unidade,id:cp.id});
-  });
-  // Obras atrasadas
-  DB.obras.filter(o=>o.status==='Atrasado').forEach(o=>{
-    alertas.push({tipo:'obra',cor:'var(--rd)',ico:'🔴',txt:'Obra atrasada: '+o.nome,sub:o.progresso+'% concluído',id:o.id});
-  });
-  var cnt=document.getElementById('alert-count');
-  if(cnt){cnt.textContent=alertas.length;cnt.style.display=alertas.length?'inline-block':'none';}
-  if(!alertas.length){
-    div.innerHTML='<div style="padding:14px 16px;text-align:center;font-size:12px;color:var(--tx3)">✓ Sem pendências</div>';
-    return;
-  }
-  div.innerHTML=alertas.slice(0,6).map(a=>`
-    <div style="padding:9px 16px;border-bottom:1px solid var(--b1);display:flex;gap:10px;align-items:flex-start;font-size:12px">
-      <span style="flex-shrink:0">${a.ico}</span>
-      <div style="flex:1;min-width:0">
-        <div style="font-weight:600;color:${a.cor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.txt}</div>
-        <div style="color:var(--tx3);font-size:10px">${a.sub}</div>
-      </div>
-    </div>`).join('');
-}
-
-function renderRDOsRecentes(){
-  var div=document.getElementById('rdos-recentes');if(!div)return;
-  if(!DB.rdos.length){
-    div.innerHTML='<div style="padding:12px 16px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum RDO ainda</div>';
-    return;
-  }
-  div.innerHTML=DB.rdos.slice(0,4).map(r=>{
-    var obra=DB.obras.find(o=>o.id===r.obra_id);
-    return `<div style="padding:9px 16px;border-bottom:1px solid var(--b1);font-size:11px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
-        <span style="font-weight:600;color:var(--tx)">${fmtDate(r.data)}</span>
-        <span style="color:var(--tx3)">${r.clima||''}</span>
-      </div>
-      <div style="color:var(--tx2)">${obra?.nome||'—'}</div>
-      <div style="color:var(--tx3);font-size:10px">${r.fiada||''} · ${r.funcionarios||0} func. · ${r.horas||0}h</div>
-    </div>`;
-  }).join('');
-}
-
-function renderFinMini(){
-  var ent=DB.lancamentos.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+(+l.valor||0),0);
-  var sai=DB.lancamentos.filter(l=>l.tipo==='saida').reduce((s,l)=>s+(+l.valor||0),0);
-  set('fin-mini-ent',mk(ent));
-  set('fin-mini-sai',mk(sai));
-  var sal=ent-sai;
-  var salEl=document.getElementById('fin-mini-sal');
-  if(salEl){salEl.textContent=mk(sal);salEl.style.color=sal>=0?'var(--gn)':'var(--rd)';}
-}
-
-function renderCuraAtiva(){
-  // Simular obras com cura ativa (obras em execução que tiveram RDO recente)
-  var panel=document.getElementById('cura-panel');
-  var lista=document.getElementById('cura-lista');
-  if(!panel||!lista)return;
-  var curasAtivas=DB.rdos.slice(0,3).filter(r=>{
-    var obra=DB.obras.find(o=>o.id===r.obra_id&&o.status==='Em execução');
-    return obra&&r.data===today();
-  }).map(r=>{
-    var obra=DB.obras.find(o=>o.id===r.obra_id);
-    return {obra:obra?.nome||'—',fiada:r.fiada||'F?'};
-  });
-  if(!curasAtivas.length){panel.style.display='none';return;}
-  panel.style.display='block';
-  lista.innerHTML=curasAtivas.map(c=>`
-    <div style="padding:6px 0;border-bottom:1px solid var(--b1);font-size:12px">
-      <div style="display:flex;justify-content:space-between">
-        <span style="font-weight:600">${c.obra}</span>
-        <span style="color:var(--am);font-weight:600">${c.fiada}</span>
-      </div>
-      <div style="color:var(--tx3);font-size:10px;margin-top:2px">Aguardando 72h · iForms ICF</div>
-      <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:6px">
-        <div style="height:100%;background:var(--am);border-radius:2px;width:${Math.random()*60+20}%"></div>
-      </div>
-    </div>`).join('');
-}
-      <!-- BACKUP E RESTAURAÇÃO -->
+<!-- BACKUP E RESTAURAÇÃO -->
       <div class="panel" style="margin-top:14px">
         <div class="ph" style="background:linear-gradient(90deg,rgba(0,203,168,.06),transparent)">
           <span class="ph-t" style="color:var(--tl)">💾 Backup e restauração de dados</span>
@@ -3058,6 +2432,637 @@ style.textContent='@keyframes bounce{0%,100%{transform:translateY(0)}50%{transfo
 document.head.appendChild(style);
 
 // ── BOOT ──────────────────────────────────────────────────────────────
+
+    </div><!-- /pages -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ═══ MODAIS ════════════════════════════════════════════════════ -->
+
+<!-- Modal obra -->
+<div class="ov" id="m-obra"><div class="modal">
+  <div class="mh"><span class="mt" id="m-obra-titulo">Nova obra iForms ICF</span><div class="mx" onclick="fechar('m-obra')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome da obra *</label><input id="o-nome" placeholder="Ex: Residencial das Palmeiras — Lote 03"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Cliente</label><input id="o-cli" placeholder="Nome do cliente"></div>
+      <div class="fg"><label>Cidade / Unidade</label><input id="o-cid" placeholder="Ex: Soledade"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Sistema iForms</label>
+        <select id="o-sis"><option>iForms 18+12</option><option>iForms 18</option><option>iForms 12</option></select></div>
+      <div class="fg"><label>Status</label>
+        <select id="o-stat"><option>Em execução</option><option>Assinando</option><option>Planejamento</option><option>Atrasado</option><option>Concluindo</option><option>Concluída</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Área (m²)</label><input type="number" id="o-area" placeholder="187"></div>
+      <div class="fg"><label>Fiadas previstas</label><input type="number" id="o-fiad" value="6"></div>
+      <div class="fg"><label>Valor (R$)</label><input type="number" id="o-val" placeholder="680000"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Data início</label><input type="date" id="o-ini"></div>
+      <div class="fg"><label>Previsão entrega</label><input type="date" id="o-prev"></div>
+    </div>
+    <div class="fg"><label>Progresso atual (%)</label>
+      <input type="range" id="o-prog" min="0" max="100" value="0" step="1" style="accent-color:var(--tl)" oninput="document.getElementById('o-prog-v').textContent=this.value+'%'">
+      <span id="o-prog-v" style="font-size:12px;color:var(--tl)">0%</span>
+    </div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-obra')">Cancelar</button><button class="btn p" id="o-btn" onclick="salvarObra()">Cadastrar obra →</button></div>
+</div></div>
+
+<!-- Modal lead -->
+<div class="ov" id="m-lead"><div class="modal">
+  <div class="mh"><span class="mt" id="m-lead-titulo">Novo lead</span><div class="mx" onclick="fechar('m-lead')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Nome *</label><input id="ld-nome" placeholder="Nome do contato"></div>
+      <div class="fg"><label>Telefone</label><input id="ld-tel" placeholder="(54) 9 9999-0000"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>E-mail</label><input id="ld-email" type="email" placeholder="contato@email.com"></div>
+      <div class="fg"><label>Cidade</label><input id="ld-cid" placeholder="Soledade"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Tipo de obra</label>
+        <select id="ld-tipo"><option>Residencial</option><option>Comercial</option><option>Industrial</option><option>Galpão</option><option>Público</option></select></div>
+      <div class="fg"><label>Valor estimado (R$)</label><input type="number" id="ld-val" placeholder="500000"></div>
+      <div class="fg"><label>Origem</label>
+        <select id="ld-orig"><option>Indicação</option><option>Instagram</option><option>Site</option><option>WhatsApp</option><option>Feira</option><option>Outro</option></select></div>
+    </div>
+    <div class="fg"><label>Status</label>
+      <select id="ld-stat"><option>Prospecção</option><option>Contato feito</option><option>Reunião agendada</option><option>Proposta enviada</option><option>Negociação</option><option>Fechado</option><option>Perdido</option></select></div>
+    <div class="fg"><label>Próxima ação</label><input id="ld-acao" placeholder="Ex: Ligar segunda-feira 14h"></div>
+    <div class="fg"><label>Observações</label><textarea id="ld-obs" rows="2" placeholder="Detalhes do lead..."></textarea></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-lead')">Cancelar</button><button class="btn p" id="ld-btn" onclick="salvarLead()">Salvar lead →</button></div>
+</div></div>
+
+<!-- Modal NC -->
+<div class="ov" id="m-nc"><div class="modal">
+  <div class="mh"><span class="mt">Registrar não conformidade</span><div class="mx" onclick="fechar('m-nc')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra *</label><select id="nc-obra"></select></div>
+      <div class="fg"><label>Fiada</label>
+        <select id="nc-fiada"><option>F1</option><option>F2</option><option>F3</option><option>F4</option><option>F5</option><option>F6</option><option>Geral</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Tipo</label>
+        <select id="nc-tipo"><option>Desalinhamento</option><option>Prumo/Nível</option><option>Escoramento</option><option>Concretagem</option><option>Cura insuficiente</option><option>Armação</option><option>Corrugados</option><option>Outro</option></select></div>
+      <div class="fg"><label>Gravidade</label>
+        <select id="nc-grav"><option>Menor</option><option>Moderada</option><option>Crítica</option></select></div>
+    </div>
+    <div class="fg"><label>Título / descrição *</label><input id="nc-titulo" placeholder="Ex: Desvio de 3cm na fiada 3, parede norte"></div>
+    <div class="fg"><label>Localização na obra</label><input id="nc-loc" placeholder="Ex: Parede Norte, trecho A-B, entre eixos 2-3"></div>
+    <div class="fg"><label>Ação corretiva</label><textarea id="nc-acao" rows="2" placeholder="Descreva a ação a ser tomada..."></textarea></div>
+    <div class="fg"><label>Responsável pela correção</label><input id="nc-resp" placeholder="Nome do responsável"></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-nc')">Cancelar</button><button class="btn danger" onclick="salvarNC()">⚠ Registrar NC</button></div>
+</div></div>
+
+<!-- Modal orçamento -->
+<div class="ov" id="m-orc"><div class="modal">
+  <div class="mh"><span class="mt">Novo orçamento iForms ICF</span><div class="mx" onclick="fechar('m-orc')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome / cliente *</label><input id="orc-nome" placeholder="Ex: Família Rodrigues — Casa 3 quartos"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Sistema iForms</label>
+        <select id="orc-sis" onchange="calcOrc()"><option>iForms 18+12</option><option>iForms 18</option><option>iForms 12</option></select></div>
+      <div class="fg"><label>Cidade</label><input id="orc-cid" placeholder="Soledade"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Área de paredes (m²) *</label><input type="number" id="orc-area" placeholder="187" oninput="calcOrc()"></div>
+      <div class="fg"><label>Fiadas previstas</label><input type="number" id="orc-fiad" value="6" oninput="calcOrc()"></div>
+      <div class="fg"><label>BDI (%)</label><input type="number" id="orc-bdi" value="28" step="0.5" oninput="calcOrc()"></div>
+    </div>
+    <div class="fg"><label>Prazo estimado (dias)</label><input type="number" id="orc-prazo" placeholder="90"></div>
+    <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:14px;margin-top:6px" id="orc-preview">
+      <div style="font-family:var(--f2);font-size:12px;font-weight:700;color:var(--tl);margin-bottom:10px">Prévia do orçamento</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px" id="orc-calc"></div>
+    </div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-orc')">Cancelar</button><button class="btn p" onclick="salvarOrc()">Gerar orçamento →</button></div>
+</div></div>
+
+<!-- Modal lançamento -->
+<div class="ov" id="m-lanc"><div class="modal">
+  <div class="mh"><span class="mt" id="m-lanc-titulo">Novo lançamento</span><div class="mx" onclick="fechar('m-lanc')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Tipo</label>
+        <select id="lan-tipo"><option value="entrada">Entrada (receita)</option><option value="saida">Saída (despesa)</option></select></div>
+      <div class="fg"><label>Obra</label><select id="lan-obra"><option value="">Geral (empresa)</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Valor (R$) *</label><input type="number" id="lan-val" placeholder="0" min="0"></div>
+      <div class="fg"><label>Data</label><input type="date" id="lan-data"></div>
+    </div>
+    <div class="fg"><label>Categoria</label>
+      <select id="lan-cat"><option>Medição</option><option>Material</option><option>Mão de obra</option><option>Equipamento</option><option>Subempreiteiro</option><option>Administrativo</option><option>Financeiro</option><option>Outro</option></select></div>
+    <div class="fg"><label>Descrição *</label><input id="lan-desc" placeholder="Descreva o lançamento"></div>
+    <div class="fg"><label>Documento / NF</label><input id="lan-doc" placeholder="Número da nota ou documento"></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-lanc')">Cancelar</button><button class="btn p" id="lan-btn" onclick="salvarLanc()">Salvar →</button></div>
+</div></div>
+
+<!-- Modal contrato -->
+<div class="ov" id="m-contrato"><div class="modal">
+  <div class="mh"><span class="mt" id="m-ct-titulo">Novo contrato</span><div class="mx" onclick="fechar('m-contrato')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Contratado *</label><input id="ct-nome" placeholder="Nome ou razão social"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra</label><select id="ct-obra"></select></div>
+      <div class="fg"><label>Tipo</label>
+        <select id="ct-tipo"><option>Empreitada global</option><option>Empreitada parcial</option><option>Fornecimento</option><option>Prestação de serviço</option><option>Locação de equipamento</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Valor (R$)</label><input type="number" id="ct-val" placeholder="0"></div>
+      <div class="fg"><label>Regime</label>
+        <select id="ct-reg"><option>MEI</option><option>PJ</option><option>PF/RPA</option><option>CLT</option></select></div>
+      <div class="fg"><label>Status</label>
+        <select id="ct-stat"><option>Ativo</option><option>Rascunho</option><option>Concluído</option><option>Cancelado</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Data início</label><input type="date" id="ct-ini"></div>
+      <div class="fg"><label>Previsão término</label><input type="date" id="ct-fim"></div>
+    </div>
+    <div class="fg"><label>Objeto do contrato</label><textarea id="ct-obj" rows="2" placeholder="Descreva o serviço ou fornecimento contratado..."></textarea></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-contrato')">Cancelar</button><button class="btn p" id="ct-btn" onclick="salvarContrato()">Salvar contrato →</button></div>
+</div></div>
+
+<!-- Modal compra -->
+<div class="ov" id="m-compra"><div class="modal">
+  <div class="mh"><span class="mt" id="m-cp-titulo">Nova solicitação de compra</span><div class="mx" onclick="fechar('m-compra')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra</label><select id="cp-obra"></select></div>
+      <div class="fg"><label>Urgência</label>
+        <select id="cp-urg"><option>Normal</option><option>Urgente</option><option>Crítico</option></select></div>
+    </div>
+    <div class="fg"><label>Material *</label><input id="cp-mat" placeholder="Ex: Bloco iForms 18 · Armadura CA-50"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Quantidade</label><input type="number" id="cp-qtd" placeholder="100"></div>
+      <div class="fg"><label>Unidade</label>
+        <select id="cp-un"><option>un</option><option>m²</option><option>kg</option><option>m³</option><option>sacos</option><option>barras</option><option>rolos</option><option>litros</option></select></div>
+    </div>
+    <div class="fg"><label>Necessário para</label><input type="date" id="cp-data"></div>
+    <div class="fg"><label>Observação / especificação</label><input id="cp-obs" placeholder="Marca preferida, dimensões específicas..."></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-compra')">Cancelar</button><button class="btn p" id="cp-btn" onclick="salvarCompra()">Solicitar →</button></div>
+</div></div>
+
+<!-- Modal funcionário -->
+<div class="ov" id="m-func"><div class="modal">
+  <div class="mh"><span class="mt" id="m-fn-titulo">Novo funcionário</span><div class="mx" onclick="fechar('m-func')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome completo *</label><input id="fn-nome" placeholder="Nome completo"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Cargo</label>
+        <select id="fn-cargo"><option>Mestre iForms</option><option>Montador iForms</option><option>Armador</option><option>Concreteiro</option><option>Pedreiro</option><option>Servente</option><option>Encarregado</option><option>Engenheiro</option><option>Técnico</option></select></div>
+      <div class="fg"><label>Regime</label>
+        <select id="fn-reg"><option>CLT</option><option>MEI</option><option>PF/RPA</option><option>Empreiteiro</option><option>Estagiário</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Valor/hora (R$)</label><input type="number" id="fn-hora" placeholder="18" value="18" step="0.5"></div>
+      <div class="fg"><label>Telefone</label><input id="fn-tel" placeholder="(54) 9 9999-0000"></div>
+    </div>
+    <div class="fg"><label>CPF / CNPJ</label><input id="fn-doc" placeholder="000.000.000-00"></div>
+    <div class="fg"><label>Certificação iForms</label>
+      <select id="fn-cert"><option>Sem certificação</option><option>Nível I — Montador</option><option>Nível II — Encarregado</option><option>Nível III — Mestre</option></select></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-func')">Cancelar</button><button class="btn p" id="fn-btn" onclick="salvarFunc()">Adicionar →</button></div>
+</div></div>
+
+<!-- Modal medição -->
+<div class="ov" id="m-medicao"><div class="modal">
+  <div class="mh"><span class="mt" id="m-med-titulo">Nova medição</span><div class="mx" onclick="fechar('m-medicao')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra *</label><select id="med-obra"></select></div>
+      <div class="fg"><label>Número da medição</label><input type="number" id="med-num" placeholder="1"></div>
+    </div>
+    <div class="fg"><label>Período de referência</label><input id="med-per" placeholder="Ex: Maio/2026 · F3 e F4"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Valor (R$) *</label><input type="number" id="med-val" placeholder="0"></div>
+      <div class="fg"><label>Vencimento</label><input type="date" id="med-venc"></div>
+    </div>
+    <div class="fg"><label>Status</label>
+      <select id="med-stat"><option>Aguardando aprovação</option><option>Aprovada</option><option>Paga</option><option>Rejeitada</option></select></div>
+    <div class="fg"><label>Descrição dos serviços</label><textarea id="med-desc" rows="2" placeholder="Serviços executados neste período..."></textarea></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-medicao')">Cancelar</button><button class="btn p" id="med-btn" onclick="salvarMedicao()">Salvar medição →</button></div>
+</div></div>
+
+<!-- Modal unidade -->
+<div class="ov" id="m-unidade"><div class="modal">
+  <div class="mh"><span class="mt">Nova unidade Alpha</span><div class="mx" onclick="fechar('m-unidade')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome da unidade *</label><input id="un-nome" placeholder="Ex: Filial Cruz Alta"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Cidade</label><input id="un-cid" placeholder="Cruz Alta"></div>
+      <div class="fg"><label>Tipo</label>
+        <select id="un-tipo"><option>Sede</option><option>Filial</option><option>Implantação</option><option>Parceiro</option></select></div>
+    </div>
+    <div class="fg"><label>Responsável</label><input id="un-resp" placeholder="Nome do responsável local"></div>
+    <div class="fg"><label>Telefone</label><input id="un-tel" placeholder="(54) 9 9999-0000"></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-unidade')">Cancelar</button><button class="btn p" onclick="salvarUnidade()">Adicionar →</button></div>
+</div></div>
+
+<!-- Modal confirmar exclusão -->
+<div class="ov" id="m-del"><div class="modal" style="width:380px">
+  <div class="mh"><span class="mt">Confirmar exclusão</span><div class="mx" onclick="fechar('m-del')">✕</div></div>
+  <div class="mb"><p style="font-size:13px;color:var(--tx2)" id="del-msg">Tem certeza que deseja excluir este item?</p></div>
+  <div class="mf"><button class="btn" onclick="fechar('m-del')">Cancelar</button><button class="btn danger" id="del-btn">Excluir</button></div>
+</div></div>
+
+<!-- Modal logout -->
+<div class="ov" id="m-logout"><div class="modal" style="width:380px">
+  <div class="mh"><span class="mt">Sair do sistema</span><div class="mx" onclick="fechar('m-logout')">✕</div></div>
+  <div class="mb"><p style="font-size:13px;color:var(--tx2)">Deseja sair do Alpha Obras? Os dados locais serão preservados.</p></div>
+  <div class="mf"><button class="btn" onclick="fechar('m-logout')">Cancelar</button><button class="btn danger" onclick="doLogout()">Sair</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+<script>
+
+// ════════════════════════════════════════════════════════════════════
+// ALPHA OBRAS — ENGINE COMPLETO v3.0
+// localStorage + Supabase opcional · Sem iframes · Tudo funcional
+// ════════════════════════════════════════════════════════════════════
+
+// ── BANCO LOCAL ──────────────────────────────────────────────────────
+var DB = {
+  obras:[],leads:[],ncs:[],rdos:[],checklists:[],
+  lancamentos:[],contratos:[],compras:[],funcionarios:[],
+  medicoes:[],orcamentos:[],unidades:[],fotos:[]
+};
+var sb = null; // Supabase client
+var session = null;
+var gpsCoords = null;
+var editId = null; // ID do item em edição
+
+function loadDB(){
+  try{ var s=localStorage.getItem('ao3_db'); if(s) DB=Object.assign(DB,JSON.parse(s)); }catch(e){}
+  Object.keys(DB).forEach(k=>{ if(!Array.isArray(DB[k])) DB[k]=[]; });
+}
+function saveDB(){ try{ localStorage.setItem('ao3_db',JSON.stringify(DB)); }catch(e){} }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2); }
+
+// ── USUÁRIOS ─────────────────────────────────────────────────────────
+var USERS=[
+  {e:'admin@alphaobras.com.br',s:'admin123',n:'Admin Alpha',r:'Administrador',i:'AL',c:'linear-gradient(135deg,#00cba8,#5b9cf6)'},
+  {e:'marcos@alphaobras.com.br',s:'eng123',n:'Marcos Lima',r:'Engenheiro',i:'ML',c:'linear-gradient(135deg,#5b9cf6,#9f8cf5)'},
+  {e:'roberto@alphaobras.com.br',s:'mestre123',n:'Roberto Oliveira',r:'Mestre iForms',i:'RO',c:'linear-gradient(135deg,#f6b93b,#00cba8)'},
+  {e:'cliente@email.com',s:'cliente123',n:'Roberto Costa',r:'Cliente',i:'RC',c:'linear-gradient(135deg,#9f8cf5,#5b9cf6)'},
+];
+
+// ── LOGIN ─────────────────────────────────────────────────────────────
+function doLogin(){
+  var e=(document.getElementById('le').value||'').trim().toLowerCase();
+  var s=(document.getElementById('ls').value||'').trim();
+  var err=document.getElementById('lerr');
+  if(!e||!s){err.textContent='Preencha e-mail e senha.';err.style.display='block';return;}
+  // Busca ignorando maiúsculas/minúsculas na senha também
+  var u=USERS.find(function(x){
+    return x.e===e && (x.s===s || x.s.toLowerCase()===s.toLowerCase());
+  });
+  if(!u){
+    err.textContent='E-mail ou senha incorretos. Tente: admin@alphaobras.com.br / admin123';
+    err.style.display='block';
+    document.getElementById('ls').value='';
+    return;
+  }
+  err.style.display='none';
+  session={email:u.e,nome:u.n,role:u.r,ini:u.i,cor:u.c};
+  localStorage.setItem('ao3_sess',JSON.stringify(session));
+  mostrarApp();
+}
+function ql(e,s){
+  document.getElementById('le').value=e;
+  document.getElementById('ls').value=s;
+  doLogin();
+}
+function ql(e,s){document.getElementById('le').value=e;document.getElementById('ls').value=s;doLogin();}
+function confirmarLogout(){abrirModal('logout');}
+function doLogout(){localStorage.removeItem('ao3_sess');session=null;fechar('m-logout');document.getElementById('login').style.display='flex';document.getElementById('app').className='';toast('Até logo! 👋','ok');}
+
+function mostrarApp(){
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').className='on';
+  document.getElementById('sb-avt').textContent=session.ini;
+  document.getElementById('sb-avt').style.background=session.cor;
+  document.getElementById('sb-uname').textContent=session.nome;
+  document.getElementById('sb-urole').textContent=session.role;
+  try{
+    var cfg2=localStorage.getItem('ao3_cfg');
+    if(cfg2){
+      var cc=JSON.parse(cfg2);
+      Object.keys(cc).forEach(function(k){ var el=document.getElementById(k); if(el) el.value=cc[k]; });
+      if(cc['cfg-cid']) document.getElementById('sb-sub').textContent='iForms ICF · '+cc['cfg-cid'];
+      if(cc['cfg-emp']){ var sb2=document.querySelectorAll('.sb-name'); if(sb2[0]) sb2[0].textContent=cc['cfg-emp']; }
+    }
+  }catch(e){}
+  // Tentar reconectar Supabase
+  var sbUrl=localStorage.getItem('ao3_sb_url');
+  var sbKey=localStorage.getItem('ao3_sb_key');
+  if(sbUrl&&sbKey) setTimeout(()=>conectarSBsilent(sbUrl,sbKey),500);
+  else { setConn(false); renderTudo(); }
+  // Inicializar datas
+  document.getElementById('rdo-data').value=today();
+  document.getElementById('ck-data').value=today();
+  document.getElementById('lan-data').value=today();
+  document.getElementById('rdo-dt').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  // Inicializar btn topbar
+  setTopBtn('obra','+ Nova obra');
+  // GPS
+  obterGPS();
+  // Checklist iForms
+  renderChecklists();
+  toast('Bem-vindo, '+session.nome.split(' ')[0]+'! 🚀','ok');
+}
+
+// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────
+var CONF = {
+  dashboard:  {t:'Dashboard',         btn:'obra',  btxt:'+ Nova obra'},
+  ecossistema:{t:'Ecossistema Alpha',  btn:'unidade',btxt:'+ Nova unidade'},
+  crm:        {t:'CRM — Oportunidades',btn:'lead',  btxt:'+ Novo lead'},
+  qualidade:  {t:'Qualidade iForms',   btn:'nc',    btxt:'+ Registrar NC'},
+  checklist:  {t:'Checklist iForms',   btn:null,    btxt:''},
+  rdo:        {t:'Diário (RDO)',        btn:null,    btxt:''},
+  orcamento:  {t:'Orçamento iForms',   btn:'orc',   btxt:'+ Novo orçamento'},
+  cronograma: {t:'Cronograma',         btn:'obra',  btxt:'+ Nova obra'},
+  medicoes:   {t:'Medições',           btn:'medicao',btxt:'+ Nova medição'},
+  fotos:      {t:'Fotos com GPS',      btn:null,    btxt:''},
+  portal:     {t:'Portal do Cliente',  btn:null,    btxt:''},
+  financeiro: {t:'Financeiro',         btn:'lanc',  btxt:'+ Lançamento'},
+  contratos:  {t:'Contratos',          btn:'contrato',btxt:'+ Novo contrato'},
+  compras:    {t:'Compras',            btn:'compra',btxt:'+ Solicitação'},
+  equipes:    {t:'Equipes',            btn:'func',  btxt:'+ Funcionário'},
+  relatorios: {t:'Relatórios',         btn:null,    btxt:''},
+  ia:         {t:'IA de Captação',     btn:null,    btxt:''},
+  configuracoes:{t:'Configurações',    btn:null,    btxt:''},
+};
+
+function ir(id,el){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
+  if(el){el.classList.add('act');}
+  else {var ni=document.querySelector(`[data-p="${id}"]`);if(ni)ni.classList.add('act');}
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  var pg=document.getElementById('p-'+id);if(pg)pg.classList.add('on');
+  var conf=CONF[id]||{t:id,btn:null,btxt:''};
+  document.getElementById('ptitle').textContent=conf.t;
+  var tb=document.getElementById('topbtns');tb.innerHTML='';
+  if(conf.btn){
+    var b=document.createElement('button');b.className='btn p';b.textContent=conf.btxt;
+    b.onclick=()=>abrirModal(conf.btn);tb.appendChild(b);
+  }
+  // Populate selects de obra
+  ['rdo-obra','nc-obra','lan-obra','ct-obra','cp-obra','med-obra','gantt-obra','ck-obra',
+   'portal-obra','f-fotos-obra'].forEach(populateObraSelect);
+  // Render específico
+  if(id==='dashboard')   renderObras();
+  if(id==='crm')         renderLeads();
+  if(id==='qualidade')   renderNCs();
+  if(id==='financeiro')  {renderLanc();renderFinCats();}
+  if(id==='compras')     renderCompras();
+  if(id==='equipes')     renderEquipes();
+  if(id==='contratos')   renderContratos();
+  if(id==='medicoes')    renderMedicoes();
+  if(id==='orcamento')   renderOrcs();
+  if(id==='ecossistema') renderEcossistema();
+  if(id==='cronograma')  renderGantt();
+  if(id==='fotos')       renderFotos();
+  if(id==='portal')      renderPortal();
+  if(id==='relatorios')  {}
+}
+
+function setTopBtn(modal,txt){
+  var tb=document.getElementById('topbtns');tb.innerHTML='';
+  if(modal){var b=document.createElement('button');b.className='btn p';b.textContent=txt;b.onclick=()=>abrirModal(modal);tb.appendChild(b);}
+}
+
+function renderTudo(){
+  renderObras();renderLeads();renderNCs();renderLanc();renderFinCats();
+  renderCompras();renderEquipes();renderContratos();renderMedicoes();
+  renderOrcs();renderEcossistema();renderFotos();
+  atualizarKPIs();
+  ['rdo-obra','nc-obra','lan-obra','ct-obra','cp-obra','med-obra','gantt-obra','ck-obra',
+   'portal-obra','f-fotos-obra'].forEach(populateObraSelect);
+}
+
+// ── KPIs ──────────────────────────────────────────────────────────────
+function atualizarKPIs(){
+  var ativas=DB.obras.filter(o=>o.status==='Em execução').length;
+  var receita=DB.obras.reduce((s,o)=>s+(+o.valor||0),0);
+  var ncAb=DB.ncs.filter(n=>n.status==='Aberta').length;
+  var leads=DB.leads.length;
+  var medAp=DB.medicoes.filter(m=>m.status==='Aprovada').reduce((s,m)=>s+(+m.valor||0),0);
+  document.getElementById('k-obras').textContent=ativas;
+  document.getElementById('k-obras-s').textContent=DB.obras.length+' no total';
+  document.getElementById('k-receita').textContent=mk(receita);
+  document.getElementById('k-ncs').textContent=ncAb;
+  document.getElementById('k-leads').textContent=leads;
+  document.getElementById('k-receber').textContent=mk(medAp);
+  // Badges sidebar
+  set('nb-crm',leads||'');
+  set('nb-nc',ncAb||'');
+  set('nb-ct',DB.contratos.filter(c=>c.status==='Ativo').length||'');
+  set('nb-cp',DB.compras.filter(c=>c.status==='Pendente').length||'');
+  set('nb-unid',DB.unidades.length||'');
+  // Qualidade KPIs
+  set('q-ab',DB.ncs.filter(n=>n.status==='Aberta').length);
+  set('q-em',DB.ncs.filter(n=>n.status==='Em tratamento').length);
+  set('q-fe',DB.ncs.filter(n=>n.status==='Fechada').length);
+  set('q-tot',DB.ncs.length);
+  // Compras
+  set('cp-pend',DB.compras.filter(c=>c.status==='Pendente').length);
+  set('cp-apro',DB.compras.filter(c=>c.status==='Aprovada').length);
+  set('cp-entr',DB.compras.filter(c=>c.status==='Entregue').length);
+  // Equipes
+  set('eq-tot',DB.funcionarios.length);
+  set('eq-clt',DB.funcionarios.filter(f=>f.regime==='CLT').length);
+  set('eq-mei',DB.funcionarios.filter(f=>f.regime==='MEI'||f.regime==='PF/RPA').length);
+  // Financeiro
+  var ent=DB.lancamentos.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+(+l.valor||0),0);
+  var sai=DB.lancamentos.filter(l=>l.tipo==='saida').reduce((s,l)=>s+(+l.valor||0),0);
+  set('fin-ent',mk(ent));set('fin-sai',mk(sai));set('fin-sal',mk(ent-sai));set('fin-ar',mk(medAp));
+  // Medições
+  set('med-tot',mk(DB.medicoes.reduce((s,m)=>s+(+m.valor||0),0)));
+  set('med-ag',DB.medicoes.filter(m=>m.status==='Aguardando aprovação').length);
+  set('med-ap',DB.medicoes.filter(m=>m.status==='Aprovada'||m.status==='Paga').length);
+  // RDO count
+  set('rdo-count',DB.rdos.length+' registros');
+}
+
+function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+
+// ── CORES STATUS ─────────────────────────────────────────────────────
+var COR  ={'Em execução':'var(--tl)','Atrasado':'var(--rd)','Concluindo':'var(--gn)','Assinando':'var(--am)','Concluída':'var(--tx3)','Planejamento':'var(--bl)','Aberta':'var(--rd)','Em tratamento':'var(--am)','Fechada':'var(--gn)','Ativo':'var(--tl)','Rascunho':'var(--tx2)','Cancelado':'var(--rd)','Pendente':'var(--am)','Aprovada':'var(--tl)','Paga':'var(--gn)','Rejeitada':'var(--rd)','Entregue':'var(--gn)','Normal':'var(--tx2)','Urgente':'var(--am)','Crítico':'var(--rd)','Fechado':'var(--gn)','Perdido':'var(--tx3)'};
+var COR_BG={'Em execução':'var(--tld)','Atrasado':'var(--rdd)','Concluindo':'var(--gnd)','Assinando':'var(--amd)','Concluída':'var(--bg4)','Planejamento':'var(--bld)','Aberta':'var(--rdd)','Em tratamento':'var(--amd)','Fechada':'var(--gnd)','Ativo':'var(--tld)','Rascunho':'var(--bg4)','Cancelado':'var(--rdd)','Pendente':'var(--amd)','Aprovada':'var(--tld)','Paga':'var(--gnd)','Rejeitada':'var(--rdd)','Entregue':'var(--gnd)','Normal':'var(--bg3)','Urgente':'var(--amd)','Crítico':'var(--rdd)','Fechado':'var(--gnd)','Perdido':'var(--bg4)'};
+function cor(s){return COR[s]||'var(--tx2)';}
+function corBg(s){return COR_BG[s]||'var(--bg4)';}
+function badge(s){return `<span class="card-badge" style="color:${cor(s)};background:${corBg(s)}">${s}</span>`;}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function mk(v){v=+v||0;if(v>=1e6)return 'R$ '+(v/1e6).toFixed(1).replace('.',',')+'M';if(v>=1000)return 'R$ '+(v/1000).toFixed(0)+'k';return 'R$ '+v.toFixed(0);}
+function today(){return new Date().toISOString().slice(0,10);}
+function fmtDate(d){if(!d)return'—';var dt=new Date(d+'T12:00:00');return dt.toLocaleDateString('pt-BR');}
+function populateObraSelect(id){
+  var sel=document.getElementById(id);if(!sel)return;
+  var v=sel.value;
+  while(sel.options.length>1)sel.remove(1);
+  DB.obras.forEach(o=>{var opt=document.createElement('option');opt.value=o.id;opt.textContent=o.nome;sel.appendChild(opt);});
+  if(v)sel.value=v;
+}
+
+// ── RENDER OBRAS ──────────────────────────────────────────────────────
+function renderObras(){
+  var g=document.getElementById('obras-grid');if(!g)return;
+  g.innerHTML='';
+  var filt=document.getElementById('f-obras')?.value||'';
+  var list=filt?DB.obras.filter(o=>o.status===filt):DB.obras;
+
+  // Atualizar contador
+  var cnt=document.getElementById('dash-obras-count');
+  if(cnt) cnt.textContent=list.length+(list.length!==DB.obras.length?' de '+DB.obras.length+' obras':'') + ' obra'+(list.length!==1?'s':'');
+
+  if(!list.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML=`<div class="empty-ico">🏗️</div><div class="empty-t">Nenhuma obra cadastrada</div><div class="empty-s">Cadastre sua primeira obra iForms ICF para começar a usar o sistema.</div><button class="btn p" onclick="abrirModal('obra')" style="margin-top:8px">+ Cadastrar primeira obra</button>`;
+    g.appendChild(e);
+  } else {
+    list.forEach(o=>{
+      var c=document.createElement('div');c.className='card';
+      var prog=+o.progresso||0;
+      var nFiadas=+o.n_fiadas||6;
+      var fiadaAtual=Math.ceil(prog/100*nFiadas)||1;
+      c.innerHTML=`<div class="card-top">
+          <div class="card-dot" style="background:${cor(o.status)}"></div>
+          <span class="card-name" title="${o.nome}">${o.nome}</span>
+          ${badge(o.status)}
+        </div>
+        <div class="card-body">
+          <div class="cr"><span>Cliente</span><span>${o.cliente||'—'}</span></div>
+          <div class="cr"><span>Sistema</span><span>${o.sistema||'iForms'}</span></div>
+          <div class="cr"><span>Área</span><span>${o.area?o.area+' m²':'—'}</span></div>
+          <div class="cr"><span>Fiadas</span><span>${fiadaAtual} / ${nFiadas}</span></div>
+          <div class="cr"><span>Valor</span><span style="font-weight:700;color:${cor(o.status)}">${mk(o.valor)}</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;margin-bottom:4px">
+            <span style="font-size:10px;color:var(--tx3)">Progresso</span>
+            <span style="font-size:11px;font-weight:600;color:${cor(o.status)}">${prog}%</span>
+          </div>
+          <div class="card-prog"><div class="card-prog-f" style="background:${cor(o.status)};width:${prog}%"></div></div>
+        </div>
+        <div class="card-actions">
+          <button class="btn sm" onclick="editarObra('${o.id}')">✏ Editar</button>
+          <button class="btn sm" onclick="excluirItem('obras','${o.id}','obra \"${o.nome}\"')">🗑 Excluir</button>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+  // Card Nova obra sempre visível
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova obra</span>';
+  add.onclick=()=>abrirModal('obra');
+  g.appendChild(add);
+  atualizarKPIs();
+  renderAlertas();
+  renderRDOsRecentes();
+  renderFinMini();
+  renderCuraAtiva();
+}
+
+function renderAlertas(){
+  var div=document.getElementById('alertas-lista');if(!div)return;
+  var alertas=[];
+  // NCs abertas
+  DB.ncs.filter(n=>n.status==='Aberta').forEach(n=>{
+    var obra=DB.obras.find(o=>o.id===n.obra_id);
+    alertas.push({tipo:'nc',cor:'var(--rd)',ico:'⚠',txt:'NC: '+n.titulo,sub:obra?.nome||'—',id:n.id});
+  });
+  // Compras pendentes
+  DB.compras.filter(c=>c.status==='Pendente').forEach(cp=>{
+    var obra=DB.obras.find(o=>o.id===cp.obra_id);
+    alertas.push({tipo:'compra',cor:'var(--am)',ico:'📦',txt:cp.material,sub:(obra?.nome||'Geral')+' · '+cp.quantidade+' '+cp.unidade,id:cp.id});
+  });
+  // Obras atrasadas
+  DB.obras.filter(o=>o.status==='Atrasado').forEach(o=>{
+    alertas.push({tipo:'obra',cor:'var(--rd)',ico:'🔴',txt:'Obra atrasada: '+o.nome,sub:o.progresso+'% concluído',id:o.id});
+  });
+  var cnt=document.getElementById('alert-count');
+  if(cnt){cnt.textContent=alertas.length;cnt.style.display=alertas.length?'inline-block':'none';}
+  if(!alertas.length){
+    div.innerHTML='<div style="padding:14px 16px;text-align:center;font-size:12px;color:var(--tx3)">✓ Sem pendências</div>';
+    return;
+  }
+  div.innerHTML=alertas.slice(0,6).map(a=>`
+    <div style="padding:9px 16px;border-bottom:1px solid var(--b1);display:flex;gap:10px;align-items:flex-start;font-size:12px">
+      <span style="flex-shrink:0">${a.ico}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;color:${a.cor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.txt}</div>
+        <div style="color:var(--tx3);font-size:10px">${a.sub}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderRDOsRecentes(){
+  var div=document.getElementById('rdos-recentes');if(!div)return;
+  if(!DB.rdos.length){
+    div.innerHTML='<div style="padding:12px 16px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum RDO ainda</div>';
+    return;
+  }
+  div.innerHTML=DB.rdos.slice(0,4).map(r=>{
+    var obra=DB.obras.find(o=>o.id===r.obra_id);
+    return `<div style="padding:9px 16px;border-bottom:1px solid var(--b1);font-size:11px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+        <span style="font-weight:600;color:var(--tx)">${fmtDate(r.data)}</span>
+        <span style="color:var(--tx3)">${r.clima||''}</span>
+      </div>
+      <div style="color:var(--tx2)">${obra?.nome||'—'}</div>
+      <div style="color:var(--tx3);font-size:10px">${r.fiada||''} · ${r.funcionarios||0} func. · ${r.horas||0}h</div>
+    </div>`;
+  }).join('');
+}
+
+function renderFinMini(){
+  var ent=DB.lancamentos.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+(+l.valor||0),0);
+  var sai=DB.lancamentos.filter(l=>l.tipo==='saida').reduce((s,l)=>s+(+l.valor||0),0);
+  set('fin-mini-ent',mk(ent));
+  set('fin-mini-sai',mk(sai));
+  var sal=ent-sai;
+  var salEl=document.getElementById('fin-mini-sal');
+  if(salEl){salEl.textContent=mk(sal);salEl.style.color=sal>=0?'var(--gn)':'var(--rd)';}
+}
+
+function renderCuraAtiva(){
+  // Simular obras com cura ativa (obras em execução que tiveram RDO recente)
+  var panel=document.getElementById('cura-panel');
+  var lista=document.getElementById('cura-lista');
+  if(!panel||!lista)return;
+  var curasAtivas=DB.rdos.slice(0,3).filter(r=>{
+    var obra=DB.obras.find(o=>o.id===r.obra_id&&o.status==='Em execução');
+    return obra&&r.data===today();
+  }).map(r=>{
+    var obra=DB.obras.find(o=>o.id===r.obra_id);
+    return {obra:obra?.nome||'—',fiada:r.fiada||'F?'};
+  });
+  if(!curasAtivas.length){panel.style.display='none';return;}
+  panel.style.display='block';
+  lista.innerHTML=curasAtivas.map(c=>`
+    <div style="padding:6px 0;border-bottom:1px solid var(--b1);font-size:12px">
+      <div style="display:flex;justify-content:space-between">
+        <span style="font-weight:600">${c.obra}</span>
+        <span style="color:var(--am);font-weight:600">${c.fiada}</span>
+      </div>
+      <div style="color:var(--tx3);font-size:10px;margin-top:2px">Aguardando 72h · iForms ICF</div>
+      <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:6px">
+        <div style="height:100%;background:var(--am);border-radius:2px;width:${Math.random()*60+20}%"></div>
+      </div>
+    </div>`).join('');
+}
 loadDB();
 var sess=localStorage.getItem('ao3_sess');
 if(sess){
@@ -3143,7 +3148,6 @@ function limparDados(){
   };
   abrirModal('del');
 }
-
 </script>
 </body>
 </html>
