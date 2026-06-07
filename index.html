@@ -1,0 +1,3149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#00cba8">
+<title>Alpha Obras — iForms ICF</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d14;--bg2:#111622;--bg3:#171f30;--bg4:#1e2840;--bg5:#243050;
+  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.12);--b3:rgba(255,255,255,.18);
+  --tx:#eef1f8;--tx2:#7a8aa0;--tx3:#46556a;--tx4:#2d3a4e;
+  --tl:#00cba8;--tld:rgba(0,203,168,.1);--tlb:rgba(0,203,168,.22);
+  --bl:#5b9cf6;--bld:rgba(91,156,246,.1);
+  --am:#f6b93b;--amd:rgba(246,185,59,.1);
+  --rd:#e05c5c;--rdd:rgba(224,92,92,.1);
+  --gn:#3dd68c;--gnd:rgba(61,214,140,.1);
+  --pu:#9f8cf5;--pud:rgba(159,140,245,.1);
+  --sw:232px;--f:'Inter',sans-serif;--f2:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);font-size:13px;}
+a{color:inherit;text-decoration:none;}
+button,input,select,textarea{font-family:var(--f);}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:2px;}
+
+/* ── LOGIN ── */
+#login{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;
+  background:radial-gradient(ellipse 60% 50% at 30% 40%,rgba(0,203,168,.05),transparent),var(--bg);}
+.lbox{background:var(--bg2);border:1px solid var(--b2);border-radius:20px;padding:40px 36px;width:440px;max-width:96vw;}
+.l-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.l-ico{width:44px;height:44px;background:var(--tl);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.l-ico svg{width:22px;height:22px;fill:#0a0d14;}
+.l-brand{font-family:var(--f2);font-size:19px;font-weight:800;}
+.l-sub{font-size:11px;color:var(--tx3);}
+.l-h1{font-family:var(--f2);font-size:22px;font-weight:800;margin-bottom:5px;}
+.l-h2{font-size:13px;color:var(--tx2);margin-bottom:24px;}
+.l-err{background:var(--rdd);border:1px solid rgba(224,92,92,.25);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--rd);margin-bottom:14px;display:none;}
+.l-grp{margin-bottom:14px;}
+.l-lbl{font-size:11px;font-weight:600;color:var(--tx2);display:block;margin-bottom:5px;}
+.l-inp{width:100%;background:var(--bg3);border:1px solid var(--b2);border-radius:9px;padding:11px 14px;color:var(--tx);font-size:14px;outline:none;transition:border .15s;}
+.l-inp:focus{border-color:var(--tl);}
+.l-inp.e{border-color:var(--rd);}
+.l-btn{width:100%;background:var(--tl);border:none;border-radius:9px;padding:13px;font-size:14px;font-weight:700;color:#0a0d14;cursor:pointer;transition:background .15s;}
+.l-btn:hover{background:#00aa8a;}
+.l-btn:disabled{opacity:.6;cursor:not-allowed;}
+.l-div{margin-top:22px;padding-top:18px;border-top:1px solid var(--b1);}
+.l-dlbl{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;}
+.l-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.lchip{background:var(--bg3);border:1px solid var(--b1);border-radius:9px;padding:9px 12px;cursor:pointer;transition:all .12s;}
+.lchip:hover{border-color:var(--b2);background:var(--bg4);}
+.lchip-n{font-size:12px;font-weight:600;}
+.lchip-r{font-size:10px;color:var(--tx3);margin-top:1px;}
+
+/* ── APP ── */
+#app{display:none;height:100vh;flex-direction:row;}
+#app.on{display:flex;}
+
+/* ── SIDEBAR ── */
+.sb{width:var(--sw);height:100vh;background:var(--bg2);border-right:1px solid var(--b1);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;}
+.sb-ico{width:30px;height:30px;background:var(--tl);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-ico svg{width:15px;height:15px;fill:#0a0d14;}
+.sb-name{font-family:var(--f2);font-weight:800;font-size:14px;line-height:1.2;}
+.sb-sub{font-size:10px;color:var(--tx3);}
+.sb-nav{flex:1;overflow-y:auto;padding:8px 8px 0;}
+.sb-sec{margin-bottom:2px;}
+.sb-lbl{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;padding:10px 10px 4px;display:block;}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;color:var(--tx2);font-size:12px;font-weight:400;transition:all .12s;margin-bottom:1px;user-select:none;position:relative;}
+.ni:hover{background:var(--bg3);color:var(--tx);}
+.ni.act{background:var(--tld);color:var(--tl);font-weight:600;}
+.ni svg{width:14px;height:14px;flex-shrink:0;opacity:.65;}
+.ni.act svg{opacity:1;}
+.ni .nb{margin-left:auto;font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;}
+.ni .nb.red{background:var(--rdd);color:var(--rd);}
+.ni .nb.teal{background:var(--tld);color:var(--tl);}
+.ni .nb.pu{background:var(--pud);color:var(--pu);}
+.ni .nb.am{background:var(--amd);color:var(--am);}
+.ni .nb.ia{background:var(--pud);color:var(--pu);}
+.sb-usr{padding:12px 8px;border-top:1px solid var(--b1);display:flex;align-items:center;gap:9px;cursor:pointer;border-radius:8px;margin:4px 8px 8px;transition:background .12s;}
+.sb-usr:hover{background:var(--bg3);}
+.sb-avt{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.sb-uname{font-size:12px;font-weight:600;line-height:1.3;}
+.sb-urole{font-size:10px;color:var(--tx3);}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{height:54px;background:var(--bg2);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 22px;gap:10px;flex-shrink:0;}
+.tb-title{flex:1;font-size:14px;font-weight:600;}
+.conn{display:flex;align-items:center;gap:5px;font-size:11px;cursor:pointer;}
+.cdot{width:7px;height:7px;border-radius:50%;background:var(--am);transition:background .4s;}
+.ctxt{color:var(--am);transition:color .4s;}
+.pages{flex:1;overflow-y:auto;overflow-x:hidden;}
+.page{display:none;padding:22px;}
+.page.on{display:block;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--b2);background:var(--bg3);color:var(--tx);transition:all .12s;white-space:nowrap;}
+.btn:hover{background:var(--bg4);}
+.btn.p{background:var(--tl);border-color:var(--tl);color:#0a0d14;font-weight:700;}
+.btn.p:hover{background:#00aa8a;}
+.btn.danger{background:var(--rdd);border-color:rgba(224,92,92,.3);color:var(--rd);}
+.btn.sm{padding:5px 10px;font-size:11px;}
+.btn svg{width:12px;height:12px;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ── KPI ROW ── */
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+.kc{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:15px;position:relative;overflow:hidden;transition:border .15s;}
+.kc:hover{border-color:var(--b2);}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--tl));}
+.kc-l{font-size:10px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:7px;}
+.kc-v{font-family:var(--f2);font-size:21px;font-weight:800;margin-bottom:3px;letter-spacing:-.3px;}
+.kc-s{font-size:10px;color:var(--tx3);}
+
+/* ── SECTION HEADER ── */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap;}
+.sh-t{font-family:var(--f2);font-size:14px;font-weight:700;}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:12px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .15s;}
+.card:hover{border-color:var(--b2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35);}
+.card-top{padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px;}
+.card-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.card-name{font-size:13px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;flex-shrink:0;}
+.card-body{padding:10px 14px;font-size:11px;}
+.cr{display:flex;justify-content:space-between;margin-bottom:4px;}
+.cr:last-child{margin-bottom:0;}
+.cr span:first-child{color:var(--tx3);}
+.cr span:last-child{font-weight:500;}
+.card-prog{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:8px;}
+.card-prog-f{height:100%;border-radius:2px;transition:width .5s;}
+.card-actions{padding:8px 14px;border-top:1px solid var(--b1);display:flex;gap:6px;}
+
+/* ADD CARD */
+.add-card{background:var(--bg2);border:2px dashed var(--b1);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:26px;cursor:pointer;transition:all .2s;min-height:150px;}
+.add-card:hover{border-color:var(--tl);background:var(--tld);}
+.add-card svg{width:22px;height:22px;stroke:var(--tx3);transition:stroke .2s;}
+.add-card:hover svg{stroke:var(--tl);}
+.add-card span{font-size:12px;font-weight:500;color:var(--tx3);transition:color .2s;}
+.add-card:hover span{color:var(--tl);}
+
+/* EMPTY STATE */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:52px 20px;text-align:center;gap:12px;background:var(--bg2);border:1px solid var(--b1);border-radius:12px;grid-column:1/-1;}
+.empty-ico{font-size:36px;}
+.empty-t{font-family:var(--f2);font-size:16px;font-weight:700;}
+.empty-s{font-size:12px;color:var(--tx2);max-width:280px;line-height:1.6;}
+
+/* PANELS */
+.panel{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.panel:last-child{margin-bottom:0;}
+.ph{padding:13px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;}
+.ph-t{font-family:var(--f2);font-size:13px;font-weight:700;flex:1;}
+.ph-b{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;}
+.pb{padding:16px;}
+
+/* FORMS */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.fg:last-child{margin-bottom:0;}
+.fg label{font-size:11px;font-weight:600;color:var(--tx2);}
+.fg input,.fg select,.fg textarea{background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:9px 12px;color:var(--tx);font-size:13px;outline:none;width:100%;transition:border .15s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--tl);box-shadow:0 0 0 3px var(--tld);}
+.fg select option{background:var(--bg3);}
+.fg input.e,.fg select.e{border-color:var(--rd);}
+.fg-row{display:grid;gap:10px;}
+
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:500;align-items:center;justify-content:center;padding:16px;}
+.ov.on{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--b2);border-radius:16px;width:560px;max-width:100%;max-height:94vh;overflow-y:auto;flex-shrink:0;}
+.modal.lg{width:720px;}
+.mh{padding:18px 22px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--bg2);z-index:1;}
+.mt{font-family:var(--f2);font-size:15px;font-weight:700;flex:1;}
+.mx{width:28px;height:28px;border-radius:7px;background:var(--bg3);border:1px solid var(--b1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--tx2);transition:all .12s;}
+.mx:hover{background:var(--bg4);color:var(--tx);}
+.mb{padding:20px 22px;}
+.mf{padding:14px 22px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:8px;}
+
+/* STATUS BADGE HELPERS */
+.st{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;}
+
+/* CHECKLIST IFORMS */
+.ck-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--b1);}
+.ck-item:last-child{border-bottom:none;}
+.ck-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--b2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;margin-top:1px;}
+.ck-box.on{background:var(--tl);border-color:var(--tl);}
+.ck-box.on::after{content:'✓';font-size:12px;font-weight:700;color:#0a0d14;}
+.ck-txt{flex:1;font-size:12px;line-height:1.5;}
+.ck-cat{font-size:9px;color:var(--tx3);margin-top:1px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--tl);color:var(--tl);padding:9px 18px;border-radius:10px;font-size:12px;font-weight:500;z-index:9999;display:none;align-items:center;gap:7px;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.5);}
+.toast.on{display:flex;}
+.toast.ok{border-color:var(--gn);color:var(--gn);}
+.toast.er{border-color:var(--rd);color:var(--rd);}
+.toast.wa{border-color:var(--am);color:var(--am);}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═════════════════════════════════════════════════════ -->
+<div id="login">
+<div class="lbox">
+  <div class="l-logo">
+    <div class="l-ico"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7l9-4 9 4M4 7v14M20 7v14M8 21v-4a4 4 0 018 0v4"/></svg></div>
+    <div><div class="l-brand">Alpha Obras</div><div class="l-sub" id="l-sub">Gestão iForms ICF</div></div>
+  </div>
+  <div class="l-h1">Bem-vindo</div>
+  <div class="l-h2">Entre com seu e-mail e senha — ou clique num perfil abaixo.</div>
+  <div class="l-err" id="lerr">E-mail ou senha incorretos.</div>
+  <div class="l-grp"><label class="l-lbl">E-mail</label>
+    <input class="l-inp" id="le" type="email" placeholder="seu@email.com.br" onkeydown="if(event.key==='Enter')document.getElementById('ls').focus()"></div>
+  <div class="l-grp"><label class="l-lbl">Senha</label>
+    <input class="l-inp" id="ls" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+  <button class="l-btn" id="lbtn" onclick="doLogin()">Entrar no Alpha Obras</button>
+  <button class="l-btn" onclick="ql('admin@alphaobras.com.br','admin123')" 
+    style="background:var(--bg3);border:1px solid var(--b2);color:var(--tl);margin-top:8px;font-weight:600">
+    Entrar como Admin (acesso rápido)
+  </button>
+  <div class="l-div">
+    <div class="l-dlbl">Entrar como (demonstração)</div>
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Clique em qualquer perfil para entrar automaticamente:</div>
+    <div class="l-chips">
+      <div class="lchip" onclick="ql('admin@alphaobras.com.br','admin123')"><div class="lchip-n">Admin Alpha</div><div class="lchip-r">🔑 Administrador</div></div>
+      <div class="lchip" onclick="ql('marcos@alphaobras.com.br','eng123')"><div class="lchip-n">Marcos Lima</div><div class="lchip-r">Engenheiro CREA/RS</div></div>
+      <div class="lchip" onclick="ql('roberto@alphaobras.com.br','mestre123')"><div class="lchip-n">Roberto Oliveira</div><div class="lchip-r">Mestre iForms</div></div>
+      <div class="lchip" onclick="ql('cliente@email.com','cliente123')"><div class="lchip-n">Roberto Costa</div><div class="lchip-r">Cliente (portal)</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ APP ═══════════════════════════════════════════════════════ -->
+<div id="app">
+  <div class="sb">
+    <div class="sb-logo">
+      <div class="sb-ico"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7l9-4 9 4M4 7v14M20 7v14M8 21v-4a4 4 0 018 0v4"/></svg></div>
+      <div><div class="sb-name">Alpha Obras</div><div class="sb-sub" id="sb-sub">iForms ICF</div></div>
+    </div>
+    <div class="sb-nav" id="sb-nav">
+      <div class="sb-sec">
+        <span class="sb-lbl">Principal</span>
+        <div class="ni act" data-p="dashboard" onclick="ir('dashboard',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</div>
+        <div class="ni" data-p="ecossistema" onclick="ir('ecossistema',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Ecossistema Alpha <span class="nb teal" id="nb-unid">0</span></div>
+        <div class="ni" data-p="crm" onclick="ir('crm',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>CRM / Oportunidades <span class="nb pu" id="nb-crm">0</span></div>
+      </div>
+      <div class="sb-sec">
+        <span class="sb-lbl">iForms ICF</span>
+        <div class="ni" data-p="qualidade" onclick="ir('qualidade',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>Qualidade iForms <span class="nb red" id="nb-nc">0</span></div>
+        <div class="ni" data-p="orcamento" onclick="ir('orcamento',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Orçamento iForms</div>
+        <div class="ni" data-p="rdo" onclick="ir('rdo',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Diário (RDO)</div>
+        <div class="ni" data-p="cronograma" onclick="ir('cronograma',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Cronograma</div>
+        <div class="ni" data-p="medicoes" onclick="ir('medicoes',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>Medições</div>
+        <div class="ni" data-p="fotos" onclick="ir('fotos',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>Fotos com GPS</div>
+        <div class="ni" data-p="portal" onclick="ir('portal',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Portal do Cliente</div>
+      </div>
+      <div class="sb-sec">
+        <span class="sb-lbl">Gestão</span>
+        <div class="ni" data-p="financeiro" onclick="ir('financeiro',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Financeiro</div>
+        <div class="ni" data-p="contratos" onclick="ir('contratos',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>Contratos <span class="nb am" id="nb-ct">0</span></div>
+        <div class="ni" data-p="compras" onclick="ir('compras',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Compras <span class="nb am" id="nb-cp">0</span></div>
+        <div class="ni" data-p="equipes" onclick="ir('equipes',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Equipes</div>
+        <div class="ni" data-p="relatorios" onclick="ir('relatorios',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Relatórios</div>
+      </div>
+      <div class="sb-sec">
+        <span class="sb-lbl">Crescimento</span>
+        <div class="ni" data-p="ia" onclick="ir('ia',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/></svg>IA de Captação <span class="nb ia">IA</span></div>
+        <div class="ni" data-p="configuracoes" onclick="ir('configuracoes',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>Configurações</div>
+      </div>
+    </div>
+    <div class="sb-usr" onclick="confirmarLogout()">
+      <div class="sb-avt" id="sb-avt" style="background:linear-gradient(135deg,var(--tl),var(--bl));color:#0a0d14">A</div>
+      <div><div class="sb-uname" id="sb-uname">Usuário</div><div class="sb-urole" id="sb-urole">—</div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="2" style="width:13px;height:13px;margin-left:auto;flex-shrink:0"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="tb-title" id="ptitle">Dashboard</span>
+      <div class="conn" onclick="ir('configuracoes')"><div class="cdot" id="cdot"></div><span class="ctxt" id="ctxt">Conectando...</span></div>
+      <div id="topbtns" style="display:flex;gap:8px"></div>
+    </div>
+    <div class="pages" id="pages">
+
+<!-- ═ DASHBOARD ══════════════════════════════════════════════════ -->
+<div class="page on" id="p-dashboard">
+
+  <!-- KPIs clicáveis -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:18px">
+    <div class="kc" style="--kc:var(--tl);cursor:pointer" onclick="ir('configuracoes',document.querySelector('[data-p=configuracoes]'))">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="kc-l" style="margin:0">Obras ativas</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--tl)" stroke-width="2" style="width:15px;height:15px;opacity:.55"><path d="M3 21h18M3 7l9-4 9 4M4 7v14M20 7v14M8 21v-4a4 4 0 018 0v4"/></svg>
+      </div>
+      <div class="kc-v" style="color:var(--tl)" id="k-obras">0</div>
+      <div class="kc-s" id="k-obras-s">nenhuma ainda</div>
+    </div>
+    <div class="kc" style="--kc:var(--gn);cursor:pointer" onclick="ir('financeiro',document.querySelector('[data-p=financeiro]'))">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="kc-l" style="margin:0">Receita contratada</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gn)" stroke-width="2" style="width:15px;height:15px;opacity:.55"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div class="kc-v" style="color:var(--gn)" id="k-receita">R$ 0</div>
+      <div class="kc-s">valor total obras</div>
+    </div>
+    <div class="kc" style="--kc:var(--bl);cursor:pointer" onclick="ir('medicoes',document.querySelector('[data-p=medicoes]'))">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="kc-l" style="margin:0">A receber</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="2" style="width:15px;height:15px;opacity:.55"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+      </div>
+      <div class="kc-v" style="color:var(--bl)" id="k-receber">R$ 0</div>
+      <div class="kc-s">medições pendentes</div>
+    </div>
+    <div class="kc" style="--kc:var(--rd);cursor:pointer" onclick="ir('qualidade',document.querySelector('[data-p=qualidade]'))">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="kc-l" style="margin:0">NCs abertas</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="2" style="width:15px;height:15px;opacity:.55"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="kc-v" style="color:var(--rd)" id="k-ncs">0</div>
+      <div class="kc-s">não conformidades</div>
+    </div>
+    <div class="kc" style="--kc:var(--pu);cursor:pointer" onclick="ir('crm',document.querySelector('[data-p=crm]'))">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="kc-l" style="margin:0">Leads no CRM</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--pu)" stroke-width="2" style="width:15px;height:15px;opacity:.55"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      </div>
+      <div class="kc-v" style="color:var(--pu)" id="k-leads">0</div>
+      <div class="kc-s">oportunidades</div>
+    </div>
+    <div class="kc" style="--kc:var(--am);cursor:pointer" onclick="ir('rdo',document.querySelector('[data-p=rdo]'))">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="kc-l" style="margin:0">RDOs hoje</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--am)" stroke-width="2" style="width:15px;height:15px;opacity:.55"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="kc-v" style="color:var(--am)" id="k-rdos">0</div>
+      <div class="kc-s">diários registrados</div>
+    </div>
+  </div>
+
+  <!-- AÇÕES RÁPIDAS -->
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;align-items:center">
+    <button class="btn p" onclick="abrirModal('obra')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Nova obra
+    </button>
+    <button class="btn" onclick="ir('rdo',document.querySelector('[data-p=rdo]'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      RDO do dia
+    </button>
+    <button class="btn" onclick="abrirModal('nc')" style="color:var(--rd);border-color:rgba(224,92,92,.3)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>
+      Registrar NC
+    </button>
+    <button class="btn" onclick="abrirModal('lead')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
+      Novo lead
+    </button>
+    <button class="btn" onclick="abrirModal('lanc')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Lançamento
+    </button>
+    <div style="margin-left:auto">
+      <select id="f-obras" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:6px 10px;color:var(--tx);font-size:11px;outline:none" onchange="renderObras()">
+        <option value="">Todos os status</option>
+        <option>Em execução</option><option>Atrasado</option><option>Concluindo</option>
+        <option>Assinando</option><option>Concluída</option><option>Planejamento</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- GRID PRINCIPAL: obras + painel lateral -->
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start">
+
+    <!-- OBRAS EM ANDAMENTO -->
+    <div>
+      <div class="sh">
+        <span class="sh-t">Obras em andamento</span>
+        <span style="font-size:11px;color:var(--tx3)" id="dash-obras-count"></span>
+      </div>
+      <div id="obras-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px"></div>
+    </div>
+
+    <!-- PAINEL LATERAL -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+
+      <!-- Pendências -->
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-t">Pendências</span>
+          <span class="ph-b" style="background:var(--rdd);color:var(--rd)" id="alert-count">0</span>
+        </div>
+        <div id="alertas-lista"></div>
+      </div>
+
+      <!-- Resumo financeiro -->
+      <div class="panel" style="cursor:pointer" onclick="ir('financeiro',document.querySelector('[data-p=financeiro]'))">
+        <div class="ph"><span class="ph-t">Financeiro</span></div>
+        <div class="pb">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+            <div style="background:var(--gnd);border-radius:8px;padding:10px;text-align:center">
+              <div style="font-size:10px;color:var(--gn);font-weight:600;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px">Entradas</div>
+              <div style="font-family:var(--f2);font-size:13px;font-weight:800;color:var(--gn)" id="fin-mini-ent">R$ 0</div>
+            </div>
+            <div style="background:var(--rdd);border-radius:8px;padding:10px;text-align:center">
+              <div style="font-size:10px;color:var(--rd);font-weight:600;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px">Saídas</div>
+              <div style="font-family:var(--f2);font-size:13px;font-weight:800;color:var(--rd)" id="fin-mini-sai">R$ 0</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding-top:8px;border-top:1px solid var(--b1)">
+            <span style="color:var(--tx2)">Saldo atual</span>
+            <span style="font-family:var(--f2);font-weight:700;font-size:14px" id="fin-mini-sal">R$ 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Últimos RDOs -->
+      <div class="panel">
+        <div class="ph">
+          <span class="ph-t">Últimos RDOs</span>
+          <span style="font-size:11px;color:var(--tl);cursor:pointer;font-weight:500" onclick="ir('rdo',document.querySelector('[data-p=rdo]'))">ver todos →</span>
+        </div>
+        <div id="rdos-recentes"></div>
+      </div>
+
+      <!-- Cura ativa iForms -->
+      <div class="panel" id="cura-panel" style="display:none;border-color:rgba(0,203,168,.22)">
+        <div class="ph" style="background:rgba(0,203,168,.05)">
+          <span class="ph-t" style="color:var(--tl)">⏱ Cura ativa — iForms</span>
+        </div>
+        <div id="cura-lista" class="pb"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="page" id="p-ecossistema">
+
+  <!-- HEADER -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-family:var(--f2);font-size:16px;font-weight:800;margin-bottom:3px">Ecossistema Alpha Obras</div>
+      <div style="font-size:12px;color:var(--tx2)">Visão consolidada de todas as unidades — Rio Grande do Sul</div>
+    </div>
+    <button class="btn p" onclick="abrirModal('unidade')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nova unidade
+    </button>
+  </div>
+
+  <!-- KPIs GLOBAIS -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px">
+    <div class="kc" style="--kc:var(--tl)">
+      <div class="kc-l">Unidades ativas</div>
+      <div class="kc-v" style="color:var(--tl)" id="eco-unid">0</div>
+      <div class="kc-s">no RS</div>
+    </div>
+    <div class="kc" style="--kc:var(--gn)">
+      <div class="kc-l">Obras consolidadas</div>
+      <div class="kc-v" style="color:var(--gn)" id="eco-obras">0</div>
+      <div class="kc-s">todas unidades</div>
+    </div>
+    <div class="kc" style="--kc:var(--bl)">
+      <div class="kc-l">Receita consolidada</div>
+      <div class="kc-v" style="color:var(--bl)" id="eco-receita">R$ 0</div>
+      <div class="kc-s">total contratado</div>
+    </div>
+    <div class="kc" style="--kc:var(--pu)">
+      <div class="kc-l">Área em execução</div>
+      <div class="kc-v" style="color:var(--pu)" id="eco-area">0 m²</div>
+      <div class="kc-s">iForms ICF</div>
+    </div>
+    <div class="kc" style="--kc:var(--am)">
+      <div class="kc-l">Equipe total</div>
+      <div class="kc-v" style="color:var(--am)" id="eco-equipe">0</div>
+      <div class="kc-s">funcionários</div>
+    </div>
+  </div>
+
+  <!-- CARDS DAS UNIDADES -->
+  <div style="font-family:var(--f2);font-size:13px;font-weight:700;margin-bottom:12px">Unidades</div>
+  <div id="unid-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px"></div>
+
+  <!-- RANKING + COMPARATIVO -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+    <!-- RANKING DE PRODUTIVIDADE -->
+    <div class="panel">
+      <div class="ph">
+        <span class="ph-t">🏆 Ranking de produtividade</span>
+        <span class="ph-b" style="background:var(--tld);color:var(--tl)">por receita</span>
+      </div>
+      <div id="eco-ranking"></div>
+    </div>
+
+    <!-- COMPARATIVO DE OBRAS -->
+    <div class="panel">
+      <div class="ph">
+        <span class="ph-t">📊 Comparativo de obras</span>
+      </div>
+      <div class="pb" id="eco-chart"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="page" id="p-crm">
+  <div class="sh"><span class="sh-t">CRM — Oportunidades</span>
+    <div style="display:flex;gap:8px">
+      <select id="f-leads" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:5px 10px;color:var(--tx);font-size:11px;outline:none" onchange="renderLeads()">
+        <option value="">Todos status</option><option>Prospecção</option><option>Contato feito</option><option>Reunião agendada</option><option>Proposta enviada</option><option>Negociação</option><option>Fechado</option><option>Perdido</option>
+      </select>
+      <button class="btn p" onclick="abrirModal('lead')">+ Novo lead</button>
+    </div>
+  </div>
+  <div class="grid" id="leads-grid"></div>
+</div>
+
+<!-- ═ QUALIDADE ═══════════════════════════════════════════════════ -->
+<div class="page" id="p-qualidade">
+  <div class="sh"><span class="sh-t">Qualidade iForms ICF</span>
+    <div style="display:flex;gap:8px">
+      <button class="btn" onclick="ir('checklist',document.querySelector('[data-p=qualidade]'))">✅ Checklist iForms</button>
+      <button class="btn p danger" onclick="abrirModal('nc')">+ Registrar NC</button>
+    </div>
+  </div>
+  <div class="krow" style="margin-bottom:20px">
+    <div class="kc" style="--kc:var(--rd)"><div class="kc-l">NCs abertas</div><div class="kc-v" style="color:var(--rd)" id="q-ab">0</div><div class="kc-s">requerem ação</div></div>
+    <div class="kc" style="--kc:var(--am)"><div class="kc-l">Em tratamento</div><div class="kc-v" style="color:var(--am)" id="q-em">0</div><div class="kc-s">em andamento</div></div>
+    <div class="kc" style="--kc:var(--gn)"><div class="kc-l">Fechadas</div><div class="kc-v" style="color:var(--gn)" id="q-fe">0</div><div class="kc-s">concluídas</div></div>
+    <div class="kc" style="--kc:var(--tl)"><div class="kc-l">Total</div><div class="kc-v" style="color:var(--tl)" id="q-tot">0</div><div class="kc-s">todas as NCs</div></div>
+  </div>
+  <div class="grid" id="ncs-grid"></div>
+</div>
+
+<!-- ═ CHECKLIST iFORMS ═══════════════════════════════════════════ -->
+<div class="page" id="p-checklist">
+  <div class="sh"><span class="sh-t">Checklist iForms ICF — 22 itens</span>
+    <button class="btn p" onclick="salvarChecklist()">Salvar checklist</button>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="panel">
+        <div class="ph"><span class="ph-t">Dados da inspeção</span></div>
+        <div class="pb">
+          <div class="fg"><label>Obra</label><select id="ck-obra"></select></div>
+          <div class="fg-row" style="grid-template-columns:1fr 1fr">
+            <div class="fg"><label>Data</label><input type="date" id="ck-data"></div>
+            <div class="fg"><label>Fiada</label>
+              <select id="ck-fiada"><option>F1</option><option>F2</option><option>F3</option><option>F4</option><option>F5</option><option>F6</option></select></div>
+          </div>
+          <div class="fg"><label>Inspetor</label><input id="ck-insp" placeholder="Nome do responsável"></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="ph"><span class="ph-t">Resumo</span></div>
+        <div class="pb">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px">
+            <span style="color:var(--tx2)">Itens aprovados</span><span id="ck-ok" style="color:var(--gn);font-weight:700">0 / 22</span>
+          </div>
+          <div style="height:6px;background:var(--bg4);border-radius:3px;overflow:hidden">
+            <div id="ck-bar" style="height:100%;background:var(--tl);border-radius:3px;transition:width .4s;width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="ph-t">Itens de inspeção iForms ICF</span></div>
+      <div class="pb" id="ck-lista"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═ RDO ════════════════════════════════════════════════════════ -->
+<div class="page" id="p-rdo">
+  <div class="sh"><span class="sh-t">Diário de Obra (RDO)</span>
+    <span id="rdo-dt" style="font-size:12px;color:var(--tx2)"></span>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="panel">
+        <div class="ph"><span class="ph-t">Preenchimento do dia</span></div>
+        <div class="pb">
+          <div class="fg"><label>Obra *</label><select id="rdo-obra"><option value="">Selecione...</option></select></div>
+          <div class="fg-row" style="grid-template-columns:1fr 1fr">
+            <div class="fg"><label>Data</label><input type="date" id="rdo-data"></div>
+            <div class="fg"><label>Clima</label>
+              <select id="rdo-clima"><option>☀️ Ensolarado</option><option>⛅ Parcialmente nublado</option><option>☁️ Nublado</option><option>🌧 Chuva fraca</option><option>⛈ Chuva forte</option></select></div>
+          </div>
+          <div class="fg"><label>Fiada em execução</label>
+            <select id="rdo-fiada"><option>F1 — início</option><option>F2</option><option>F3</option><option>F4</option><option>F5</option><option>F6</option><option>Fundação</option><option>Cobertura</option><option>Acabamentos</option></select></div>
+          <div class="fg-row" style="grid-template-columns:1fr 1fr">
+            <div class="fg"><label>Funcionários</label><input type="number" id="rdo-func" value="0" min="0"></div>
+            <div class="fg"><label>Horas trabalhadas</label><input type="number" id="rdo-horas" value="0" min="0"></div>
+          </div>
+          <div class="fg"><label>Etapas executadas</label><input id="rdo-etapas" placeholder="Ex: Montagem blocos, amarração, armação CA-50"></div>
+          <div class="fg"><label>Ocorrências / observações</label><textarea id="rdo-obs" rows="3" placeholder="Problemas, visitas, decisões tomadas..."></textarea></div>
+          <button class="btn p" style="width:100%;justify-content:center" onclick="salvarRDO()">Salvar RDO do dia →</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="ph-t">Histórico de RDOs</span><span class="ph-b" style="background:var(--tld);color:var(--tl)" id="rdo-count">0 registros</span></div>
+      <div id="rdo-lista" style="max-height:500px;overflow-y:auto"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═ ORÇAMENTO ═══════════════════════════════════════════════════ -->
+<div class="page" id="p-orcamento">
+  <div class="sh"><span class="sh-t">Orçamento iForms ICF</span>
+    <button class="btn p" onclick="abrirModal('orc')">+ Novo orçamento</button>
+  </div>
+  <div class="grid" id="orc-grid"></div>
+</div>
+
+<!-- ═ CRONOGRAMA ═════════════════════════════════════════════════ -->
+<div class="page" id="p-cronograma">
+  <div class="sh"><span class="sh-t">Cronograma de obras</span>
+    <button class="btn p" onclick="abrirModal('obra')">+ Nova obra</button>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="ph-t">Gantt — Fiadas iForms</span>
+      <select id="gantt-obra" style="background:var(--bg3);border:1px solid var(--b2);border-radius:7px;padding:5px 10px;color:var(--tx);font-size:11px;outline:none" onchange="renderGantt()">
+        <option value="">Selecione a obra...</option>
+      </select>
+    </div>
+    <div class="pb" id="gantt-area" style="overflow-x:auto"></div>
+  </div>
+</div>
+
+<!-- ═ MEDIÇÕES ════════════════════════════════════════════════════ -->
+<div class="page" id="p-medicoes">
+  <div class="sh"><span class="sh-t">Medições</span>
+    <button class="btn p" onclick="abrirModal('medicao')">+ Nova medição</button>
+  </div>
+  <div class="krow">
+    <div class="kc" style="--kc:var(--gn)"><div class="kc-l">Total medido</div><div class="kc-v" style="color:var(--gn)" id="med-tot">R$ 0</div><div class="kc-s">todas obras</div></div>
+    <div class="kc" style="--kc:var(--am)"><div class="kc-l">Aguardando aprovação</div><div class="kc-v" style="color:var(--am)" id="med-ag">0</div><div class="kc-s">medições</div></div>
+    <div class="kc" style="--kc:var(--tl)"><div class="kc-l">Aprovadas</div><div class="kc-v" style="color:var(--tl)" id="med-ap">0</div><div class="kc-s">pagas / a pagar</div></div>
+  </div>
+  <div class="grid" id="med-grid"></div>
+</div>
+
+<!-- ═ FOTOS GPS ═══════════════════════════════════════════════════ -->
+<div class="page" id="p-fotos">
+  <div class="sh"><span class="sh-t">Fotos com GPS</span>
+    <div style="display:flex;gap:8px">
+      <select id="f-fotos-obra" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:5px 10px;color:var(--tx);font-size:11px;outline:none" onchange="renderFotos()">
+        <option value="">Todas obras</option>
+      </select>
+      <label class="btn p" style="cursor:pointer">
+        📸 Tirar / enviar foto
+        <input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="processarFotos(this)">
+      </label>
+    </div>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--tx2);display:flex;align-items:center;gap:10px">
+    <div class="cdot" id="gps-dot" style="width:8px;height:8px;flex-shrink:0"></div>
+    <span id="gps-status">Obtendo localização GPS...</span>
+    <button class="btn sm" onclick="obterGPS()" style="margin-left:auto">🔄 Atualizar GPS</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px" id="fotos-grid"></div>
+</div>
+
+<!-- ═ PORTAL CLIENTE ══════════════════════════════════════════════ -->
+<div class="page" id="p-portal">
+
+  <!-- Seletor de obra -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+    <div style="font-family:var(--f2);font-size:14px;font-weight:700">Portal do Cliente</div>
+    <select id="portal-obra" onchange="renderPortal()"
+      style="background:var(--bg3);border:1px solid var(--b2);border-radius:9px;padding:8px 14px;color:var(--tx);font-size:13px;outline:none;flex:1;max-width:360px">
+      <option value="">Selecione a obra do cliente...</option>
+    </select>
+    <button class="btn" onclick="imprimirPortal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><polyline points="6,9 6,2 18,2 18,9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimir
+    </button>
+    <button class="btn p" onclick="compartilharPortal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Compartilhar
+    </button>
+  </div>
+
+  <!-- CONTEÚDO DO PORTAL -->
+  <div id="portal-conteudo">
+    <!-- Empty state -->
+    <div class="empty" style="margin-top:20px">
+      <div class="empty-ico">👤</div>
+      <div class="empty-t">Selecione uma obra</div>
+      <div class="empty-s">Escolha a obra do cliente acima para exibir o portal completo com timeline, fotos, fiadas e financeiro.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page" id="p-financeiro">
+  <div class="sh"><span class="sh-t">Financeiro</span>
+    <button class="btn p" onclick="abrirModal('lanc')">+ Lançamento</button>
+  </div>
+  <div class="krow">
+    <div class="kc" style="--kc:var(--gn)"><div class="kc-l">Total entradas</div><div class="kc-v" style="color:var(--gn)" id="fin-ent">R$ 0</div><div class="kc-s">receitas</div></div>
+    <div class="kc" style="--kc:var(--rd)"><div class="kc-l">Total saídas</div><div class="kc-v" style="color:var(--rd)" id="fin-sai">R$ 0</div><div class="kc-s">despesas</div></div>
+    <div class="kc" style="--kc:var(--tl)"><div class="kc-l">Saldo</div><div class="kc-v" style="color:var(--tl)" id="fin-sal">R$ 0</div><div class="kc-s">resultado</div></div>
+    <div class="kc" style="--kc:var(--am)"><div class="kc-l">A receber</div><div class="kc-v" style="color:var(--am)" id="fin-ar">R$ 0</div><div class="kc-s">medições aprovadas</div></div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="ph"><span class="ph-t">Lançamentos recentes</span>
+        <select id="fin-filtro" style="background:var(--bg3);border:1px solid var(--b2);border-radius:7px;padding:4px 8px;color:var(--tx);font-size:11px;outline:none" onchange="renderLanc()">
+          <option value="">Todos</option><option value="entrada">Entradas</option><option value="saida">Saídas</option>
+        </select>
+      </div>
+      <div id="lanc-lista" style="max-height:400px;overflow-y:auto"></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="ph-t">Por categoria</span></div>
+      <div id="fin-cats" class="pb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═ CONTRATOS ═══════════════════════════════════════════════════ -->
+<div class="page" id="p-contratos">
+  <div class="sh"><span class="sh-t">Contratos</span>
+    <button class="btn p" onclick="abrirModal('contrato')">+ Novo contrato</button>
+  </div>
+  <div class="grid" id="ct-grid"></div>
+</div>
+
+<!-- ═ COMPRAS ═════════════════════════════════════════════════════ -->
+<div class="page" id="p-compras">
+  <div class="sh"><span class="sh-t">Compras e Materiais</span>
+    <button class="btn p" onclick="abrirModal('compra')">+ Solicitação</button>
+  </div>
+  <div class="krow">
+    <div class="kc" style="--kc:var(--am)"><div class="kc-l">Pendentes</div><div class="kc-v" style="color:var(--am)" id="cp-pend">0</div><div class="kc-s">aguardando aprovação</div></div>
+    <div class="kc" style="--kc:var(--tl)"><div class="kc-l">Aprovadas</div><div class="kc-v" style="color:var(--tl)" id="cp-apro">0</div><div class="kc-s">em cotação/pedido</div></div>
+    <div class="kc" style="--kc:var(--gn)"><div class="kc-l">Entregues</div><div class="kc-v" style="color:var(--gn)" id="cp-entr">0</div><div class="kc-s">no canteiro</div></div>
+  </div>
+  <div class="grid" id="cp-grid"></div>
+</div>
+
+<!-- ═ EQUIPES ═════════════════════════════════════════════════════ -->
+<div class="page" id="p-equipes">
+  <div class="sh"><span class="sh-t">Equipes</span>
+    <button class="btn p" onclick="abrirModal('func')">+ Funcionário</button>
+  </div>
+  <div class="krow">
+    <div class="kc" style="--kc:var(--tl)"><div class="kc-l">Total equipe</div><div class="kc-v" style="color:var(--tl)" id="eq-tot">0</div><div class="kc-s">funcionários</div></div>
+    <div class="kc" style="--kc:var(--gn)"><div class="kc-l">CLT</div><div class="kc-v" style="color:var(--gn)" id="eq-clt">0</div><div class="kc-s">contratados</div></div>
+    <div class="kc" style="--kc:var(--bl)"><div class="kc-l">MEI / PF</div><div class="kc-v" style="color:var(--bl)" id="eq-mei">0</div><div class="kc-s">prestadores</div></div>
+  </div>
+  <div class="grid" id="eq-grid"></div>
+</div>
+
+<!-- ═ RELATÓRIOS ══════════════════════════════════════════════════ -->
+<div class="page" id="p-relatorios">
+  <div class="sh"><span class="sh-t">Relatórios</span></div>
+  <div class="grid3">
+    <div class="panel" style="cursor:pointer" onclick="gerarRelatorio('obras')"><div class="pb" style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:10px">📊</div><div style="font-family:var(--f2);font-size:14px;font-weight:700;margin-bottom:5px">Relatório de Obras</div><div style="font-size:12px;color:var(--tx2)">Status, progresso e valores</div></div></div>
+    <div class="panel" style="cursor:pointer" onclick="gerarRelatorio('financeiro')"><div class="pb" style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:10px">💰</div><div style="font-family:var(--f2);font-size:14px;font-weight:700;margin-bottom:5px">Relatório Financeiro</div><div style="font-size:12px;color:var(--tx2)">DRE, fluxo de caixa</div></div></div>
+    <div class="panel" style="cursor:pointer" onclick="gerarRelatorio('equipe')"><div class="pb" style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:10px">👷</div><div style="font-family:var(--f2);font-size:14px;font-weight:700;margin-bottom:5px">Relatório de Equipe</div><div style="font-size:12px;color:var(--tx2)">Funcionários e horas</div></div></div>
+    <div class="panel" style="cursor:pointer" onclick="gerarRelatorio('qualidade')"><div class="pb" style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:10px">✅</div><div style="font-family:var(--f2);font-size:14px;font-weight:700;margin-bottom:5px">Relatório de Qualidade</div><div style="font-size:12px;color:var(--tx2)">NCs e checklists iForms</div></div></div>
+    <div class="panel" style="cursor:pointer" onclick="gerarRelatorio('rdo')"><div class="pb" style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:10px">📋</div><div style="font-family:var(--f2);font-size:14px;font-weight:700;margin-bottom:5px">Histórico RDOs</div><div style="font-size:12px;color:var(--tx2)">Diários de obra</div></div></div>
+    <div class="panel" style="cursor:pointer" onclick="gerarRelatorio('compras')"><div class="pb" style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:10px">📦</div><div style="font-family:var(--f2);font-size:14px;font-weight:700;margin-bottom:5px">Relatório de Compras</div><div style="font-size:12px;color:var(--tx2)">Materiais e fornecedores</div></div></div>
+  </div>
+  <div class="panel" id="relatorio-saida" style="display:none;margin-top:16px">
+    <div class="ph"><span class="ph-t" id="rel-titulo">Relatório</span>
+      <button class="btn" onclick="document.getElementById('relatorio-saida').style.display='none'">✕ Fechar</button>
+      <button class="btn p" onclick="window.print()">🖨 Imprimir</button>
+    </div>
+    <div class="pb" id="rel-conteudo"></div>
+  </div>
+</div>
+
+<!-- ═ IA CAPTAÇÃO ═════════════════════════════════════════════════ -->
+<div class="page" id="p-ia">
+  <div class="sh"><span class="sh-t">IA de Captação — Alpha Obras</span>
+    <span style="font-size:11px;background:var(--pud);color:var(--pu);padding:2px 10px;border-radius:20px;font-weight:600">Powered by Claude AI</span>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="ph"><span class="ph-t">💬 Chat com IA de Captação</span><span class="ph-b" style="background:var(--gnd);color:var(--gn)" id="ia-status">● Online</span></div>
+      <div id="ia-msgs" style="height:380px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px"></div>
+      <div style="padding:10px;border-top:1px solid var(--b1);display:flex;gap:8px">
+        <textarea id="ia-inp" style="flex:1;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:9px 12px;color:var(--tx);font-size:13px;outline:none;resize:none;height:42px" placeholder="Pergunte sobre prospecção, scripts, leads iForms ICF..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarIA();}"></textarea>
+        <button class="btn p" onclick="enviarIA()" style="height:42px;padding:0 14px">▶</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="panel">
+        <div class="ph"><span class="ph-t">Ações rápidas</span></div>
+        <div class="pb" style="display:flex;flex-direction:column;gap:6px">
+          <button class="btn" style="justify-content:flex-start" onclick="perguntarIA('Quais os melhores perfis de clientes para obras iForms ICF no RS?')">👥 Perfis ideais no RS</button>
+          <button class="btn" style="justify-content:flex-start" onclick="perguntarIA('Crie 3 scripts de WhatsApp para prospectar clientes iForms ICF')">📲 Scripts WhatsApp</button>
+          <button class="btn" style="justify-content:flex-start" onclick="perguntarIA('Liste argumentos de venda iForms ICF vs alvenaria convencional')">⚔️ iForms vs convencional</button>
+          <button class="btn" style="justify-content:flex-start" onclick="perguntarIA('Como qualificar um lead para saber se tem potencial para obra iForms ICF?')">🎯 Qualificar leads</button>
+          <button class="btn" style="justify-content:flex-start" onclick="perguntarIA('Crie um roteiro de reunião para apresentar o sistema iForms ICF para um incorporador')">📋 Roteiro de reunião</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═ CONFIGURAÇÕES ═══════════════════════════════════════════════ -->
+<div class="page" id="p-configuracoes">
+  <div class="sh"><span class="sh-t">Configurações</span></div>
+  <div class="grid2">
+    <div>
+      <div class="panel">
+        <div class="ph"><span class="ph-t">Dados da empresa</span></div>
+        <div class="pb">
+          <div class="fg"><label>Nome da empresa</label><input id="cfg-emp" placeholder="Ex: Alpha Obras Ltda"></div>
+          <div class="fg-row" style="grid-template-columns:1fr 1fr">
+            <div class="fg"><label>Cidade sede</label><input id="cfg-cid" placeholder="Soledade"></div>
+            <div class="fg"><label>Estado</label><input id="cfg-est" placeholder="RS" maxlength="2"></div>
+          </div>
+          <div class="fg"><label>CNPJ</label><input id="cfg-cnpj" placeholder="00.000.000/0001-00"></div>
+          <div class="fg"><label>Engenheiro responsável</label><input id="cfg-eng" placeholder="Nome · CREA/RS 00000"></div>
+          <button class="btn p" onclick="salvarConfig()" style="margin-top:4px">Salvar dados →</button>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="ph"><span class="ph-t">Parâmetros iForms ICF</span></div>
+        <div class="pb">
+          <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+            <div class="fg"><label>Cura mínima (h)</label><input type="number" id="cfg-cura" value="72"></div>
+            <div class="fg"><label>fck mínimo (MPa)</label><input type="number" id="cfg-fck" value="25"></div>
+            <div class="fg"><label>Slump (cm)</label><input type="number" id="cfg-slump" value="18"></div>
+          </div>
+          <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+            <div class="fg"><label>iForms 12 (m³/m²)</label><input type="number" id="cfg-i12" value="0.038" step="0.001"></div>
+            <div class="fg"><label>iForms 18 (m³/m²)</label><input type="number" id="cfg-i18" value="0.072" step="0.001"></div>
+            <div class="fg"><label>Produtividade (Hh/m²)</label><input type="number" id="cfg-prod" value="0.44" step="0.01"></div>
+          </div>
+          <button class="btn p" onclick="salvarConfig()" style="margin-top:4px">Salvar parâmetros →</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="ph-t" style="color:var(--tl)">🔗 Conexão Supabase</span>
+        <span class="ph-b" id="sb-badge" style="background:var(--amd);color:var(--am)">Não conectado</span>
+      </div>
+      <div class="pb">
+        <div style="font-size:12px;color:var(--tx2);background:var(--tld);border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.6">
+          Conecte ao Supabase para sincronizar dados em tempo real entre todos os dispositivos — computador, celular, equipe de obra.
+        </div>
+        <div class="fg"><label>URL do projeto Supabase</label><input type="text" id="sb-url" placeholder="https://xxx.supabase.co"></div>
+        <div class="fg"><label>Chave anon (eyJ...)</label><input type="password" id="sb-key" placeholder="eyJhbGciOiJIUzI1N..."></div>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button class="btn p" onclick="conectarSB()">Conectar e sincronizar</button>
+          <button class="btn" onclick="desconectarSB()">Desconectar</button>
+        </div>
+        <div id="sb-msg" style="font-size:12px;margin-top:10px;color:var(--tx3)">Preencha URL e KEY para conectar</div>
+      </div>
+      <div class="pb" style="border-top:1px solid var(--b1)">
+        <div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px">LOGINS DO SISTEMA</div>
+        <div style="font-size:12px;line-height:1.8;color:var(--tx2)">
+          <div>admin@alphaobras.com.br → <strong style="color:var(--tx)">admin123</strong></div>
+          <div>marcos@alphaobras.com.br → <strong style="color:var(--tx)">eng123</strong></div>
+          <div>roberto@alphaobras.com.br → <strong style="color:var(--tx)">mestre123</strong></div>
+          <div>cliente@email.com → <strong style="color:var(--tx)">cliente123</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div><!-- /pages -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ═══ MODAIS ════════════════════════════════════════════════════ -->
+
+<!-- Modal obra -->
+<div class="ov" id="m-obra"><div class="modal">
+  <div class="mh"><span class="mt" id="m-obra-titulo">Nova obra iForms ICF</span><div class="mx" onclick="fechar('m-obra')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome da obra *</label><input id="o-nome" placeholder="Ex: Residencial das Palmeiras — Lote 03"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Cliente</label><input id="o-cli" placeholder="Nome do cliente"></div>
+      <div class="fg"><label>Cidade / Unidade</label><input id="o-cid" placeholder="Ex: Soledade"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Sistema iForms</label>
+        <select id="o-sis"><option>iForms 18+12</option><option>iForms 18</option><option>iForms 12</option></select></div>
+      <div class="fg"><label>Status</label>
+        <select id="o-stat"><option>Em execução</option><option>Assinando</option><option>Planejamento</option><option>Atrasado</option><option>Concluindo</option><option>Concluída</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Área (m²)</label><input type="number" id="o-area" placeholder="187"></div>
+      <div class="fg"><label>Fiadas previstas</label><input type="number" id="o-fiad" value="6"></div>
+      <div class="fg"><label>Valor (R$)</label><input type="number" id="o-val" placeholder="680000"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Data início</label><input type="date" id="o-ini"></div>
+      <div class="fg"><label>Previsão entrega</label><input type="date" id="o-prev"></div>
+    </div>
+    <div class="fg"><label>Progresso atual (%)</label>
+      <input type="range" id="o-prog" min="0" max="100" value="0" step="1" style="accent-color:var(--tl)" oninput="document.getElementById('o-prog-v').textContent=this.value+'%'">
+      <span id="o-prog-v" style="font-size:12px;color:var(--tl)">0%</span>
+    </div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-obra')">Cancelar</button><button class="btn p" id="o-btn" onclick="salvarObra()">Cadastrar obra →</button></div>
+</div></div>
+
+<!-- Modal lead -->
+<div class="ov" id="m-lead"><div class="modal">
+  <div class="mh"><span class="mt" id="m-lead-titulo">Novo lead</span><div class="mx" onclick="fechar('m-lead')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Nome *</label><input id="ld-nome" placeholder="Nome do contato"></div>
+      <div class="fg"><label>Telefone</label><input id="ld-tel" placeholder="(54) 9 9999-0000"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>E-mail</label><input id="ld-email" type="email" placeholder="contato@email.com"></div>
+      <div class="fg"><label>Cidade</label><input id="ld-cid" placeholder="Soledade"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Tipo de obra</label>
+        <select id="ld-tipo"><option>Residencial</option><option>Comercial</option><option>Industrial</option><option>Galpão</option><option>Público</option></select></div>
+      <div class="fg"><label>Valor estimado (R$)</label><input type="number" id="ld-val" placeholder="500000"></div>
+      <div class="fg"><label>Origem</label>
+        <select id="ld-orig"><option>Indicação</option><option>Instagram</option><option>Site</option><option>WhatsApp</option><option>Feira</option><option>Outro</option></select></div>
+    </div>
+    <div class="fg"><label>Status</label>
+      <select id="ld-stat"><option>Prospecção</option><option>Contato feito</option><option>Reunião agendada</option><option>Proposta enviada</option><option>Negociação</option><option>Fechado</option><option>Perdido</option></select></div>
+    <div class="fg"><label>Próxima ação</label><input id="ld-acao" placeholder="Ex: Ligar segunda-feira 14h"></div>
+    <div class="fg"><label>Observações</label><textarea id="ld-obs" rows="2" placeholder="Detalhes do lead..."></textarea></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-lead')">Cancelar</button><button class="btn p" id="ld-btn" onclick="salvarLead()">Salvar lead →</button></div>
+</div></div>
+
+<!-- Modal NC -->
+<div class="ov" id="m-nc"><div class="modal">
+  <div class="mh"><span class="mt">Registrar não conformidade</span><div class="mx" onclick="fechar('m-nc')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra *</label><select id="nc-obra"></select></div>
+      <div class="fg"><label>Fiada</label>
+        <select id="nc-fiada"><option>F1</option><option>F2</option><option>F3</option><option>F4</option><option>F5</option><option>F6</option><option>Geral</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Tipo</label>
+        <select id="nc-tipo"><option>Desalinhamento</option><option>Prumo/Nível</option><option>Escoramento</option><option>Concretagem</option><option>Cura insuficiente</option><option>Armação</option><option>Corrugados</option><option>Outro</option></select></div>
+      <div class="fg"><label>Gravidade</label>
+        <select id="nc-grav"><option>Menor</option><option>Moderada</option><option>Crítica</option></select></div>
+    </div>
+    <div class="fg"><label>Título / descrição *</label><input id="nc-titulo" placeholder="Ex: Desvio de 3cm na fiada 3, parede norte"></div>
+    <div class="fg"><label>Localização na obra</label><input id="nc-loc" placeholder="Ex: Parede Norte, trecho A-B, entre eixos 2-3"></div>
+    <div class="fg"><label>Ação corretiva</label><textarea id="nc-acao" rows="2" placeholder="Descreva a ação a ser tomada..."></textarea></div>
+    <div class="fg"><label>Responsável pela correção</label><input id="nc-resp" placeholder="Nome do responsável"></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-nc')">Cancelar</button><button class="btn danger" onclick="salvarNC()">⚠ Registrar NC</button></div>
+</div></div>
+
+<!-- Modal orçamento -->
+<div class="ov" id="m-orc"><div class="modal">
+  <div class="mh"><span class="mt">Novo orçamento iForms ICF</span><div class="mx" onclick="fechar('m-orc')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome / cliente *</label><input id="orc-nome" placeholder="Ex: Família Rodrigues — Casa 3 quartos"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Sistema iForms</label>
+        <select id="orc-sis" onchange="calcOrc()"><option>iForms 18+12</option><option>iForms 18</option><option>iForms 12</option></select></div>
+      <div class="fg"><label>Cidade</label><input id="orc-cid" placeholder="Soledade"></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Área de paredes (m²) *</label><input type="number" id="orc-area" placeholder="187" oninput="calcOrc()"></div>
+      <div class="fg"><label>Fiadas previstas</label><input type="number" id="orc-fiad" value="6" oninput="calcOrc()"></div>
+      <div class="fg"><label>BDI (%)</label><input type="number" id="orc-bdi" value="28" step="0.5" oninput="calcOrc()"></div>
+    </div>
+    <div class="fg"><label>Prazo estimado (dias)</label><input type="number" id="orc-prazo" placeholder="90"></div>
+    <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:14px;margin-top:6px" id="orc-preview">
+      <div style="font-family:var(--f2);font-size:12px;font-weight:700;color:var(--tl);margin-bottom:10px">Prévia do orçamento</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px" id="orc-calc"></div>
+    </div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-orc')">Cancelar</button><button class="btn p" onclick="salvarOrc()">Gerar orçamento →</button></div>
+</div></div>
+
+<!-- Modal lançamento -->
+<div class="ov" id="m-lanc"><div class="modal">
+  <div class="mh"><span class="mt" id="m-lanc-titulo">Novo lançamento</span><div class="mx" onclick="fechar('m-lanc')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Tipo</label>
+        <select id="lan-tipo"><option value="entrada">Entrada (receita)</option><option value="saida">Saída (despesa)</option></select></div>
+      <div class="fg"><label>Obra</label><select id="lan-obra"><option value="">Geral (empresa)</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Valor (R$) *</label><input type="number" id="lan-val" placeholder="0" min="0"></div>
+      <div class="fg"><label>Data</label><input type="date" id="lan-data"></div>
+    </div>
+    <div class="fg"><label>Categoria</label>
+      <select id="lan-cat"><option>Medição</option><option>Material</option><option>Mão de obra</option><option>Equipamento</option><option>Subempreiteiro</option><option>Administrativo</option><option>Financeiro</option><option>Outro</option></select></div>
+    <div class="fg"><label>Descrição *</label><input id="lan-desc" placeholder="Descreva o lançamento"></div>
+    <div class="fg"><label>Documento / NF</label><input id="lan-doc" placeholder="Número da nota ou documento"></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-lanc')">Cancelar</button><button class="btn p" id="lan-btn" onclick="salvarLanc()">Salvar →</button></div>
+</div></div>
+
+<!-- Modal contrato -->
+<div class="ov" id="m-contrato"><div class="modal">
+  <div class="mh"><span class="mt" id="m-ct-titulo">Novo contrato</span><div class="mx" onclick="fechar('m-contrato')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Contratado *</label><input id="ct-nome" placeholder="Nome ou razão social"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra</label><select id="ct-obra"></select></div>
+      <div class="fg"><label>Tipo</label>
+        <select id="ct-tipo"><option>Empreitada global</option><option>Empreitada parcial</option><option>Fornecimento</option><option>Prestação de serviço</option><option>Locação de equipamento</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="fg"><label>Valor (R$)</label><input type="number" id="ct-val" placeholder="0"></div>
+      <div class="fg"><label>Regime</label>
+        <select id="ct-reg"><option>MEI</option><option>PJ</option><option>PF/RPA</option><option>CLT</option></select></div>
+      <div class="fg"><label>Status</label>
+        <select id="ct-stat"><option>Ativo</option><option>Rascunho</option><option>Concluído</option><option>Cancelado</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Data início</label><input type="date" id="ct-ini"></div>
+      <div class="fg"><label>Previsão término</label><input type="date" id="ct-fim"></div>
+    </div>
+    <div class="fg"><label>Objeto do contrato</label><textarea id="ct-obj" rows="2" placeholder="Descreva o serviço ou fornecimento contratado..."></textarea></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-contrato')">Cancelar</button><button class="btn p" id="ct-btn" onclick="salvarContrato()">Salvar contrato →</button></div>
+</div></div>
+
+<!-- Modal compra -->
+<div class="ov" id="m-compra"><div class="modal">
+  <div class="mh"><span class="mt" id="m-cp-titulo">Nova solicitação de compra</span><div class="mx" onclick="fechar('m-compra')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra</label><select id="cp-obra"></select></div>
+      <div class="fg"><label>Urgência</label>
+        <select id="cp-urg"><option>Normal</option><option>Urgente</option><option>Crítico</option></select></div>
+    </div>
+    <div class="fg"><label>Material *</label><input id="cp-mat" placeholder="Ex: Bloco iForms 18 · Armadura CA-50"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Quantidade</label><input type="number" id="cp-qtd" placeholder="100"></div>
+      <div class="fg"><label>Unidade</label>
+        <select id="cp-un"><option>un</option><option>m²</option><option>kg</option><option>m³</option><option>sacos</option><option>barras</option><option>rolos</option><option>litros</option></select></div>
+    </div>
+    <div class="fg"><label>Necessário para</label><input type="date" id="cp-data"></div>
+    <div class="fg"><label>Observação / especificação</label><input id="cp-obs" placeholder="Marca preferida, dimensões específicas..."></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-compra')">Cancelar</button><button class="btn p" id="cp-btn" onclick="salvarCompra()">Solicitar →</button></div>
+</div></div>
+
+<!-- Modal funcionário -->
+<div class="ov" id="m-func"><div class="modal">
+  <div class="mh"><span class="mt" id="m-fn-titulo">Novo funcionário</span><div class="mx" onclick="fechar('m-func')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome completo *</label><input id="fn-nome" placeholder="Nome completo"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Cargo</label>
+        <select id="fn-cargo"><option>Mestre iForms</option><option>Montador iForms</option><option>Armador</option><option>Concreteiro</option><option>Pedreiro</option><option>Servente</option><option>Encarregado</option><option>Engenheiro</option><option>Técnico</option></select></div>
+      <div class="fg"><label>Regime</label>
+        <select id="fn-reg"><option>CLT</option><option>MEI</option><option>PF/RPA</option><option>Empreiteiro</option><option>Estagiário</option></select></div>
+    </div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Valor/hora (R$)</label><input type="number" id="fn-hora" placeholder="18" value="18" step="0.5"></div>
+      <div class="fg"><label>Telefone</label><input id="fn-tel" placeholder="(54) 9 9999-0000"></div>
+    </div>
+    <div class="fg"><label>CPF / CNPJ</label><input id="fn-doc" placeholder="000.000.000-00"></div>
+    <div class="fg"><label>Certificação iForms</label>
+      <select id="fn-cert"><option>Sem certificação</option><option>Nível I — Montador</option><option>Nível II — Encarregado</option><option>Nível III — Mestre</option></select></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-func')">Cancelar</button><button class="btn p" id="fn-btn" onclick="salvarFunc()">Adicionar →</button></div>
+</div></div>
+
+<!-- Modal medição -->
+<div class="ov" id="m-medicao"><div class="modal">
+  <div class="mh"><span class="mt" id="m-med-titulo">Nova medição</span><div class="mx" onclick="fechar('m-medicao')">✕</div></div>
+  <div class="mb">
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Obra *</label><select id="med-obra"></select></div>
+      <div class="fg"><label>Número da medição</label><input type="number" id="med-num" placeholder="1"></div>
+    </div>
+    <div class="fg"><label>Período de referência</label><input id="med-per" placeholder="Ex: Maio/2026 · F3 e F4"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Valor (R$) *</label><input type="number" id="med-val" placeholder="0"></div>
+      <div class="fg"><label>Vencimento</label><input type="date" id="med-venc"></div>
+    </div>
+    <div class="fg"><label>Status</label>
+      <select id="med-stat"><option>Aguardando aprovação</option><option>Aprovada</option><option>Paga</option><option>Rejeitada</option></select></div>
+    <div class="fg"><label>Descrição dos serviços</label><textarea id="med-desc" rows="2" placeholder="Serviços executados neste período..."></textarea></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-medicao')">Cancelar</button><button class="btn p" id="med-btn" onclick="salvarMedicao()">Salvar medição →</button></div>
+</div></div>
+
+<!-- Modal unidade -->
+<div class="ov" id="m-unidade"><div class="modal">
+  <div class="mh"><span class="mt">Nova unidade Alpha</span><div class="mx" onclick="fechar('m-unidade')">✕</div></div>
+  <div class="mb">
+    <div class="fg"><label>Nome da unidade *</label><input id="un-nome" placeholder="Ex: Filial Cruz Alta"></div>
+    <div class="fg-row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Cidade</label><input id="un-cid" placeholder="Cruz Alta"></div>
+      <div class="fg"><label>Tipo</label>
+        <select id="un-tipo"><option>Sede</option><option>Filial</option><option>Implantação</option><option>Parceiro</option></select></div>
+    </div>
+    <div class="fg"><label>Responsável</label><input id="un-resp" placeholder="Nome do responsável local"></div>
+    <div class="fg"><label>Telefone</label><input id="un-tel" placeholder="(54) 9 9999-0000"></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="fechar('m-unidade')">Cancelar</button><button class="btn p" onclick="salvarUnidade()">Adicionar →</button></div>
+</div></div>
+
+<!-- Modal confirmar exclusão -->
+<div class="ov" id="m-del"><div class="modal" style="width:380px">
+  <div class="mh"><span class="mt">Confirmar exclusão</span><div class="mx" onclick="fechar('m-del')">✕</div></div>
+  <div class="mb"><p style="font-size:13px;color:var(--tx2)" id="del-msg">Tem certeza que deseja excluir este item?</p></div>
+  <div class="mf"><button class="btn" onclick="fechar('m-del')">Cancelar</button><button class="btn danger" id="del-btn">Excluir</button></div>
+</div></div>
+
+<!-- Modal logout -->
+<div class="ov" id="m-logout"><div class="modal" style="width:380px">
+  <div class="mh"><span class="mt">Sair do sistema</span><div class="mx" onclick="fechar('m-logout')">✕</div></div>
+  <div class="mb"><p style="font-size:13px;color:var(--tx2)">Deseja sair do Alpha Obras? Os dados locais serão preservados.</p></div>
+  <div class="mf"><button class="btn" onclick="fechar('m-logout')">Cancelar</button><button class="btn danger" onclick="doLogout()">Sair</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+<script>
+// ════════════════════════════════════════════════════════════════════
+// ALPHA OBRAS — ENGINE COMPLETO v3.0
+// localStorage + Supabase opcional · Sem iframes · Tudo funcional
+// ════════════════════════════════════════════════════════════════════
+
+// ── BANCO LOCAL ──────────────────────────────────────────────────────
+var DB = {
+  obras:[],leads:[],ncs:[],rdos:[],checklists:[],
+  lancamentos:[],contratos:[],compras:[],funcionarios:[],
+  medicoes:[],orcamentos:[],unidades:[],fotos:[]
+};
+var sb = null; // Supabase client
+var session = null;
+var gpsCoords = null;
+var editId = null; // ID do item em edição
+
+function loadDB(){
+  try{ var s=localStorage.getItem('ao3_db'); if(s) DB=Object.assign(DB,JSON.parse(s)); }catch(e){}
+  Object.keys(DB).forEach(k=>{ if(!Array.isArray(DB[k])) DB[k]=[]; });
+}
+function saveDB(){ try{ localStorage.setItem('ao3_db',JSON.stringify(DB)); }catch(e){} }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2); }
+
+// ── USUÁRIOS ─────────────────────────────────────────────────────────
+var USERS=[
+  {e:'admin@alphaobras.com.br',s:'admin123',n:'Admin Alpha',r:'Administrador',i:'AL',c:'linear-gradient(135deg,#00cba8,#5b9cf6)'},
+  {e:'marcos@alphaobras.com.br',s:'eng123',n:'Marcos Lima',r:'Engenheiro',i:'ML',c:'linear-gradient(135deg,#5b9cf6,#9f8cf5)'},
+  {e:'roberto@alphaobras.com.br',s:'mestre123',n:'Roberto Oliveira',r:'Mestre iForms',i:'RO',c:'linear-gradient(135deg,#f6b93b,#00cba8)'},
+  {e:'cliente@email.com',s:'cliente123',n:'Roberto Costa',r:'Cliente',i:'RC',c:'linear-gradient(135deg,#9f8cf5,#5b9cf6)'},
+];
+
+// ── LOGIN ─────────────────────────────────────────────────────────────
+function doLogin(){
+  var e=(document.getElementById('le').value||'').trim().toLowerCase();
+  var s=(document.getElementById('ls').value||'').trim();
+  var err=document.getElementById('lerr');
+  if(!e||!s){err.textContent='Preencha e-mail e senha.';err.style.display='block';return;}
+  // Busca ignorando maiúsculas/minúsculas na senha também
+  var u=USERS.find(function(x){
+    return x.e===e && (x.s===s || x.s.toLowerCase()===s.toLowerCase());
+  });
+  if(!u){
+    err.textContent='E-mail ou senha incorretos. Tente: admin@alphaobras.com.br / admin123';
+    err.style.display='block';
+    document.getElementById('ls').value='';
+    return;
+  }
+  err.style.display='none';
+  session={email:u.e,nome:u.n,role:u.r,ini:u.i,cor:u.c};
+  localStorage.setItem('ao3_sess',JSON.stringify(session));
+  mostrarApp();
+}
+function ql(e,s){
+  document.getElementById('le').value=e;
+  document.getElementById('ls').value=s;
+  doLogin();
+}
+function ql(e,s){document.getElementById('le').value=e;document.getElementById('ls').value=s;doLogin();}
+function confirmarLogout(){abrirModal('logout');}
+function doLogout(){localStorage.removeItem('ao3_sess');session=null;fechar('m-logout');document.getElementById('login').style.display='flex';document.getElementById('app').className='';toast('Até logo! 👋','ok');}
+
+function mostrarApp(){
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').className='on';
+  document.getElementById('sb-avt').textContent=session.ini;
+  document.getElementById('sb-avt').style.background=session.cor;
+  document.getElementById('sb-uname').textContent=session.nome;
+  document.getElementById('sb-urole').textContent=session.role;
+  // Carregar config salva
+  var cfg=localStorage.getItem('ao3_cfg');
+  if(cfg){try{var c=JSON.parse(cfg);Object.keys(c).forEach(k=>{var el=document.getElementById(k);if(el)el.value=c[k];});
+    if(c['cfg-cid']) document.getElementById('sb-sub').textContent='iForms ICF · '+c['cfg-cid'];
+    if(c['cfg-emp']) document.getElementById('sb-uname') && (document.querySelectorAll('.sb-name')[0].textContent=c['cfg-emp']||'Alpha Obras');
+  }catch(e){}}
+  // Tentar reconectar Supabase
+  var sbUrl=localStorage.getItem('ao3_sb_url');
+  var sbKey=localStorage.getItem('ao3_sb_key');
+  if(sbUrl&&sbKey) setTimeout(()=>conectarSBsilent(sbUrl,sbKey),500);
+  else { setConn(false); renderTudo(); }
+  // Inicializar datas
+  document.getElementById('rdo-data').value=today();
+  document.getElementById('ck-data').value=today();
+  document.getElementById('lan-data').value=today();
+  document.getElementById('rdo-dt').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  // Inicializar btn topbar
+  setTopBtn('obra','+ Nova obra');
+  // GPS
+  obterGPS();
+  // Checklist iForms
+  renderChecklists();
+  toast('Bem-vindo, '+session.nome.split(' ')[0]+'! 🚀','ok');
+}
+
+// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────
+var CONF = {
+  dashboard:  {t:'Dashboard',         btn:'obra',  btxt:'+ Nova obra'},
+  ecossistema:{t:'Ecossistema Alpha',  btn:'unidade',btxt:'+ Nova unidade'},
+  crm:        {t:'CRM — Oportunidades',btn:'lead',  btxt:'+ Novo lead'},
+  qualidade:  {t:'Qualidade iForms',   btn:'nc',    btxt:'+ Registrar NC'},
+  checklist:  {t:'Checklist iForms',   btn:null,    btxt:''},
+  rdo:        {t:'Diário (RDO)',        btn:null,    btxt:''},
+  orcamento:  {t:'Orçamento iForms',   btn:'orc',   btxt:'+ Novo orçamento'},
+  cronograma: {t:'Cronograma',         btn:'obra',  btxt:'+ Nova obra'},
+  medicoes:   {t:'Medições',           btn:'medicao',btxt:'+ Nova medição'},
+  fotos:      {t:'Fotos com GPS',      btn:null,    btxt:''},
+  portal:     {t:'Portal do Cliente',  btn:null,    btxt:''},
+  financeiro: {t:'Financeiro',         btn:'lanc',  btxt:'+ Lançamento'},
+  contratos:  {t:'Contratos',          btn:'contrato',btxt:'+ Novo contrato'},
+  compras:    {t:'Compras',            btn:'compra',btxt:'+ Solicitação'},
+  equipes:    {t:'Equipes',            btn:'func',  btxt:'+ Funcionário'},
+  relatorios: {t:'Relatórios',         btn:null,    btxt:''},
+  ia:         {t:'IA de Captação',     btn:null,    btxt:''},
+  configuracoes:{t:'Configurações',    btn:null,    btxt:''},
+};
+
+function ir(id,el){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
+  if(el){el.classList.add('act');}
+  else {var ni=document.querySelector(`[data-p="${id}"]`);if(ni)ni.classList.add('act');}
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  var pg=document.getElementById('p-'+id);if(pg)pg.classList.add('on');
+  var conf=CONF[id]||{t:id,btn:null,btxt:''};
+  document.getElementById('ptitle').textContent=conf.t;
+  var tb=document.getElementById('topbtns');tb.innerHTML='';
+  if(conf.btn){
+    var b=document.createElement('button');b.className='btn p';b.textContent=conf.btxt;
+    b.onclick=()=>abrirModal(conf.btn);tb.appendChild(b);
+  }
+  // Populate selects de obra
+  ['rdo-obra','nc-obra','lan-obra','ct-obra','cp-obra','med-obra','gantt-obra','ck-obra',
+   'portal-obra','f-fotos-obra'].forEach(populateObraSelect);
+  // Render específico
+  if(id==='dashboard')   renderObras();
+  if(id==='crm')         renderLeads();
+  if(id==='qualidade')   renderNCs();
+  if(id==='financeiro')  {renderLanc();renderFinCats();}
+  if(id==='compras')     renderCompras();
+  if(id==='equipes')     renderEquipes();
+  if(id==='contratos')   renderContratos();
+  if(id==='medicoes')    renderMedicoes();
+  if(id==='orcamento')   renderOrcs();
+  if(id==='ecossistema') renderEcossistema();
+  if(id==='cronograma')  renderGantt();
+  if(id==='fotos')       renderFotos();
+  if(id==='portal')      renderPortal();
+  if(id==='relatorios')  {}
+}
+
+function setTopBtn(modal,txt){
+  var tb=document.getElementById('topbtns');tb.innerHTML='';
+  if(modal){var b=document.createElement('button');b.className='btn p';b.textContent=txt;b.onclick=()=>abrirModal(modal);tb.appendChild(b);}
+}
+
+function renderTudo(){
+  renderObras();renderLeads();renderNCs();renderLanc();renderFinCats();
+  renderCompras();renderEquipes();renderContratos();renderMedicoes();
+  renderOrcs();renderEcossistema();renderFotos();
+  atualizarKPIs();
+  ['rdo-obra','nc-obra','lan-obra','ct-obra','cp-obra','med-obra','gantt-obra','ck-obra',
+   'portal-obra','f-fotos-obra'].forEach(populateObraSelect);
+}
+
+// ── KPIs ──────────────────────────────────────────────────────────────
+function atualizarKPIs(){
+  var ativas=DB.obras.filter(o=>o.status==='Em execução').length;
+  var receita=DB.obras.reduce((s,o)=>s+(+o.valor||0),0);
+  var ncAb=DB.ncs.filter(n=>n.status==='Aberta').length;
+  var leads=DB.leads.length;
+  var medAp=DB.medicoes.filter(m=>m.status==='Aprovada').reduce((s,m)=>s+(+m.valor||0),0);
+  document.getElementById('k-obras').textContent=ativas;
+  document.getElementById('k-obras-s').textContent=DB.obras.length+' no total';
+  document.getElementById('k-receita').textContent=mk(receita);
+  document.getElementById('k-ncs').textContent=ncAb;
+  document.getElementById('k-leads').textContent=leads;
+  document.getElementById('k-receber').textContent=mk(medAp);
+  // Badges sidebar
+  set('nb-crm',leads||'');
+  set('nb-nc',ncAb||'');
+  set('nb-ct',DB.contratos.filter(c=>c.status==='Ativo').length||'');
+  set('nb-cp',DB.compras.filter(c=>c.status==='Pendente').length||'');
+  set('nb-unid',DB.unidades.length||'');
+  // Qualidade KPIs
+  set('q-ab',DB.ncs.filter(n=>n.status==='Aberta').length);
+  set('q-em',DB.ncs.filter(n=>n.status==='Em tratamento').length);
+  set('q-fe',DB.ncs.filter(n=>n.status==='Fechada').length);
+  set('q-tot',DB.ncs.length);
+  // Compras
+  set('cp-pend',DB.compras.filter(c=>c.status==='Pendente').length);
+  set('cp-apro',DB.compras.filter(c=>c.status==='Aprovada').length);
+  set('cp-entr',DB.compras.filter(c=>c.status==='Entregue').length);
+  // Equipes
+  set('eq-tot',DB.funcionarios.length);
+  set('eq-clt',DB.funcionarios.filter(f=>f.regime==='CLT').length);
+  set('eq-mei',DB.funcionarios.filter(f=>f.regime==='MEI'||f.regime==='PF/RPA').length);
+  // Financeiro
+  var ent=DB.lancamentos.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+(+l.valor||0),0);
+  var sai=DB.lancamentos.filter(l=>l.tipo==='saida').reduce((s,l)=>s+(+l.valor||0),0);
+  set('fin-ent',mk(ent));set('fin-sai',mk(sai));set('fin-sal',mk(ent-sai));set('fin-ar',mk(medAp));
+  // Medições
+  set('med-tot',mk(DB.medicoes.reduce((s,m)=>s+(+m.valor||0),0)));
+  set('med-ag',DB.medicoes.filter(m=>m.status==='Aguardando aprovação').length);
+  set('med-ap',DB.medicoes.filter(m=>m.status==='Aprovada'||m.status==='Paga').length);
+  // RDO count
+  set('rdo-count',DB.rdos.length+' registros');
+}
+
+function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+
+// ── CORES STATUS ─────────────────────────────────────────────────────
+var COR  ={'Em execução':'var(--tl)','Atrasado':'var(--rd)','Concluindo':'var(--gn)','Assinando':'var(--am)','Concluída':'var(--tx3)','Planejamento':'var(--bl)','Aberta':'var(--rd)','Em tratamento':'var(--am)','Fechada':'var(--gn)','Ativo':'var(--tl)','Rascunho':'var(--tx2)','Cancelado':'var(--rd)','Pendente':'var(--am)','Aprovada':'var(--tl)','Paga':'var(--gn)','Rejeitada':'var(--rd)','Entregue':'var(--gn)','Normal':'var(--tx2)','Urgente':'var(--am)','Crítico':'var(--rd)','Fechado':'var(--gn)','Perdido':'var(--tx3)'};
+var COR_BG={'Em execução':'var(--tld)','Atrasado':'var(--rdd)','Concluindo':'var(--gnd)','Assinando':'var(--amd)','Concluída':'var(--bg4)','Planejamento':'var(--bld)','Aberta':'var(--rdd)','Em tratamento':'var(--amd)','Fechada':'var(--gnd)','Ativo':'var(--tld)','Rascunho':'var(--bg4)','Cancelado':'var(--rdd)','Pendente':'var(--amd)','Aprovada':'var(--tld)','Paga':'var(--gnd)','Rejeitada':'var(--rdd)','Entregue':'var(--gnd)','Normal':'var(--bg3)','Urgente':'var(--amd)','Crítico':'var(--rdd)','Fechado':'var(--gnd)','Perdido':'var(--bg4)'};
+function cor(s){return COR[s]||'var(--tx2)';}
+function corBg(s){return COR_BG[s]||'var(--bg4)';}
+function badge(s){return `<span class="card-badge" style="color:${cor(s)};background:${corBg(s)}">${s}</span>`;}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function mk(v){v=+v||0;if(v>=1e6)return 'R$ '+(v/1e6).toFixed(1).replace('.',',')+'M';if(v>=1000)return 'R$ '+(v/1000).toFixed(0)+'k';return 'R$ '+v.toFixed(0);}
+function today(){return new Date().toISOString().slice(0,10);}
+function fmtDate(d){if(!d)return'—';var dt=new Date(d+'T12:00:00');return dt.toLocaleDateString('pt-BR');}
+function populateObraSelect(id){
+  var sel=document.getElementById(id);if(!sel)return;
+  var v=sel.value;
+  while(sel.options.length>1)sel.remove(1);
+  DB.obras.forEach(o=>{var opt=document.createElement('option');opt.value=o.id;opt.textContent=o.nome;sel.appendChild(opt);});
+  if(v)sel.value=v;
+}
+
+// ── RENDER OBRAS ──────────────────────────────────────────────────────
+function renderObras(){
+  var g=document.getElementById('obras-grid');if(!g)return;
+  g.innerHTML='';
+  var filt=document.getElementById('f-obras')?.value||'';
+  var list=filt?DB.obras.filter(o=>o.status===filt):DB.obras;
+
+  // Atualizar contador
+  var cnt=document.getElementById('dash-obras-count');
+  if(cnt) cnt.textContent=list.length+(list.length!==DB.obras.length?' de '+DB.obras.length+' obras':'') + ' obra'+(list.length!==1?'s':'');
+
+  if(!list.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">🏗️</div><div class="empty-t">Nenhuma obra cadastrada</div><div class="empty-s">Cadastre sua primeira obra iForms ICF para começar a usar o sistema.</div><button class="btn p" onclick="abrirModal('obra')" style="margin-top:8px">+ Cadastrar primeira obra</button>';
+    g.appendChild(e);
+  } else {
+    list.forEach(o=>{
+      var c=document.createElement('div');c.className='card';
+      var prog=+o.progresso||0;
+      var nFiadas=+o.n_fiadas||6;
+      var fiadaAtual=Math.ceil(prog/100*nFiadas)||1;
+      c.innerHTML=`<div class="card-top">
+          <div class="card-dot" style="background:${cor(o.status)}"></div>
+          <span class="card-name" title="${o.nome}">${o.nome}</span>
+          ${badge(o.status)}
+        </div>
+        <div class="card-body">
+          <div class="cr"><span>Cliente</span><span>${o.cliente||'—'}</span></div>
+          <div class="cr"><span>Sistema</span><span>${o.sistema||'iForms'}</span></div>
+          <div class="cr"><span>Área</span><span>${o.area?o.area+' m²':'—'}</span></div>
+          <div class="cr"><span>Fiadas</span><span>${fiadaAtual} / ${nFiadas}</span></div>
+          <div class="cr"><span>Valor</span><span style="font-weight:700;color:${cor(o.status)}">${mk(o.valor)}</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;margin-bottom:4px">
+            <span style="font-size:10px;color:var(--tx3)">Progresso</span>
+            <span style="font-size:11px;font-weight:600;color:${cor(o.status)}">${prog}%</span>
+          </div>
+          <div class="card-prog"><div class="card-prog-f" style="background:${cor(o.status)};width:${prog}%"></div></div>
+        </div>
+        <div class="card-actions">
+          <button class="btn sm" onclick="editarObra('${o.id}')">✏ Editar</button>
+          <button class="btn sm" onclick="excluirItem('obras','${o.id}','obra \"${o.nome}\"')">🗑 Excluir</button>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+  // Card Nova obra sempre visível
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova obra</span>';
+  add.onclick=()=>abrirModal('obra');
+  g.appendChild(add);
+  atualizarKPIs();
+  renderAlertas();
+  renderRDOsRecentes();
+  renderFinMini();
+  renderCuraAtiva();
+}
+
+function renderAlertas(){
+  var div=document.getElementById('alertas-lista');if(!div)return;
+  var alertas=[];
+  // NCs abertas
+  DB.ncs.filter(n=>n.status==='Aberta').forEach(n=>{
+    var obra=DB.obras.find(o=>o.id===n.obra_id);
+    alertas.push({tipo:'nc',cor:'var(--rd)',ico:'⚠',txt:'NC: '+n.titulo,sub:obra?.nome||'—',id:n.id});
+  });
+  // Compras pendentes
+  DB.compras.filter(c=>c.status==='Pendente').forEach(cp=>{
+    var obra=DB.obras.find(o=>o.id===cp.obra_id);
+    alertas.push({tipo:'compra',cor:'var(--am)',ico:'📦',txt:cp.material,sub:(obra?.nome||'Geral')+' · '+cp.quantidade+' '+cp.unidade,id:cp.id});
+  });
+  // Obras atrasadas
+  DB.obras.filter(o=>o.status==='Atrasado').forEach(o=>{
+    alertas.push({tipo:'obra',cor:'var(--rd)',ico:'🔴',txt:'Obra atrasada: '+o.nome,sub:o.progresso+'% concluído',id:o.id});
+  });
+  var cnt=document.getElementById('alert-count');
+  if(cnt){cnt.textContent=alertas.length;cnt.style.display=alertas.length?'inline-block':'none';}
+  if(!alertas.length){
+    div.innerHTML='<div style="padding:14px 16px;text-align:center;font-size:12px;color:var(--tx3)">✓ Sem pendências</div>';
+    return;
+  }
+  div.innerHTML=alertas.slice(0,6).map(a=>`
+    <div style="padding:9px 16px;border-bottom:1px solid var(--b1);display:flex;gap:10px;align-items:flex-start;font-size:12px">
+      <span style="flex-shrink:0">${a.ico}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;color:${a.cor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.txt}</div>
+        <div style="color:var(--tx3);font-size:10px">${a.sub}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderRDOsRecentes(){
+  var div=document.getElementById('rdos-recentes');if(!div)return;
+  if(!DB.rdos.length){
+    div.innerHTML='<div style="padding:12px 16px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum RDO ainda</div>';
+    return;
+  }
+  div.innerHTML=DB.rdos.slice(0,4).map(r=>{
+    var obra=DB.obras.find(o=>o.id===r.obra_id);
+    return `<div style="padding:9px 16px;border-bottom:1px solid var(--b1);font-size:11px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+        <span style="font-weight:600;color:var(--tx)">${fmtDate(r.data)}</span>
+        <span style="color:var(--tx3)">${r.clima||''}</span>
+      </div>
+      <div style="color:var(--tx2)">${obra?.nome||'—'}</div>
+      <div style="color:var(--tx3);font-size:10px">${r.fiada||''} · ${r.funcionarios||0} func. · ${r.horas||0}h</div>
+    </div>`;
+  }).join('');
+}
+
+function renderFinMini(){
+  var ent=DB.lancamentos.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+(+l.valor||0),0);
+  var sai=DB.lancamentos.filter(l=>l.tipo==='saida').reduce((s,l)=>s+(+l.valor||0),0);
+  set('fin-mini-ent',mk(ent));
+  set('fin-mini-sai',mk(sai));
+  var sal=ent-sai;
+  var salEl=document.getElementById('fin-mini-sal');
+  if(salEl){salEl.textContent=mk(sal);salEl.style.color=sal>=0?'var(--gn)':'var(--rd)';}
+}
+
+function renderCuraAtiva(){
+  // Simular obras com cura ativa (obras em execução que tiveram RDO recente)
+  var panel=document.getElementById('cura-panel');
+  var lista=document.getElementById('cura-lista');
+  if(!panel||!lista)return;
+  var curasAtivas=DB.rdos.slice(0,3).filter(r=>{
+    var obra=DB.obras.find(o=>o.id===r.obra_id&&o.status==='Em execução');
+    return obra&&r.data===today();
+  }).map(r=>{
+    var obra=DB.obras.find(o=>o.id===r.obra_id);
+    return {obra:obra?.nome||'—',fiada:r.fiada||'F?'};
+  });
+  if(!curasAtivas.length){panel.style.display='none';return;}
+  panel.style.display='block';
+  lista.innerHTML=curasAtivas.map(c=>`
+    <div style="padding:6px 0;border-bottom:1px solid var(--b1);font-size:12px">
+      <div style="display:flex;justify-content:space-between">
+        <span style="font-weight:600">${c.obra}</span>
+        <span style="color:var(--am);font-weight:600">${c.fiada}</span>
+      </div>
+      <div style="color:var(--tx3);font-size:10px;margin-top:2px">Aguardando 72h · iForms ICF</div>
+      <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:6px">
+        <div style="height:100%;background:var(--am);border-radius:2px;width:${Math.random()*60+20}%"></div>
+      </div>
+    </div>`).join('');
+}
+      <!-- BACKUP E RESTAURAÇÃO -->
+      <div class="panel" style="margin-top:14px">
+        <div class="ph" style="background:linear-gradient(90deg,rgba(0,203,168,.06),transparent)">
+          <span class="ph-t" style="color:var(--tl)">💾 Backup e restauração de dados</span>
+          <span class="ph-b" style="background:var(--gnd);color:var(--gn)">Recomendado antes de atualizar</span>
+        </div>
+        <div class="pb">
+          <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:9px;padding:11px 13px;font-size:12px;color:var(--tx2);margin-bottom:14px;line-height:1.6">
+            💡 <strong style="color:var(--tx)">Como atualizar sem perder dados:</strong><br>
+            1. Clique em <strong>"Exportar backup"</strong> → salva um arquivo <code style="background:var(--bg3);padding:1px 5px;border-radius:4px">.json</code> com todos os seus dados<br>
+            2. Faça o deploy do novo <code style="background:var(--bg3);padding:1px 5px;border-radius:4px">index.html</code> na <strong>mesma URL</strong> do Netlify<br>
+            3. Se os dados sumirem, clique em <strong>"Restaurar backup"</strong> e selecione o arquivo salvo
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <button class="btn p" onclick="exportarBackup()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar backup
+            </button>
+            <label class="btn" style="cursor:pointer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Restaurar backup
+              <input type="file" accept=".json" style="display:none" onchange="restaurarBackup(this)">
+            </label>
+            <button class="btn" onclick="verResumoBackup()" style="color:var(--bl)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Ver resumo
+            </button>
+            <button class="btn" onclick="limparDados()" style="color:var(--rd);margin-left:auto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+              Limpar tudo
+            </button>
+          </div>
+          <div id="backup-status" style="font-size:12px;color:var(--tx3)">
+            Clique em "Exportar backup" para salvar todos os seus dados em um arquivo local.
+          </div>
+          <!-- Resumo dos dados -->
+          <div id="backup-resumo" style="display:none;margin-top:12px;background:var(--bg3);border-radius:8px;padding:10px 14px;font-size:12px">
+            <div style="font-weight:600;color:var(--tx2);margin-bottom:8px">Dados atuais no sistema:</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="backup-items"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+// ── SALVAR / EDITAR OBRA ─────────────────────────────────────────────
+function salvarObra(){
+  var nome=document.getElementById('o-nome').value.trim();
+  if(!nome){toast('Digite o nome da obra','wa');return;}
+  var o={id:editId||uid(),nome,cliente:V('o-cli'),cidade:V('o-cid'),sistema:V('o-sis'),
+    status:V('o-stat'),area:V('o-area'),n_fiadas:V('o-fiad'),valor:V('o-val'),
+    data_ini:V('o-ini'),data_prev:V('o-prev'),progresso:V('o-prog'),
+    updated:today()};
+  if(editId){var i=DB.obras.findIndex(x=>x.id===editId);if(i>=0)DB.obras[i]=o;}
+  else{o.created=today();DB.obras.unshift(o);}
+  saveDB();fechar('m-obra');editId=null;renderObras();renderTudo();
+  toast(editId?'Obra atualizada ✓':'Obra cadastrada ✓','ok');
+  sbSave('obras',o);
+}
+function editarObra(id){
+  var o=DB.obras.find(x=>x.id===id);if(!o)return;
+  editId=id;
+  document.getElementById('m-obra-titulo').textContent='Editar obra';
+  document.getElementById('o-btn').textContent='Salvar alterações →';
+  setV('o-nome',o.nome);setV('o-cli',o.cliente);setV('o-cid',o.cidade);
+  setV('o-sis',o.sistema);setV('o-stat',o.status);setV('o-area',o.area);
+  setV('o-fiad',o.n_fiadas);setV('o-val',o.valor);setV('o-ini',o.data_ini);
+  setV('o-prev',o.data_prev);
+  var prog=document.getElementById('o-prog');
+  if(prog){prog.value=+o.progresso||0;document.getElementById('o-prog-v').textContent=(+o.progresso||0)+'%';}
+  abrirModal('obra');
+}
+
+function renderLeads(){
+  var g=document.getElementById('leads-grid');if(!g)return;g.innerHTML='';
+  var filt=document.getElementById('f-leads')?.value||'';
+  var list=filt?DB.leads.filter(l=>l.status===filt):DB.leads;
+  if(!list.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">👥</div><div class="empty-t">Nenhum lead cadastrado</div><div class="empty-s">Adicione oportunidades de negócio para acompanhar no CRM.</div><button class="btn p" onclick="abrirModal(\'lead\')" style="margin-top:8px">+ Novo lead</button>';
+    g.appendChild(e);
+  } else {
+    list.forEach(l=>{
+      var c=document.createElement('div');c.className='card';
+      c.innerHTML=`<div class="card-top"><span class="card-name">${l.nome}</span>${badge(l.status)}</div>
+        <div class="card-body">
+          <div class="cr"><span>Tipo</span><span>${l.tipo||'—'}</span></div>
+          <div class="cr"><span>Cidade</span><span>${l.cidade||'—'}</span></div>
+          <div class="cr"><span>Valor est.</span><span style="font-weight:700;color:var(--tl)">${mk(l.valor)}</span></div>
+          <div class="cr"><span>Telefone</span><span>${l.telefone||'—'}</span></div>
+          <div class="cr"><span>Próx. ação</span><span style="color:var(--am)">${l.acao||'—'}</span></div>
+          ${l.obs?`<div style="font-size:10px;color:var(--tx3);margin-top:4px">${l.obs}</div>`:''}
+        </div>
+        <div class="card-actions">
+          <button class="btn sm" onclick="editarLead('${l.id}')">✏ Editar</button>
+          <button class="btn sm" onclick="moverLead('${l.id}')">→ Mover</button>
+          <button class="btn sm" onclick="excluirItem('leads','${l.id}','lead \"${l.nome}\"')">🗑</button>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Novo lead</span>';
+  add.onclick=()=>abrirModal('lead');g.appendChild(add);
+  atualizarKPIs();
+}
+function salvarLead(){
+  var nome=document.getElementById('ld-nome').value.trim();
+  if(!nome){toast('Digite o nome do contato','wa');return;}
+  var l={id:editId||uid(),nome,telefone:V('ld-tel'),email:V('ld-email'),cidade:V('ld-cid'),
+    tipo:V('ld-tipo'),valor:V('ld-val'),origem:V('ld-orig'),status:V('ld-stat'),
+    acao:V('ld-acao'),obs:V('ld-obs'),updated:today()};
+  if(editId){var i=DB.leads.findIndex(x=>x.id===editId);if(i>=0)DB.leads[i]=l;}
+  else{l.created=today();DB.leads.unshift(l);}
+  saveDB();fechar('m-lead');editId=null;renderLeads();atualizarKPIs();
+  toast('Lead salvo ✓','ok');sbSave('leads',l);
+}
+function editarLead(id){
+  var l=DB.leads.find(x=>x.id===id);if(!l)return;editId=id;
+  document.getElementById('m-lead-titulo').textContent='Editar lead';
+  document.getElementById('ld-btn').textContent='Salvar alterações →';
+  setV('ld-nome',l.nome);setV('ld-tel',l.telefone);setV('ld-email',l.email);
+  setV('ld-cid',l.cidade);setV('ld-tipo',l.tipo);setV('ld-val',l.valor);
+  setV('ld-orig',l.origem);setV('ld-stat',l.status);setV('ld-acao',l.acao);setV('ld-obs',l.obs);
+  abrirModal('lead');
+}
+var STATUS_LEAD=['Prospecção','Contato feito','Reunião agendada','Proposta enviada','Negociação','Fechado','Perdido'];
+function moverLead(id){
+  var l=DB.leads.find(x=>x.id===id);if(!l)return;
+  var idx=STATUS_LEAD.indexOf(l.status);
+  var prox=STATUS_LEAD[(idx+1)%STATUS_LEAD.length];
+  l.status=prox;saveDB();renderLeads();atualizarKPIs();toast(`Lead movido para: ${prox}`,'ok');
+}
+
+// ── NCs ───────────────────────────────────────────────────────────────
+function renderNCs(){
+  var g=document.getElementById('ncs-grid');if(!g)return;g.innerHTML='';
+  if(!DB.ncs.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">✅</div><div class="empty-t">Nenhuma NC registrada</div><div class="empty-s">Registre não conformidades encontradas na execução iForms ICF.</div>';
+    g.appendChild(e);return;
+  }
+  DB.ncs.forEach((n,i)=>{
+    var obra=DB.obras.find(o=>o.id===n.obra_id);
+    var c=document.createElement('div');c.className='card';
+    c.innerHTML=`<div class="card-top"><div class="card-dot" style="background:${cor(n.status)}"></div>
+      <span class="card-name">NC-${String(i+1).padStart(3,'0')} · ${n.titulo}</span>${badge(n.status)}</div>
+      <div class="card-body">
+        <div class="cr"><span>Obra</span><span>${obra?.nome||'—'}</span></div>
+        <div class="cr"><span>Fiada</span><span>${n.fiada||'—'}</span></div>
+        <div class="cr"><span>Tipo</span><span>${n.tipo||'—'}</span></div>
+        <div class="cr"><span>Gravidade</span><span style="color:${cor(n.status)}">${n.gravidade||'—'}</span></div>
+        ${n.localizacao?`<div class="cr"><span>Local</span><span>${n.localizacao}</span></div>`:''}
+        ${n.acao?`<div style="font-size:10px;color:var(--tx3);margin-top:4px">Ação: ${n.acao}</div>`:''}
+      </div>
+      <div class="card-actions">
+        ${n.status==='Aberta'?`<button class="btn sm" onclick="tratarNC('${n.id}')">Em tratamento</button>`:''}
+        ${n.status!=='Fechada'?`<button class="btn sm" style="color:var(--gn)" onclick="fecharNC('${n.id}')">✓ Fechar</button>`:''}
+        <button class="btn sm" onclick="excluirItem('ncs','${n.id}','NC')">🗑</button>
+      </div>`;
+    g.appendChild(c);
+  });
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Registrar NC</span>';
+  add.onclick=()=>abrirModal('nc');g.appendChild(add);
+  atualizarKPIs();
+}
+function salvarNC(){
+  var titulo=document.getElementById('nc-titulo').value.trim();
+  if(!titulo){toast('Descreva a NC','wa');return;}
+  var n={id:uid(),obra_id:V('nc-obra'),fiada:V('nc-fiada'),tipo:V('nc-tipo'),
+    gravidade:V('nc-grav'),titulo,localizacao:V('nc-loc'),acao:V('nc-acao'),
+    responsavel:V('nc-resp'),status:'Aberta',created:today()};
+  DB.ncs.unshift(n);saveDB();fechar('m-nc');
+  ['nc-titulo','nc-loc','nc-acao','nc-resp'].forEach(id=>setV(id,''));
+  renderNCs();atualizarKPIs();toast('NC registrada ✓','ok');sbSave('ncs',n);
+}
+function tratarNC(id){var n=DB.ncs.find(x=>x.id===id);if(n){n.status='Em tratamento';saveDB();renderNCs();atualizarKPIs();toast('NC marcada em tratamento','ok');}}
+function fecharNC(id){var n=DB.ncs.find(x=>x.id===id);if(n){n.status='Fechada';n.fechada=today();saveDB();renderNCs();atualizarKPIs();toast('NC fechada ✓','ok');}}
+
+// ── CHECKLIST iFORMS ──────────────────────────────────────────────────
+var IFORMS_ITEMS=[
+  {cat:'Preparo',txt:'Limpeza e nivelamento da base/fundação'},
+  {cat:'Preparo',txt:'Verificação das dimensões e cotas do projeto'},
+  {cat:'Preparo',txt:'Locação das paredes conforme planta'},
+  {cat:'Montagem',txt:'Assentamento da 1ª camada de blocos iForms alinhada'},
+  {cat:'Montagem',txt:'Amarração intercalada dos blocos (juntas desencontradas)'},
+  {cat:'Montagem',txt:'Instalação dos travamentos a cada 1,25m (altura)'},
+  {cat:'Montagem',txt:'Instalação do escoramento externo antes da concretagem'},
+  {cat:'Armação',txt:'Armação vertical CA-50 φ6,3mm conforme projeto'},
+  {cat:'Armação',txt:'Armação horizontal CA-60 a cada 3 fiadas'},
+  {cat:'Armação',txt:'Cobrimento mínimo das barras: 25mm'},
+  {cat:'Instalações',txt:'Eletrodutos corrugados na face externa do EPS'},
+  {cat:'Instalações',txt:'Caixas elétricas fixadas corretamente'},
+  {cat:'Instalações',txt:'Rasgos hidráulicos apenas na face interna'},
+  {cat:'Concretagem',txt:'Concreto fck ≥ 25 MPa · Slump 18±2 cm · Brita 0'},
+  {cat:'Concretagem',txt:'Lançamento em camadas de no máximo 0,50m'},
+  {cat:'Concretagem',txt:'Vibração adequada na face externa do EPS'},
+  {cat:'Concretagem',txt:'Nível máximo de concretagem: 2,00m por etapa'},
+  {cat:'Cura',txt:'Início da cura: imediatamente após a concretagem'},
+  {cat:'Cura',txt:'Tempo mínimo de cura: 72 horas (3 dias)'},
+  {cat:'Cura',txt:'Temperatura ambiente acima de 5°C durante a cura'},
+  {cat:'Verificação',txt:'Prumo e nível conferidos após cada fiada'},
+  {cat:'Verificação',txt:'Registro fotográfico de cada etapa concluída'},
+];
+var ckStatus={};
+function renderChecklists(){
+  var div=document.getElementById('ck-lista');if(!div)return;
+  div.innerHTML='';
+  IFORMS_ITEMS.forEach((item,i)=>{
+    var d=document.createElement('div');d.className='ck-item';
+    d.innerHTML=`<div class="ck-box${ckStatus[i]?' on':''}" onclick="toggleCk(${i})"></div>
+      <div><div class="ck-txt">${item.txt}</div><div class="ck-cat">${item.cat}</div></div>`;
+    div.appendChild(d);
+  });
+  updateCkBar();
+}
+function toggleCk(i){ckStatus[i]=!ckStatus[i];renderChecklists();}
+function updateCkBar(){
+  var ok=Object.values(ckStatus).filter(v=>v).length;
+  var pct=Math.round(ok/IFORMS_ITEMS.length*100);
+  set('ck-ok',ok+' / '+IFORMS_ITEMS.length);
+  var b=document.getElementById('ck-bar');if(b)b.style.width=pct+'%';
+}
+function salvarChecklist(){
+  var obra=V('ck-obra');var data=V('ck-data');
+  if(!obra||!data){toast('Selecione obra e data','wa');return;}
+  var ok=IFORMS_ITEMS.map((_,i)=>ckStatus[i]?1:0);
+  var ck={id:uid(),obra_id:obra,data,fiada:V('ck-fiada'),inspetor:V('ck-insp'),
+    itens:ok,total:IFORMS_ITEMS.length,aprovados:ok.filter(v=>v).length,created:today()};
+  DB.checklists.unshift(ck);saveDB();
+  ckStatus={};renderChecklists();
+  toast(`Checklist salvo: ${ck.aprovados}/${ck.total} itens aprovados`,'ok');
+}
+
+// ── RDO ───────────────────────────────────────────────────────────────
+function salvarRDO(){
+  var obra=V('rdo-obra');
+  if(!obra){toast('Selecione a obra','wa');return;}
+  var r={id:uid(),obra_id:obra,data:V('rdo-data'),clima:V('rdo-clima'),
+    fiada:V('rdo-fiada'),funcionarios:+V('rdo-func')||0,horas:+V('rdo-horas')||0,
+    etapas:V('rdo-etapas'),obs:V('rdo-obs'),autor:session?.nome||'—',created:today()};
+  DB.rdos.unshift(r);saveDB();renderRDOLista();atualizarKPIs();
+  setV('rdo-obs','');setV('rdo-etapas','');setV('rdo-func','0');setV('rdo-horas','0');
+  toast('RDO salvo ✓','ok');sbSave('rdos',r);
+}
+function renderRDOLista(){
+  var div=document.getElementById('rdo-lista');if(!div)return;
+  if(!DB.rdos.length){div.innerHTML='<div style="text-align:center;padding:20px;color:var(--tx3);font-size:12px">Nenhum RDO ainda</div>';return;}
+  div.innerHTML=DB.rdos.slice(0,20).map(r=>{
+    var obra=DB.obras.find(o=>o.id===r.obra_id);
+    return `<div style="padding:10px 16px;border-bottom:1px solid var(--b1);font-size:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <span style="font-weight:600">${fmtDate(r.data)}</span>
+        <span style="color:var(--tx2)">${r.clima||''}</span>
+      </div>
+      <div style="color:var(--tx2);margin-bottom:2px">${obra?.nome||'—'} · ${r.fiada||'—'} · ${r.funcionarios} func. · ${r.horas}h</div>
+      ${r.etapas?`<div style="color:var(--tl);font-size:11px">${r.etapas}</div>`:''}
+      ${r.obs?`<div style="color:var(--tx3);font-size:11px;margin-top:2px">${r.obs}</div>`:''}
+    </div>`;
+  }).join('');
+  set('rdo-count',DB.rdos.length+' registros');
+}
+
+// ── ORÇAMENTO ICF ─────────────────────────────────────────────────────
+function calcOrc(){
+  var area=+V('orc-area')||0;var bdi=+V('orc-bdi')||28;var sis=V('orc-sis');
+  var cfg=getLSJson('ao3_cfg');
+  var ci18=+(cfg&&cfg['cfg-i18'])||0.072;var ci12=+(cfg&&cfg['cfg-i12'])||0.038;
+  var custo_base=sis==='iForms 18+12'?area*(ci18*850+ci12*800):sis==='iForms 18'?area*ci18*850:area*ci12*800;
+  var total=custo_base*(1+bdi/100);
+  var concreto=sis==='iForms 18+12'?area*(ci18+ci12):sis==='iForms 18'?area*ci18:area*ci12;
+  var div=document.getElementById('orc-calc');if(!div)return;
+  div.innerHTML=[
+    ['Área de paredes',area+' m²'],['Sistema',sis],
+    ['Custo base',mk(custo_base)],['BDI ('+bdi+'%)',mk(custo_base*bdi/100)],
+    ['<strong>Total orçado</strong>','<strong style="color:var(--tl)">'+mk(total)+'</strong>'],
+    ['Concreto necessário',concreto.toFixed(2)+' m³'],['R$/m²',mk(area?total/area:0)],
+  ].map(([l,v])=>`<div style="color:var(--tx2)">${l}</div><div style="text-align:right">${v}</div>`).join('');
+}
+function salvarOrc(){
+  var nome=V('orc-nome');var area=V('orc-area');
+  if(!nome||!area){toast('Preencha nome e área','wa');return;}
+  var bdi=+V('orc-bdi')||28;var sis=V('orc-sis');
+  var ci18=0.072;var ci12=0.038;
+  var custo_base=sis==='iForms 18+12'?+area*(ci18*850+ci12*800):+area*ci18*850;
+  var o={id:uid(),nome,sistema:sis,area,fiadas:V('orc-fiad'),cidade:V('orc-cid'),
+    bdi,prazo:V('orc-prazo'),total:(custo_base*(1+bdi/100)).toFixed(0),created:today()};
+  DB.orcamentos.unshift(o);saveDB();fechar('m-orc');renderOrcs();
+  toast('Orçamento gerado: '+mk(o.total),'ok');
+}
+function renderOrcs(){
+  var g=document.getElementById('orc-grid');if(!g)return;g.innerHTML='';
+  if(!DB.orcamentos.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">📐</div><div class="empty-t">Nenhum orçamento</div><div class="empty-s">Gere orçamentos iForms ICF com cálculo automático dos parâmetros técnicos.</div>';
+    g.appendChild(e);
+  } else {
+    DB.orcamentos.forEach(o=>{
+      var c=document.createElement('div');c.className='card';
+      c.innerHTML=`<div class="card-top"><span class="card-name">${o.nome}</span><span class="card-badge" style="background:var(--tld);color:var(--tl)">${o.sistema}</span></div>
+        <div class="card-body">
+          <div class="cr"><span>Área</span><span>${o.area} m²</span></div>
+          <div class="cr"><span>Fiadas</span><span>${o.fiadas}</span></div>
+          <div class="cr"><span>BDI</span><span>${o.bdi}%</span></div>
+          <div class="cr"><span>Total</span><span style="font-weight:700;color:var(--tl)">${mk(o.total)}</span></div>
+          <div class="cr"><span>Prazo</span><span>${o.prazo?o.prazo+' dias':'—'}</span></div>
+          <div class="cr"><span>Data</span><span>${fmtDate(o.created)}</span></div>
+        </div>
+        <div class="card-actions">
+          <button class="btn sm" onclick="excluirItem('orcamentos','${o.id}','orçamento \"${o.nome}\"')">🗑</button>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Novo orçamento</span>';
+  add.onclick=()=>abrirModal('orc');g.appendChild(add);
+}
+
+// ── FINANCEIRO ────────────────────────────────────────────────────────
+function salvarLanc(){
+  var desc=V('lan-desc');var val=V('lan-val');
+  if(!desc||!val){toast('Preencha descrição e valor','wa');return;}
+  var l={id:editId||uid(),tipo:V('lan-tipo'),obra_id:V('lan-obra'),categoria:V('lan-cat'),
+    descricao:desc,valor:+val,data:V('lan-data'),doc:V('lan-doc'),
+    updated:today()};
+  if(editId){var i=DB.lancamentos.findIndex(x=>x.id===editId);if(i>=0)DB.lancamentos[i]=l;}
+  else{l.created=today();DB.lancamentos.unshift(l);}
+  saveDB();fechar('m-lanc');editId=null;renderLanc();renderFinCats();atualizarKPIs();
+  toast('Lançamento salvo ✓','ok');sbSave('lancamentos',l);
+}
+function renderLanc(){
+  var div=document.getElementById('lanc-lista');if(!div)return;
+  var filt=document.getElementById('fin-filtro')?.value||'';
+  var list=filt?DB.lancamentos.filter(l=>l.tipo===filt):DB.lancamentos;
+  if(!list.length){div.innerHTML='<div style="text-align:center;padding:20px;color:var(--tx3);font-size:12px">Nenhum lançamento ainda</div>';return;}
+  div.innerHTML=list.slice(0,30).map(l=>`
+    <div style="padding:10px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;font-size:12px">
+      <div style="flex:1">
+        <div style="font-weight:600">${l.descricao}</div>
+        <div style="color:var(--tx3)">${l.categoria} · ${fmtDate(l.data)}${l.doc?' · '+l.doc:''}</div>
+      </div>
+      <div style="font-family:var(--f2);font-weight:700;color:${l.tipo==='entrada'?'var(--gn)':'var(--rd)'}">${l.tipo==='entrada'?'+':'-'} ${mk(l.valor)}</div>
+      <button class="btn sm" onclick="editarLanc('${l.id}')">✏</button>
+      <button class="btn sm" onclick="excluirItem('lancamentos','${l.id}','lançamento')">🗑</button>
+    </div>`).join('');
+}
+function renderFinCats(){
+  var div=document.getElementById('fin-cats');if(!div)return;
+  var cats={};
+  DB.lancamentos.filter(l=>l.tipo==='saida').forEach(l=>{cats[l.categoria]=(cats[l.categoria]||0)+(+l.valor||0);});
+  if(!Object.keys(cats).length){div.innerHTML='<div style="text-align:center;color:var(--tx3);font-size:12px;padding:20px">Nenhuma saída ainda</div>';return;}
+  var total=Object.values(cats).reduce((s,v)=>s+v,0);
+  div.innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,val])=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--tx2)">${cat}</span><span style="font-weight:600">${mk(val)}</span>
+      </div>
+      <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">
+        <div style="height:100%;background:var(--rd);border-radius:2px;width:${total?Math.round(val/total*100):0}%"></div>
+      </div>
+    </div>`).join('');
+}
+function editarLanc(id){
+  var l=DB.lancamentos.find(x=>x.id===id);if(!l)return;editId=id;
+  document.getElementById('m-lanc-titulo').textContent='Editar lançamento';
+  document.getElementById('lan-btn').textContent='Salvar alterações →';
+  setV('lan-tipo',l.tipo);setV('lan-obra',l.obra_id);setV('lan-cat',l.categoria);
+  setV('lan-val',l.valor);setV('lan-data',l.data);setV('lan-desc',l.descricao);setV('lan-doc',l.doc);
+  abrirModal('lanc');
+}
+
+// ── CONTRATOS ─────────────────────────────────────────────────────────
+function salvarContrato(){
+  var nome=V('ct-nome');if(!nome){toast('Digite o nome do contratado','wa');return;}
+  var c={id:editId||uid(),contratado:nome,obra_id:V('ct-obra'),tipo:V('ct-tipo'),
+    valor:+V('ct-val')||0,regime:V('ct-reg'),status:V('ct-stat'),
+    data_ini:V('ct-ini'),data_fim:V('ct-fim'),objeto:V('ct-obj'),updated:today()};
+  if(editId){var i=DB.contratos.findIndex(x=>x.id===editId);if(i>=0)DB.contratos[i]=c;}
+  else{c.created=today();DB.contratos.unshift(c);}
+  saveDB();fechar('m-contrato');editId=null;renderContratos();atualizarKPIs();
+  toast('Contrato salvo ✓','ok');
+}
+function renderContratos(){
+  var g=document.getElementById('ct-grid');if(!g)return;g.innerHTML='';
+  if(!DB.contratos.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">📋</div><div class="empty-t">Nenhum contrato</div><div class="empty-s">Cadastre contratos com terceirizados e empreiteiros.</div>';
+    g.appendChild(e);
+  } else {
+    DB.contratos.forEach(c=>{
+      var obra=DB.obras.find(o=>o.id===c.obra_id);
+      var el=document.createElement('div');el.className='card';
+      el.innerHTML=`<div class="card-top"><span class="card-name">${c.contratado}</span>${badge(c.status)}</div>
+        <div class="card-body">
+          <div class="cr"><span>Obra</span><span>${obra?.nome||'—'}</span></div>
+          <div class="cr"><span>Tipo</span><span>${c.tipo}</span></div>
+          <div class="cr"><span>Valor</span><span style="font-weight:700;color:var(--tl)">${mk(c.valor)}</span></div>
+          <div class="cr"><span>Regime</span><span>${c.regime}</span></div>
+          <div class="cr"><span>Início</span><span>${fmtDate(c.data_ini)}</span></div>
+          ${c.objeto?`<div style="font-size:10px;color:var(--tx3);margin-top:4px">${c.objeto}</div>`:''}
+        </div>
+        <div class="card-actions">
+          <button class="btn sm" onclick="editarContrato('${c.id}')">✏ Editar</button>
+          <button class="btn sm" onclick="excluirItem('contratos','${c.id}','contrato')">🗑</button>
+        </div>`;
+      g.appendChild(el);
+    });
+  }
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Novo contrato</span>';
+  add.onclick=()=>abrirModal('contrato');g.appendChild(add);atualizarKPIs();
+}
+function editarContrato(id){
+  var c=DB.contratos.find(x=>x.id===id);if(!c)return;editId=id;
+  document.getElementById('m-ct-titulo').textContent='Editar contrato';
+  document.getElementById('ct-btn').textContent='Salvar alterações →';
+  setV('ct-nome',c.contratado);setV('ct-obra',c.obra_id);setV('ct-tipo',c.tipo);
+  setV('ct-val',c.valor);setV('ct-reg',c.regime);setV('ct-stat',c.status);
+  setV('ct-ini',c.data_ini);setV('ct-fim',c.data_fim);setV('ct-obj',c.objeto);
+  abrirModal('contrato');
+}
+
+// ── COMPRAS ───────────────────────────────────────────────────────────
+function salvarCompra(){
+  var mat=V('cp-mat');if(!mat){toast('Digite o material','wa');return;}
+  var c={id:editId||uid(),obra_id:V('cp-obra'),material:mat,quantidade:+V('cp-qtd')||0,
+    unidade:V('cp-un'),data_necesidade:V('cp-data'),urgencia:V('cp-urg'),
+    obs:V('cp-obs'),status:'Pendente',updated:today()};
+  if(editId){var i=DB.compras.findIndex(x=>x.id===editId);if(i>=0)DB.compras[i]=c;}
+  else{c.created=today();DB.compras.unshift(c);}
+  saveDB();fechar('m-compra');editId=null;renderCompras();atualizarKPIs();
+  toast('Solicitação registrada ✓','ok');
+}
+function renderCompras(){
+  var g=document.getElementById('cp-grid');if(!g)return;g.innerHTML='';
+  if(!DB.compras.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">📦</div><div class="empty-t">Nenhuma solicitação</div><div class="empty-s">Solicite materiais para aprovação antes de enviar ao fornecedor.</div>';
+    g.appendChild(e);
+  } else {
+    DB.compras.forEach(cp=>{
+      var obra=DB.obras.find(o=>o.id===cp.obra_id);
+      var c=document.createElement('div');c.className='card';
+      c.innerHTML=`<div class="card-top"><span class="card-name">${cp.material}</span>${badge(cp.urgencia)}</div>
+        <div class="card-body">
+          <div class="cr"><span>Obra</span><span>${obra?.nome||'—'}</span></div>
+          <div class="cr"><span>Qtd.</span><span>${cp.quantidade} ${cp.unidade}</span></div>
+          <div class="cr"><span>Status</span><span style="color:${cor(cp.status)}">${cp.status}</span></div>
+          ${cp.data_necesidade?`<div class="cr"><span>Necessário</span><span>${fmtDate(cp.data_necesidade)}</span></div>`:''}
+          ${cp.obs?`<div style="font-size:10px;color:var(--tx3);margin-top:4px">${cp.obs}</div>`:''}
+        </div>
+        <div class="card-actions">
+          ${cp.status==='Pendente'?`<button class="btn sm" style="color:var(--gn)" onclick="mudarStatusCompra('${cp.id}','Aprovada')">✓ Aprovar</button>`:''}
+          ${cp.status==='Aprovada'?`<button class="btn sm" style="color:var(--tl)" onclick="mudarStatusCompra('${cp.id}','Entregue')">📦 Entregue</button>`:''}
+          <button class="btn sm" onclick="editarCompra('${cp.id}')">✏</button>
+          <button class="btn sm" onclick="excluirItem('compras','${cp.id}','solicitação')">🗑</button>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova solicitação</span>';
+  add.onclick=()=>abrirModal('compra');g.appendChild(add);atualizarKPIs();
+}
+function mudarStatusCompra(id,st){var c=DB.compras.find(x=>x.id===id);if(c){c.status=st;saveDB();renderCompras();atualizarKPIs();toast('Status: '+st,'ok');}}
+function editarCompra(id){
+  var c=DB.compras.find(x=>x.id===id);if(!c)return;editId=id;
+  document.getElementById('m-cp-titulo').textContent='Editar solicitação';
+  document.getElementById('cp-btn').textContent='Salvar →';
+  setV('cp-obra',c.obra_id);setV('cp-mat',c.material);setV('cp-qtd',c.quantidade);
+  setV('cp-un',c.unidade);setV('cp-data',c.data_necesidade);setV('cp-urg',c.urgencia);setV('cp-obs',c.obs);
+  abrirModal('compra');
+}
+
+// ── EQUIPES ───────────────────────────────────────────────────────────
+function salvarFunc(){
+  var nome=V('fn-nome');if(!nome){toast('Digite o nome','wa');return;}
+  var f={id:editId||uid(),nome,cargo:V('fn-cargo'),regime:V('fn-reg'),
+    valor_hora:+V('fn-hora')||0,telefone:V('fn-tel'),cpf:V('fn-doc'),
+    certificacao:V('fn-cert'),status:'Ativo',updated:today()};
+  if(editId){var i=DB.funcionarios.findIndex(x=>x.id===editId);if(i>=0)DB.funcionarios[i]=f;}
+  else{f.created=today();DB.funcionarios.unshift(f);}
+  saveDB();fechar('m-func');editId=null;renderEquipes();atualizarKPIs();
+  toast('Funcionário salvo ✓','ok');
+}
+function renderEquipes(){
+  var g=document.getElementById('eq-grid');if(!g)return;g.innerHTML='';
+  if(!DB.funcionarios.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">👷</div><div class="empty-t">Nenhum funcionário</div><div class="empty-s">Cadastre sua equipe iForms ICF — mestres, montadores e serventes.</div>';
+    g.appendChild(e);
+  } else {
+    DB.funcionarios.forEach(f=>{
+      var c=document.createElement('div');c.className='card';
+      c.innerHTML=`<div class="card-top"><span class="card-name">${f.nome}</span><span class="card-badge" style="background:var(--tld);color:var(--tl)">${f.cargo}</span></div>
+        <div class="card-body">
+          <div class="cr"><span>Regime</span><span>${f.regime}</span></div>
+          <div class="cr"><span>Valor/hora</span><span style="color:var(--gn);font-weight:600">R$ ${f.valor_hora}/h</span></div>
+          <div class="cr"><span>Certificação</span><span>${f.certificacao||'—'}</span></div>
+          ${f.telefone?`<div class="cr"><span>Tel.</span><span>${f.telefone}</span></div>`:''}
+        </div>
+        <div class="card-actions">
+          <button class="btn sm" onclick="editarFunc('${f.id}')">✏ Editar</button>
+          <button class="btn sm" onclick="excluirItem('funcionarios','${f.id}','funcionário \"${f.nome}\"')">🗑</button>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Novo funcionário</span>';
+  add.onclick=()=>abrirModal('func');g.appendChild(add);atualizarKPIs();
+}
+function editarFunc(id){
+  var f=DB.funcionarios.find(x=>x.id===id);if(!f)return;editId=id;
+  document.getElementById('m-fn-titulo').textContent='Editar funcionário';
+  document.getElementById('fn-btn').textContent='Salvar →';
+  setV('fn-nome',f.nome);setV('fn-cargo',f.cargo);setV('fn-reg',f.regime);
+  setV('fn-hora',f.valor_hora);setV('fn-tel',f.telefone);setV('fn-doc',f.cpf);setV('fn-cert',f.certificacao);
+  abrirModal('func');
+}
+
+// ── MEDIÇÕES ──────────────────────────────────────────────────────────
+function salvarMedicao(){
+  var obra=V('med-obra');var val=V('med-val');
+  if(!obra||!val){toast('Preencha obra e valor','wa');return;}
+  var m={id:editId||uid(),obra_id:obra,numero:+V('med-num')||1,periodo:V('med-per'),
+    valor:+val,vencimento:V('med-venc'),status:V('med-stat'),descricao:V('med-desc'),
+    updated:today()};
+  if(editId){var i=DB.medicoes.findIndex(x=>x.id===editId);if(i>=0)DB.medicoes[i]=m;}
+  else{m.created=today();DB.medicoes.unshift(m);}
+  saveDB();fechar('m-medicao');editId=null;renderMedicoes();atualizarKPIs();
+  toast('Medição salva ✓','ok');
+}
+function renderMedicoes(){
+  var g=document.getElementById('med-grid');if(!g)return;g.innerHTML='';
+  if(!DB.medicoes.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="empty-ico">📏</div><div class="empty-t">Nenhuma medição</div><div class="empty-s">Registre medições de avanço das obras para controle financeiro.</div>';
+    g.appendChild(e);
+  } else {
+    DB.medicoes.forEach(m=>{
+      var obra=DB.obras.find(o=>o.id===m.obra_id);
+      var c=document.createElement('div');c.className='card';
+      c.innerHTML=`<div class="card-top"><span class="card-name">Med. ${m.numero}${m.periodo?' · '+m.periodo:''}</span>${badge(m.status)}</div>
+        <div class="card-body">
+          <div class="cr"><span>Obra</span><span>${obra?.nome||'—'}</span></div>
+          <div class="cr"><span>Valor</span><span style="font-weight:700;color:var(--tl)">${mk(m.valor)}</span></div>
+          <div class="cr"><span>Vencimento</span><span>${fmtDate(m.vencimento)}</span></div>
+          ${m.descricao?`<div style="font-size:10px;color:var(--tx3);margin-top:4px">${m.descricao}</div>`:''}
+        </div>
+        <div class="card-actions">
+          ${m.status==='Aguardando aprovação'?`<button class="btn sm" style="color:var(--gn)" onclick="mudarStatusMed('${m.id}','Aprovada')">✓ Aprovar</button>`:''}
+          ${m.status==='Aprovada'?`<button class="btn sm" style="color:var(--gn)" onclick="mudarStatusMed('${m.id}','Paga')">✓ Paga</button>`:''}
+          <button class="btn sm" onclick="editarMed('${m.id}')">✏</button>
+          <button class="btn sm" onclick="excluirItem('medicoes','${m.id}','medição')">🗑</button>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+  var add=document.createElement('div');add.className='add-card';
+  add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova medição</span>';
+  add.onclick=()=>abrirModal('medicao');g.appendChild(add);atualizarKPIs();
+}
+function mudarStatusMed(id,st){var m=DB.medicoes.find(x=>x.id===id);if(m){m.status=st;saveDB();renderMedicoes();atualizarKPIs();toast('Medição: '+st,'ok');}}
+function editarMed(id){
+  var m=DB.medicoes.find(x=>x.id===id);if(!m)return;editId=id;
+  document.getElementById('m-med-titulo').textContent='Editar medição';
+  document.getElementById('med-btn').textContent='Salvar →';
+  setV('med-obra',m.obra_id);setV('med-num',m.numero);setV('med-per',m.periodo);
+  setV('med-val',m.valor);setV('med-venc',m.vencimento);setV('med-stat',m.status);setV('med-desc',m.descricao);
+  abrirModal('medicao');
+}
+
+// ── ECOSSISTEMA ───────────────────────────────────────────────────────
+function salvarUnidade(){
+  var nome=V('un-nome');if(!nome){toast('Digite o nome','wa');return;}
+  var u={id:uid(),nome,cidade:V('un-cid'),tipo:V('un-tipo'),responsavel:V('un-resp'),telefone:V('un-tel'),created:today()};
+  DB.unidades.unshift(u);saveDB();fechar('m-unidade');renderEcossistema();atualizarKPIs();
+  ['un-nome','un-cid','un-resp','un-tel'].forEach(id=>setV(id,''));
+  toast('Unidade adicionada ✓','ok');
+}
+function renderEcossistema(){
+  // ── KPIs globais ─────────────────────────────────────────────
+  var todasObras = DB.obras;
+  var receita   = todasObras.reduce((s,o)=>s+(+o.valor||0),0);
+  var area      = todasObras.reduce((s,o)=>s+(+o.area||0),0);
+  set('eco-unid',   DB.unidades.length);
+  set('eco-obras',  todasObras.length);
+  set('eco-receita',mk(receita));
+  set('eco-area',   area.toFixed(0)+' m²');
+  set('eco-equipe', DB.funcionarios.length);
+
+  // ── Cards das unidades ────────────────────────────────────────
+  var g = document.getElementById('unid-grid');
+  if(!g) return;
+  g.innerHTML = '';
+
+  var TIPO_COR = {
+    'Sede':        'var(--tl)',
+    'Filial':      'var(--bl)',
+    'Implantação': 'var(--am)',
+    'Parceiro':    'var(--pu)',
+  };
+  var TIPO_BG = {
+    'Sede':        'var(--tld)',
+    'Filial':      'var(--bld)',
+    'Implantação': 'var(--amd)',
+    'Parceiro':    'var(--pud)',
+  };
+  var TIPO_GRAD = {
+    'Sede':        'linear-gradient(135deg,rgba(0,203,168,.12),rgba(0,203,168,.03))',
+    'Filial':      'linear-gradient(135deg,rgba(91,156,246,.12),rgba(91,156,246,.03))',
+    'Implantação': 'linear-gradient(135deg,rgba(246,185,59,.12),rgba(246,185,59,.03))',
+    'Parceiro':    'linear-gradient(135deg,rgba(159,140,245,.12),rgba(159,140,245,.03))',
+  };
+
+  if(!DB.unidades.length){
+    var e = document.createElement('div');
+    e.className = 'empty';
+    e.style.gridColumn = '1/-1';
+    e.innerHTML = '<div class="empty-ico">🌐</div><div class="empty-t">Nenhuma unidade cadastrada</div><div class="empty-s">Adicione as unidades do ecossistema Alpha Obras (sede, filiais, implantações) para ver o comparativo consolidado.</div><button class="btn p" onclick="abrirModal('unidade')" style="margin-top:8px">+ Adicionar primeira unidade</button>';
+    g.appendChild(e);
+  } else {
+    DB.unidades.forEach((u,rank)=>{
+      var obras_u    = DB.obras.filter(o=>o.cidade===u.cidade||o.unidade===u.cidade);
+      var ativas_u   = obras_u.filter(o=>o.status==='Em execução').length;
+      var receita_u  = obras_u.reduce((s,o)=>s+(+o.valor||0),0);
+      var area_u     = obras_u.reduce((s,o)=>s+(+o.area||0),0);
+      var prog_u     = obras_u.length ? Math.round(obras_u.reduce((s,o)=>s+(+o.progresso||0),0)/obras_u.length) : 0;
+      var nc_u       = DB.ncs.filter(n=>{var ob=DB.obras.find(o=>o.id===n.obra_id);return ob&&(ob.cidade===u.cidade||ob.unidade===u.cidade)&&n.status==='Aberta';}).length;
+      var rdos_u     = DB.rdos.filter(r=>{var ob=DB.obras.find(o=>o.id===r.obra_id);return ob&&(ob.cidade===u.cidade||ob.unidade===u.cidade);}).length;
+      var cor        = TIPO_COR[u.tipo] || 'var(--tl)';
+      var bg         = TIPO_BG[u.tipo]  || 'var(--tld)';
+      var grad       = TIPO_GRAD[u.tipo] || TIPO_GRAD['Sede'];
+
+      var c = document.createElement('div');
+      c.style.cssText = `background:${grad};border:1px solid ${bg};border-radius:14px;overflow:hidden;transition:transform .15s,box-shadow .15s`;
+      c.addEventListener('mouseenter',()=>{c.style.transform='translateY(-2px)';c.style.boxShadow='0 8px 28px rgba(0,0,0,.35)';});
+      c.addEventListener('mouseleave',()=>{c.style.transform='';c.style.boxShadow='';});
+
+      c.innerHTML = `
+        <!-- Header colorido -->
+        <div style="padding:14px 16px 12px;border-bottom:1px solid ${bg};position:relative">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:32px;height:32px;border-radius:8px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:16px">
+                ${{Sede:'🏠',Filial:'🏢',Implantação:'🔨',Parceiro:'🤝'}[u.tipo]||'🏗️'}
+              </div>
+              <div>
+                <div style="font-family:var(--f2);font-size:14px;font-weight:800;color:var(--tx)">${u.nome}</div>
+                <div style="font-size:10px;color:var(--tx3)">${u.cidade||'—'} · RS</div>
+              </div>
+            </div>
+            <span style="background:${bg};color:${cor};font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px">${u.tipo}</span>
+          </div>
+          ${u.responsavel?`<div style="font-size:11px;color:var(--tx2)">👤 ${u.responsavel}</div>`:''}
+          ${u.telefone?`<div style="font-size:11px;color:var(--tx3);margin-top:1px">📞 ${u.telefone}</div>`:''}
+        </div>
+
+        <!-- Métricas -->
+        <div style="padding:12px 16px;border-bottom:1px solid ${bg}">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">
+            <div style="text-align:center;background:var(--bg2);border-radius:7px;padding:8px 4px">
+              <div style="font-family:var(--f2);font-size:16px;font-weight:800;color:${cor}">${obras_u.length}</div>
+              <div style="font-size:9px;color:var(--tx3)">obras</div>
+            </div>
+            <div style="text-align:center;background:var(--bg2);border-radius:7px;padding:8px 4px">
+              <div style="font-family:var(--f2);font-size:16px;font-weight:800;color:var(--gn)">${mk(receita_u)}</div>
+              <div style="font-size:9px;color:var(--tx3)">receita</div>
+            </div>
+            <div style="text-align:center;background:var(--bg2);border-radius:7px;padding:8px 4px">
+              <div style="font-family:var(--f2);font-size:16px;font-weight:800;color:var(--bl)">${area_u.toFixed(0)}</div>
+              <div style="font-size:9px;color:var(--tx3)">m²</div>
+            </div>
+          </div>
+          <!-- Barra progresso médio -->
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:4px">
+            <span>Progresso médio</span>
+            <span style="color:${cor};font-weight:600">${prog_u}%</span>
+          </div>
+          <div style="height:5px;background:var(--bg4);border-radius:3px;overflow:hidden">
+            <div style="height:100%;background:${cor};border-radius:3px;width:${prog_u}%;transition:width .5s"></div>
+          </div>
+        </div>
+
+        <!-- Indicadores -->
+        <div style="padding:10px 16px;display:flex;gap:12px;font-size:11px">
+          <div style="display:flex;align-items:center;gap:4px">
+            <span style="background:var(--tld);color:var(--tl);padding:1px 6px;border-radius:12px;font-size:10px;font-weight:600">${ativas_u} ativas</span>
+          </div>
+          ${nc_u?`<div style="display:flex;align-items:center;gap:4px"><span style="background:var(--rdd);color:var(--rd);padding:1px 6px;border-radius:12px;font-size:10px;font-weight:600">${nc_u} NC${nc_u>1?'s':''}</span></div>`:''}
+          <div style="display:flex;align-items:center;gap:4px;color:var(--tx3)">${rdos_u} RDOs</div>
+          <div style="margin-left:auto;display:flex;gap:6px">
+            <button class="btn sm" onclick="filtrarObrasPorUnidade('${u.cidade}')" style="font-size:10px">Ver obras</button>
+            <button class="btn sm" onclick="excluirItem('unidades','${u.id}','unidade "${u.nome}"')" style="font-size:10px;color:var(--rd)">🗑</button>
+          </div>
+        </div>`;
+      g.appendChild(c);
+    });
+  }
+
+  // ── Card "+ Nova unidade" ────────────────────────────────────────
+  var add = document.createElement('div');
+  add.className = 'add-card';
+  add.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova unidade</span>';
+  add.onclick = ()=>abrirModal('unidade');
+  g.appendChild(add);
+
+  // ── Ranking ──────────────────────────────────────────────────────
+  renderEcoRanking();
+  renderEcoChart();
+}
+
+function renderEcoRanking(){
+  var div = document.getElementById('eco-ranking');
+  if(!div) return;
+
+  if(!DB.unidades.length){
+    div.innerHTML='<div style="padding:16px;text-align:center;font-size:12px;color:var(--tx3)">Adicione unidades para ver o ranking</div>';
+    return;
+  }
+
+  // Calcular score por unidade
+  var ranked = DB.unidades.map((u,i)=>{
+    var obras_u   = DB.obras.filter(o=>o.cidade===u.cidade||o.unidade===u.cidade);
+    var receita_u = obras_u.reduce((s,o)=>s+(+o.valor||0),0);
+    var prog_u    = obras_u.length ? Math.round(obras_u.reduce((s,o)=>s+(+o.progresso||0),0)/obras_u.length) : 0;
+    var nc_u      = DB.ncs.filter(n=>{var ob=DB.obras.find(o=>o.id===n.obra_id);return ob&&(ob.cidade===u.cidade||ob.unidade===u.cidade)&&n.status==='Aberta';}).length;
+    var score     = (receita_u/1000) + (prog_u*100) - (nc_u*500);
+    return {u, obras_u, receita_u, prog_u, nc_u, score};
+  }).sort((a,b)=>b.score-a.score);
+
+  var MEDALS = ['🥇','🥈','🥉'];
+  var maxReceita = Math.max(...ranked.map(r=>r.receita_u),1);
+
+  div.innerHTML = ranked.map((r,i)=>
+    `<div style="padding:12px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px">
+      <div style="font-size:18px;flex-shrink:0">${MEDALS[i]||'#'+(i+1)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:13px">${r.u.nome}</div>
+        <div style="font-size:10px;color:var(--tx3)">${r.u.cidade||'—'} · ${r.obras_u.length} obras · ${r.prog_u}% médio</div>
+        <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:5px">
+          <div style="height:100%;background:${i===0?'var(--tl)':i===1?'var(--bl)':'var(--am)'};border-radius:2px;width:${Math.round(r.receita_u/maxReceita*100)}%;transition:width .6s"></div>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:var(--f2);font-weight:700;font-size:13px;color:var(--tl)">${mk(r.receita_u)}</div>
+        ${r.nc_u?`<div style="font-size:10px;color:var(--rd)">${r.nc_u} NC</div>`:'<div style="font-size:10px;color:var(--gn)">✓ 0 NC</div>'}
+      </div>
+    </div>`
+  ).join('');
+}
+
+function renderEcoChart(){
+  var div = document.getElementById('eco-chart');
+  if(!div) return;
+
+  if(!DB.unidades.length){
+    div.innerHTML='<div style="text-align:center;padding:16px;font-size:12px;color:var(--tx3)">Adicione unidades para ver o comparativo</div>';
+    return;
+  }
+
+  var dados = DB.unidades.map(u=>{
+    var obras_u  = DB.obras.filter(o=>o.cidade===u.cidade||o.unidade===u.cidade);
+    var ativas   = obras_u.filter(o=>o.status==='Em execução').length;
+    var concl    = obras_u.filter(o=>o.status==='Concluída').length;
+    var atrasado = obras_u.filter(o=>o.status==='Atrasado').length;
+    return {nome:u.nome, cidade:u.cidade, ativas, concl, atrasado, total:obras_u.length};
+  });
+
+  var maxTotal = Math.max(...dados.map(d=>d.total),1);
+  var CATS = [{key:'ativas',cor:'var(--tl)',label:'Em execução'},{key:'concl',cor:'var(--gn)',label:'Concluídas'},{key:'atrasado',cor:'var(--rd)',label:'Atrasadas'}];
+
+  div.innerHTML = `
+    <!-- Legenda -->
+    <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+      ${CATS.map(c=>`<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)">
+        <div style="width:10px;height:10px;border-radius:2px;background:${c.cor}"></div>${c.label}
+      </div>`).join('')}
+    </div>
+    <!-- Barras -->
+    ${dados.map(d=>`
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+          <span style="font-weight:600">${d.nome}</span>
+          <span style="color:var(--tx3)">${d.cidade||'—'} · ${d.total} obra${d.total!==1?'s':''}</span>
+        </div>
+        <div style="display:flex;height:22px;background:var(--bg4);border-radius:5px;overflow:hidden;gap:1px">
+          ${CATS.map(c=>d[c.key]?`<div style="width:${Math.round(d[c.key]/maxTotal*100)}%;background:${c.cor};transition:width .6s;display:flex;align-items:center;justify-content:center" title="${c.label}: ${d[c.key]}">
+            ${d[c.key]>0?`<span style="font-size:10px;font-weight:700;color:${c.key==='ativas'?'#0a0d14':'var(--tx)'}">${d[c.key]}</span>`:''}
+          </div>`:''
+          ).join('')}
+          ${!d.total?'<div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--tx3)">sem obras</div>':''}
+        </div>
+      </div>`).join('')}
+    <!-- Totais -->
+    <div style="border-top:1px solid var(--b1);padding-top:10px;display:flex;justify-content:space-between;font-size:11px;color:var(--tx2)">
+      <span>Total: ${dados.reduce((s,d)=>s+d.total,0)} obras</span>
+      <span style="color:var(--tl)">${dados.reduce((s,d)=>s+d.ativas,0)} em execução</span>
+      <span style="color:var(--rd)">${dados.reduce((s,d)=>s+d.atrasado,0)} atrasadas</span>
+    </div>
+  `;
+}
+
+function filtrarObrasPorUnidade(cidade){
+  // Navegar ao dashboard filtrando por unidade
+  ir('dashboard', document.querySelector('[data-p=dashboard]'));
+  setTimeout(()=>{
+    var sel = document.getElementById('f-obras');
+    if(sel){ sel.value = ''; }
+    // Mostrar somente obras da cidade
+    var g = document.getElementById('obras-grid');
+    if(!g) return;
+    g.innerHTML = '';
+    var list = DB.obras.filter(o=>o.cidade===cidade||o.unidade===cidade);
+    if(!list.length){
+      var e=document.createElement('div');e.className='empty';e.style.gridColumn='1/-1';
+      e.innerHTML='<div class="empty-ico">🏗️</div><div class="empty-t">Nenhuma obra em '+cidade+'</div>';
+      g.appendChild(e);
+      return;
+    }
+    list.forEach(o=>{
+      var c=document.createElement('div');c.className='card';
+      var prog=+o.progresso||0;
+      c.innerHTML=`<div class="card-top"><div class="card-dot" style="background:${cor(o.status)}"></div><span class="card-name">${o.nome}</span>${badge(o.status)}</div>
+        <div class="card-body">
+          <div class="cr"><span>Cliente</span><span>${o.cliente||'—'}</span></div>
+          <div class="cr"><span>Valor</span><span style="font-weight:700;color:${cor(o.status)}">${mk(o.valor)}</span></div>
+          <div class="cr"><span>Progresso</span><span style="color:${cor(o.status)}">${prog}%</span></div>
+          <div class="card-prog"><div class="card-prog-f" style="background:${cor(o.status)};width:${prog}%"></div></div>
+        </div>
+        <div class="card-actions">
+          <button class="btn sm" onclick="editarObra('${o.id}')">✏ Editar</button>
+          <button class="btn sm" onclick="excluirItem('obras','${o.id}','obra \"${o.nome}\"')">🗑</button>
+        </div>`;
+      g.appendChild(c);
+    });
+    var add=document.createElement('div');add.className='add-card';
+    add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova obra</span>';
+    add.onclick=()=>abrirModal('obra');
+    g.appendChild(add);
+    toast('Obras de '+cidade+': '+list.length,'ok');
+  }, 100);
+}
+
+
+function renderGantt(){
+  var div=document.getElementById('gantt-area');if(!div)return;
+  var obraId=V('gantt-obra');
+  if(!obraId){div.innerHTML='<div style="text-align:center;padding:24px;color:var(--tx3);font-size:12px">Selecione uma obra para ver o cronograma de fiadas</div>';return;}
+  var obra=DB.obras.find(o=>o.id===obraId);if(!obra)return;
+  var nFiadas=+obra.n_fiadas||6;
+  var hoje=new Date();
+  var ini=obra.data_ini?new Date(obra.data_ini+'T12:00:00'):hoje;
+  var rdos_obra=DB.rdos.filter(r=>r.obra_id===obraId);
+  var DURACAO=3; // dias por fiada (mínimo 72h)
+  var html=`<div style="min-width:600px;padding:16px">
+    <div style="display:grid;grid-template-columns:120px repeat(${nFiadas*4},1fr);gap:2px;font-size:11px;margin-bottom:8px">
+      <div style="font-weight:600;color:var(--tx2)">Fiada</div>
+      ${Array.from({length:nFiadas},(_,i)=>`<div style="grid-column:span 4;text-align:center;color:var(--tx2);font-weight:600">F${i+1}</div>`).join('')}
+    </div>
+    <div style="display:grid;grid-template-columns:120px repeat(${nFiadas*4},1fr);gap:2px;font-size:10px;margin-bottom:4px">
+      <div style="color:var(--tx3)">Etapa</div>
+      ${Array.from({length:nFiadas},(_,i)=>`
+        <div style="grid-column:span 1;text-align:center;color:var(--tx3)">Mont.</div>
+        <div style="grid-column:span 1;text-align:center;color:var(--tx3)">Arm.</div>
+        <div style="grid-column:span 1;text-align:center;color:var(--tx3)">Conc.</div>
+        <div style="grid-column:span 1;text-align:center;color:var(--tx3)">Cura</div>`).join('')}
+    </div>
+    ${['Prazo planejado','Executado','Cura ativa'].map((linha,li)=>`
+      <div style="display:grid;grid-template-columns:120px repeat(${nFiadas*4},1fr);gap:2px;margin-bottom:4px">
+        <div style="font-size:11px;color:var(--tx2);display:flex;align-items:center">${linha}</div>
+        ${Array.from({length:nFiadas},(_,fi)=>{
+          var fiRDOs=rdos_obra.filter(r=>r.fiada&&r.fiada.includes('F'+(fi+1)));
+          var tem=fiRDOs.length>0;
+          var emCura=tem&&li===2&&fi===rdos_obra.length-1;
+          return ['var(--bg3)','var(--bg3)','var(--bg3)','var(--bg3)'].map((_,si)=>{
+            var cor_c=li===0?(si<2?'var(--bld)':si===2?'var(--amd)':'var(--pud)')
+              :li===1?(tem&&si<(fiRDOs.length>0?3:0)?'var(--tl)':'var(--bg3)')
+              :(emCura&&si===3?'var(--am)':'var(--bg3)');
+            return `<div style="height:24px;background:${cor_c};border-radius:3px"></div>`;
+          }).join('');
+        }).join('')}
+      </div>`).join('')}
+    <div style="margin-top:12px;display:flex;gap:16px;font-size:11px;color:var(--tx2)">
+      <span>■ <span style="color:var(--bld)">Planejado</span></span>
+      <span>■ <span style="color:var(--tl)">Executado</span></span>
+      <span>■ <span style="color:var(--amd)">Concretagem</span></span>
+      <span>■ <span style="color:var(--am)">Em cura</span></span>
+    </div>
+  </div>`;
+  div.innerHTML=html;
+}
+
+// ── FOTOS GPS ─────────────────────────────────────────────────────────
+var gpsCoords=null;
+function obterGPS(){
+  var dot=document.getElementById('gps-dot');var status=document.getElementById('gps-status');
+  if(!navigator.geolocation){if(status)status.textContent='GPS não disponível neste browser';return;}
+  if(dot)dot.style.background='var(--am)';
+  if(status)status.textContent='Obtendo localização...';
+  navigator.geolocation.getCurrentPosition(
+    pos=>{gpsCoords={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy)};
+      if(dot)dot.style.background='var(--gn)';
+      if(status)status.textContent=`GPS ativo — ${gpsCoords.lat.toFixed(5)}, ${gpsCoords.lng.toFixed(5)} · ±${gpsCoords.acc}m`;},
+    err=>{gpsCoords={lat:-28.8123,lng:-52.5094,acc:500};
+      if(dot)dot.style.background='var(--am)';
+      if(status)status.textContent='Localização padrão (GPS negado) — ' +[-28.8123,-52.5094].map(x=>x.toFixed(4)).join(', ');}
+  ,{enableHighAccuracy:true,timeout:10000});
+}
+function processarFotos(inp){
+  var obra=V('f-fotos-obra');
+  Array.from(inp.files).forEach(file=>{
+    var reader=new FileReader();
+    reader.onload=e=>{
+      var f={id:uid(),obra_id:obra,url:e.target.result,
+        lat:gpsCoords?.lat||0,lng:gpsCoords?.lng||0,acc:gpsCoords?.acc||0,
+        created:new Date().toISOString()};
+      DB.fotos.unshift(f);saveDB();renderFotos();toast('Foto registrada com GPS ✓','ok');
+    };
+    reader.readAsDataURL(file);
+  });
+  inp.value='';
+}
+function renderFotos(){
+  var g=document.getElementById('fotos-grid');if(!g)return;g.innerHTML='';
+  var fil=V('f-fotos-obra');
+  var list=fil?DB.fotos.filter(f=>f.obra_id===fil):DB.fotos;
+  if(!list.length){
+    var e=document.createElement('div');e.style.cssText='grid-column:1/-1;text-align:center;padding:32px;color:var(--tx3);font-size:13px';
+    e.innerHTML='📷 Nenhuma foto ainda — use o botão acima para registrar fotos com GPS';
+    g.appendChild(e);return;
+  }
+  list.forEach(f=>{
+    var obra=DB.obras.find(o=>o.id===f.obra_id);
+    var c=document.createElement('div');
+    c.style.cssText='background:var(--bg2);border:1px solid var(--b1);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .15s';
+    var dt=f.created?new Date(f.created).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    c.innerHTML=`<div style="aspect-ratio:4/3;background:var(--bg3);overflow:hidden">
+      <img src="${f.url}" style="width:100%;height:100%;object-fit:cover" loading="lazy" alt="Foto da obra">
+    </div>
+    <div style="padding:8px 10px;font-size:11px">
+      <div style="font-weight:600;color:var(--tl);margin-bottom:2px">${obra?.nome||'—'}</div>
+      <div style="color:var(--tx3)">${dt}</div>
+      ${f.lat?`<div style="color:var(--tx2);font-size:10px;margin-top:2px">📍 ${f.lat.toFixed(4)}, ${f.lng.toFixed(4)} · ±${f.acc}m</div>`:''}
+    </div>`;
+    c.addEventListener('mouseenter',()=>c.style.borderColor='var(--b2)');
+    c.addEventListener('mouseleave',()=>c.style.borderColor='var(--b1)');
+    g.appendChild(c);
+  });
+}
+
+// ── PORTAL CLIENTE ────────────────────────────────────────────────────
+function renderPortal(){
+  var obraId = V('portal-obra');
+  var div = document.getElementById('portal-conteudo');
+  if(!div) return;
+
+  if(!obraId){
+    div.innerHTML = '<div class="empty" style="margin-top:20px"><div class="empty-ico">👤</div><div class="empty-t">Selecione uma obra</div><div class="empty-s">Escolha a obra do cliente acima para exibir o portal completo.</div></div>';
+    return;
+  }
+
+  var obra = DB.obras.find(o=>o.id===obraId);
+  if(!obra){ div.innerHTML='<div class="empty"><div class="empty-t">Obra não encontrada</div></div>'; return; }
+
+  var rdos_o   = DB.rdos.filter(r=>r.obra_id===obraId);
+  var fotos_o  = DB.fotos.filter(f=>f.obra_id===obraId);
+  var med_o    = DB.medicoes.filter(m=>m.obra_id===obraId);
+  var nc_o     = DB.ncs.filter(n=>n.obra_id===obraId);
+  var nFiadas  = +obra.n_fiadas || 6;
+  var prog     = +obra.progresso || 0;
+  var fiadaAtual = Math.max(1, Math.ceil(prog/100*nFiadas));
+  var totalMed = med_o.reduce((s,m)=>s+(+m.valor||0),0);
+  var totalPago= med_o.filter(m=>m.status==='Paga').reduce((s,m)=>s+(+m.valor||0),0);
+
+  div.innerHTML = `
+    <!-- HEADER DA OBRA -->
+    <div style="background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--b2);border-radius:16px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,var(--tld),transparent 70%);pointer-events:none"></div>
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-family:var(--f2);font-size:20px;font-weight:800">${obra.nome}</span>
+            ${badge(obra.status)}
+          </div>
+          <div style="font-size:13px;color:var(--tx2);margin-bottom:12px">
+            ${obra.cliente?'<strong style="color:var(--tx)">'+obra.cliente+'</strong> · ':''}${obra.sistema||'iForms ICF'} · ${obra.cidade||'—'}
+          </div>
+          <div style="display:flex;gap:20px;flex-wrap:wrap">
+            <div style="font-size:11px"><span style="color:var(--tx3)">Área</span><br><strong>${obra.area?obra.area+' m²':'—'}</strong></div>
+            <div style="font-size:11px"><span style="color:var(--tx3)">Início</span><br><strong>${fmtDate(obra.data_ini)}</strong></div>
+            <div style="font-size:11px"><span style="color:var(--tx3)">Entrega</span><br><strong>${fmtDate(obra.data_prev)}</strong></div>
+            <div style="font-size:11px"><span style="color:var(--tx3)">Valor</span><br><strong style="color:var(--tl)">${mk(obra.valor)}</strong></div>
+          </div>
+        </div>
+        <!-- PROGRESSO EM DESTAQUE -->
+        <div style="text-align:center;flex-shrink:0">
+          <div style="position:relative;width:100px;height:100px;margin:0 auto 8px">
+            <svg viewBox="0 0 100 100" style="width:100px;height:100px;transform:rotate(-90deg)">
+              <circle cx="50" cy="50" r="40" fill="none" stroke="var(--bg4)" stroke-width="8"/>
+              <circle cx="50" cy="50" r="40" fill="none" stroke="var(--tl)" stroke-width="8"
+                stroke-dasharray="${2*Math.PI*40}" stroke-dashoffset="${2*Math.PI*40*(1-prog/100)}"
+                stroke-linecap="round" style="transition:stroke-dashoffset .6s"/>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <div style="font-family:var(--f2);font-size:20px;font-weight:900;color:var(--tl)">${prog}%</div>
+              <div style="font-size:9px;color:var(--tx3)">concluído</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--tx2)">Fiada ${fiadaAtual} / ${nFiadas}</div>
+        </div>
+      </div>
+      <!-- BARRA DE PROGRESSO DAS FIADAS -->
+      <div style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:5px">
+          <span>Progresso das fiadas iForms</span>
+          <span>${fiadaAtual} de ${nFiadas} fiadas</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(${nFiadas},1fr);gap:3px">
+          ${Array.from({length:nFiadas},(_,i)=>{
+            var pct = i < fiadaAtual-1 ? 100 : i === fiadaAtual-1 ? Math.round((prog/100*nFiadas-i)*100) : 0;
+            var bg = pct===100 ? 'var(--tl)' : pct>0 ? 'var(--am)' : 'var(--bg4)';
+            return `<div style="text-align:center">
+              <div style="height:6px;background:${bg};border-radius:3px;margin-bottom:3px"></div>
+              <div style="font-size:9px;color:${pct>0?'var(--tl)':'var(--tx3)'}">F${i+1}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs DO CLIENTE -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px">
+      <div class="kc" style="--kc:var(--tl)">
+        <div class="kc-l">Progresso</div>
+        <div class="kc-v" style="color:var(--tl)">${prog}%</div>
+        <div class="kc-s">${obra.status}</div>
+      </div>
+      <div class="kc" style="--kc:var(--bl)">
+        <div class="kc-l">Diários</div>
+        <div class="kc-v" style="color:var(--bl)">${rdos_o.length}</div>
+        <div class="kc-s">RDOs registrados</div>
+      </div>
+      <div class="kc" style="--kc:var(--pu)">
+        <div class="kc-l">Fotos</div>
+        <div class="kc-v" style="color:var(--pu)">${fotos_o.length}</div>
+        <div class="kc-s">com GPS</div>
+      </div>
+      <div class="kc" style="--kc:var(--gn)">
+        <div class="kc-l">Medido</div>
+        <div class="kc-v" style="color:var(--gn)">${mk(totalMed)}</div>
+        <div class="kc-s">${mk(totalPago)} pago</div>
+      </div>
+      <div class="kc" style="--kc:${nc_o.filter(n=>n.status==='Aberta').length?'var(--rd)':'var(--gn)'}">
+        <div class="kc-l">NCs</div>
+        <div class="kc-v" style="color:${nc_o.filter(n=>n.status==='Aberta').length?'var(--rd)':'var(--gn)'}">${nc_o.length}</div>
+        <div class="kc-s">${nc_o.filter(n=>n.status==='Aberta').length} aberta(s)</div>
+      </div>
+    </div>
+
+    <!-- ABAS -->
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--b1);margin-bottom:16px;overflow-x:auto" id="portal-tabs">
+      ${['timeline','fotos','fiadas','financeiro','qualidade'].map((tab,i)=>`
+        <div onclick="setPortalTab('${tab}')" id="ptab-${tab}"
+          style="padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid ${i===0?'var(--tl)':'transparent'};color:${i===0?'var(--tl)':'var(--tx2)'};transition:all .15s;white-space:nowrap">
+          ${{timeline:'📋 Linha do tempo',fotos:'📸 Fotos',fiadas:'🧱 Fiadas',financeiro:'💰 Financeiro',qualidade:'✅ Qualidade'}[tab]}
+        </div>`).join('')}
+    </div>
+
+    <!-- CONTEÚDO DAS ABAS -->
+    <div id="portal-tab-content"></div>
+  `;
+
+  // Inicializar aba padrão
+  setPortalTab('timeline');
+  // Guardar dados para uso nas abas
+  window._portalData = {obra, rdos_o, fotos_o, med_o, nc_o, nFiadas, fiadaAtual};
+}
+
+function setPortalTab(tab){
+  // Estilizar abas
+  ['timeline','fotos','fiadas','financeiro','qualidade'].forEach(t=>{
+    var el=document.getElementById('ptab-'+t);
+    if(!el)return;
+    if(t===tab){el.style.borderBottomColor='var(--tl)';el.style.color='var(--tl)';}
+    else{el.style.borderBottomColor='transparent';el.style.color='var(--tx2)';}
+  });
+
+  var d = window._portalData;
+  if(!d)return;
+  var cont = document.getElementById('portal-tab-content');
+  if(!cont)return;
+
+  if(tab==='timeline'){
+    if(!d.rdos_o.length){
+      cont.innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-t">Nenhum RDO registrado</div><div class="empty-s">A timeline aparece conforme os diários forem registrados pela equipe.</div></div>';
+      return;
+    }
+    cont.innerHTML='<div style="position:relative">' +
+      d.rdos_o.map((r,i)=>{
+        var cor_clima = {'☀️ Ensolarado':'var(--am)','⛅ Parcialmente nublado':'var(--bl)','☁️ Nublado':'var(--tx2)','🌧 Chuva fraca':'var(--bl)','⛈ Chuva forte':'var(--rd)'}[r.clima]||'var(--tx2)';
+        return `<div style="display:flex;gap:14px;margin-bottom:14px;position:relative">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--tl);border:2px solid var(--bg);z-index:1;margin-top:4px"></div>
+            ${i<d.rdos_o.length-1?'<div style="width:2px;flex:1;background:var(--b1);margin-top:2px;min-height:30px"></div>':''}
+          </div>
+          <div style="flex:1;background:var(--bg2);border:1px solid var(--b1);border-radius:10px;padding:12px 14px;margin-bottom:2px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-weight:600;font-size:13px">${fmtDate(r.data)}</span>
+              <span style="font-size:12px;color:${cor_clima}">${r.clima||''}</span>
+            </div>
+            <div style="font-size:12px;color:var(--tx2);margin-bottom:4px">
+              ${r.fiada?'<span style="background:var(--tld);color:var(--tl);padding:1px 8px;border-radius:12px;font-size:10px;font-weight:600;margin-right:6px">'+r.fiada+'</span>':''} 
+              ${r.funcionarios||0} funcionários · ${r.horas||0}h trabalhadas
+            </div>
+            ${r.etapas?`<div style="font-size:12px;color:var(--tx);margin-bottom:3px">${r.etapas}</div>`:''}
+            ${r.obs?`<div style="font-size:11px;color:var(--tx3);font-style:italic">${r.obs}</div>`:''}
+          </div>
+        </div>`;
+      }).join('') + '</div>';
+  }
+
+  else if(tab==='fotos'){
+    if(!d.fotos_o.length){
+      cont.innerHTML='<div class="empty"><div class="empty-ico">📸</div><div class="empty-t">Nenhuma foto registrada</div><div class="empty-s">As fotos aparecem conforme a equipe registra no campo.</div></div>';
+      return;
+    }
+    cont.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">' +
+      d.fotos_o.map(f=>{
+        var dt = f.created?new Date(f.created).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+        return `<div style="background:var(--bg2);border:1px solid var(--b1);border-radius:10px;overflow:hidden">
+          <div style="aspect-ratio:4/3;background:var(--bg3);overflow:hidden">
+            <img src="${f.url}" style="width:100%;height:100%;object-fit:cover" loading="lazy" alt="Foto">
+          </div>
+          <div style="padding:8px 10px;font-size:11px">
+            <div style="font-weight:500;margin-bottom:2px">${dt}</div>
+            ${f.lat?`<div style="color:var(--tl);font-size:10px">📍 ${f.lat.toFixed(4)}, ${f.lng.toFixed(4)}</div>`:''}
+          </div>
+        </div>`;
+      }).join('') + '</div>';
+  }
+
+  else if(tab==='fiadas'){
+    var nF = d.nFiadas;
+    cont.innerHTML=`
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="background:var(--bg3)">
+              <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);font-weight:600;color:var(--tx2)">Fiada</th>
+              <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);font-weight:600;color:var(--tx2)">Status</th>
+              <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);font-weight:600;color:var(--tx2)">Concretagem</th>
+              <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);font-weight:600;color:var(--tx2)">Liberação (72h)</th>
+              <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);font-weight:600;color:var(--tx2)">Observação</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Array.from({length:nF},(_,i)=>{
+              var fi = i+1;
+              var rdoF = d.rdos_o.filter(r=>r.fiada&&r.fiada.startsWith('F'+fi)).slice(-1)[0];
+              var concretada = rdoF?.data || null;
+              var libera = concretada ? (() => {var d2=new Date(concretada+'T12:00:00');d2.setDate(d2.getDate()+3);return d2.toLocaleDateString('pt-BR');})() : '—';
+              var st = fi < d.fiadaAtual ? 'Concluída' : fi === d.fiadaAtual ? 'Em execução' : 'Aguardando';
+              var stCor = {'Concluída':'var(--gn)','Em execução':'var(--am)','Aguardando':'var(--tx3)'}[st];
+              var stBg  = {'Concluída':'var(--gnd)','Em execução':'var(--amd)','Aguardando':'var(--bg4)'}[st];
+              return `<tr style="border-bottom:1px solid var(--b1);transition:background .12s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''">
+                <td style="padding:10px 14px;font-weight:600">Fiada ${fi}</td>
+                <td style="padding:10px 14px"><span style="background:${stBg};color:${stCor};padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600">${st}</span></td>
+                <td style="padding:10px 14px;color:var(--tx2)">${concretada?fmtDate(concretada):'—'}</td>
+                <td style="padding:10px 14px;color:${st==='Em execução'?'var(--am)':'var(--tx2)'}">${libera}</td>
+                <td style="padding:10px 14px;color:var(--tx3)">${rdoF?.etapas||'—'}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:14px;background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--tx2)">
+        ℹ️ Sistema <strong style="color:var(--tl)">${d.obra.sistema||'iForms ICF'}</strong> · Cura mínima: <strong>72 horas</strong> por fiada · Próxima fiada liberada somente após a cura completa.
+      </div>`;
+  }
+
+  else if(tab==='financeiro'){
+    if(!d.med_o.length){
+      cont.innerHTML='<div class="empty"><div class="empty-ico">💰</div><div class="empty-t">Nenhuma medição registrada</div><div class="empty-s">As medições aparecem conforme são registradas pela equipe.</div></div>';
+      return;
+    }
+    var totalMed = d.med_o.reduce((s,m)=>s+(+m.valor||0),0);
+    var totalPago = d.med_o.filter(m=>m.status==='Paga').reduce((s,m)=>s+(+m.valor||0),0);
+    var totalPend = d.med_o.filter(m=>m.status==='Aguardando aprovação').reduce((s,m)=>s+(+m.valor||0),0);
+    cont.innerHTML=`
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px">
+        <div class="kc" style="--kc:var(--tl)"><div class="kc-l">Total medido</div><div class="kc-v" style="color:var(--tl)">${mk(totalMed)}</div><div class="kc-s">todas medições</div></div>
+        <div class="kc" style="--kc:var(--gn)"><div class="kc-l">Pago</div><div class="kc-v" style="color:var(--gn)">${mk(totalPago)}</div><div class="kc-s">quitado</div></div>
+        <div class="kc" style="--kc:var(--am)"><div class="kc-l">A aprovar</div><div class="kc-v" style="color:var(--am)">${mk(totalPend)}</div><div class="kc-s">pendente</div></div>
+        <div class="kc" style="--kc:var(--bl)"><div class="kc-l">Saldo contrato</div><div class="kc-v" style="color:var(--bl)">${mk((+d.obra.valor||0)-totalMed)}</div><div class="kc-s">a medir</div></div>
+      </div>
+      <!-- Barra progresso financeiro -->
+      <div class="panel" style="margin-bottom:16px">
+        <div class="ph"><span class="ph-t">Evolução financeira</span></div>
+        <div class="pb">
+          <div style="height:16px;background:var(--bg4);border-radius:8px;overflow:hidden;margin-bottom:8px">
+            <div style="height:100%;background:linear-gradient(90deg,var(--gn),var(--tl));border-radius:8px;width:${d.obra.valor?Math.min(100,Math.round(totalMed/d.obra.valor*100)):0}%;transition:width .6s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3)">
+            <span>Medido: ${mk(totalMed)}</span>
+            <span>Contrato: ${mk(d.obra.valor)}</span>
+          </div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="background:var(--bg3)">
+          <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);color:var(--tx2)">Medição</th>
+          <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);color:var(--tx2)">Período</th>
+          <th style="padding:10px 14px;text-align:right;border-bottom:1px solid var(--b1);color:var(--tx2)">Valor</th>
+          <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);color:var(--tx2)">Vencimento</th>
+          <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--b1);color:var(--tx2)">Status</th>
+        </tr></thead>
+        <tbody>
+          ${d.med_o.map(m=>`<tr style="border-bottom:1px solid var(--b1)" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''">
+            <td style="padding:10px 14px;font-weight:600">Medição ${m.numero||'—'}</td>
+            <td style="padding:10px 14px;color:var(--tx2)">${m.periodo||'—'}</td>
+            <td style="padding:10px 14px;text-align:right;font-weight:700;color:var(--tl)">${mk(m.valor)}</td>
+            <td style="padding:10px 14px;color:var(--tx2)">${fmtDate(m.vencimento)}</td>
+            <td style="padding:10px 14px"><span style="background:${corBg(m.status)};color:${cor(m.status)};padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600">${m.status}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  }
+
+  else if(tab==='qualidade'){
+    var ncAb = d.nc_o.filter(n=>n.status==='Aberta');
+    var ncFe = d.nc_o.filter(n=>n.status==='Fechada');
+    cont.innerHTML=`
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px">
+        <div class="kc" style="--kc:${ncAb.length?'var(--rd)':'var(--gn)'}">
+          <div class="kc-l">NCs abertas</div>
+          <div class="kc-v" style="color:${ncAb.length?'var(--rd)':'var(--gn)'}">${ncAb.length}</div>
+          <div class="kc-s">${ncAb.length?'requerem atenção':'tudo ok'}</div>
+        </div>
+        <div class="kc" style="--kc:var(--gn)">
+          <div class="kc-l">NCs fechadas</div>
+          <div class="kc-v" style="color:var(--gn)">${ncFe.length}</div>
+          <div class="kc-s">corrigidas</div>
+        </div>
+        <div class="kc" style="--kc:var(--tl)">
+          <div class="kc-l">Checklists</div>
+          <div class="kc-v" style="color:var(--tl)">${DB.checklists.filter(c=>c.obra_id===d.obra.id).length}</div>
+          <div class="kc-s">iForms ICF</div>
+        </div>
+      </div>
+      ${!d.nc_o.length
+        ? '<div class="empty"><div class="empty-ico">✅</div><div class="empty-t">Sem não conformidades</div><div class="empty-s">Excelente! Nenhuma NC registrada nesta obra.</div></div>'
+        : d.nc_o.map(n=>`<div style="background:var(--bg2);border:1px solid var(--b1);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start">
+            <div style="width:8px;height:8px;border-radius:50%;background:${cor(n.status)};flex-shrink:0;margin-top:5px"></div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px;margin-bottom:3px">${n.titulo}</div>
+              <div style="font-size:11px;color:var(--tx3)">${n.tipo||''} · ${n.fiada||''} · <span style="color:${cor(n.status)}">${n.status}</span></div>
+              ${n.acao?'<div style="font-size:11px;color:var(--tx2);margin-top:4px">Ação: '+n.acao+'</div>':''}
+            </div>
+          </div>`).join('')
+      }`;
+  }
+}
+
+function imprimirPortal(){ window.print(); toast('Abrindo impressão...'); }
+function compartilharPortal(){
+  var url = window.location.href + '#portal';
+  navigator.clipboard?.writeText(url).then(()=>toast('Link copiado ✓','ok')).catch(()=>toast('Link: '+url));
+}
+
+
+function gerarRelatorio(tipo){
+  var div=document.getElementById('relatorio-saida');var cont=document.getElementById('rel-conteudo');
+  if(!div||!cont)return;
+  div.style.display='block';div.scrollIntoView({behavior:'smooth'});
+  var titulos={obras:'Relatório de Obras',financeiro:'Relatório Financeiro',equipe:'Relatório de Equipe',qualidade:'Relatório de Qualidade',rdo:'Histórico de RDOs',compras:'Relatório de Compras'};
+  set('rel-titulo',titulos[tipo]||tipo);
+  if(tipo==='obras'){
+    cont.innerHTML=`<table style="width:100%;font-size:12px;border-collapse:collapse">
+      <tr style="background:var(--bg3)"><th style="padding:8px;text-align:left;border-bottom:1px solid var(--b1)">Obra</th><th>Status</th><th>Progresso</th><th>Valor</th><th>Sistema</th></tr>
+      ${DB.obras.length?DB.obras.map(o=>`<tr><td style="padding:8px;border-bottom:1px solid var(--b1)">${o.nome}</td><td style="padding:8px;text-align:center;border-bottom:1px solid var(--b1)">${o.status}</td><td style="padding:8px;text-align:center;border-bottom:1px solid var(--b1)">${o.progresso||0}%</td><td style="padding:8px;text-align:right;border-bottom:1px solid var(--b1);color:var(--tl)">${mk(o.valor)}</td><td style="padding:8px;border-bottom:1px solid var(--b1)">${o.sistema||'—'}</td></tr>`).join(''):'<tr><td colspan="5" style="padding:16px;text-align:center;color:var(--tx3)">Nenhuma obra cadastrada</td></tr>'}
+    </table>`;
+  } else if(tipo==='financeiro'){
+    var ent=DB.lancamentos.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+(+l.valor||0),0);
+    var sai=DB.lancamentos.filter(l=>l.tipo==='saida').reduce((s,l)=>s+(+l.valor||0),0);
+    cont.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+      <div class="kc" style="--kc:var(--gn)"><div class="kc-l">Entradas</div><div class="kc-v" style="color:var(--gn)">${mk(ent)}</div></div>
+      <div class="kc" style="--kc:var(--rd)"><div class="kc-l">Saídas</div><div class="kc-v" style="color:var(--rd)">${mk(sai)}</div></div>
+      <div class="kc" style="--kc:var(--tl)"><div class="kc-l">Saldo</div><div class="kc-v" style="color:var(--tl)">${mk(ent-sai)}</div></div>
+    </div>
+    <table style="width:100%;font-size:12px;border-collapse:collapse">
+      <tr style="background:var(--bg3)"><th style="padding:8px;text-align:left;border-bottom:1px solid var(--b1)">Descrição</th><th>Tipo</th><th>Categoria</th><th>Data</th><th>Valor</th></tr>
+      ${DB.lancamentos.length?DB.lancamentos.map(l=>`<tr><td style="padding:8px;border-bottom:1px solid var(--b1)">${l.descricao}</td><td style="padding:8px;text-align:center;border-bottom:1px solid var(--b1);color:${l.tipo==='entrada'?'var(--gn)':'var(--rd)'}">${l.tipo}</td><td style="padding:8px;border-bottom:1px solid var(--b1)">${l.categoria}</td><td style="padding:8px;border-bottom:1px solid var(--b1)">${fmtDate(l.data)}</td><td style="padding:8px;text-align:right;border-bottom:1px solid var(--b1);color:${l.tipo==='entrada'?'var(--gn)':'var(--rd)'}">${l.tipo==='entrada'?'+':'-'} ${mk(l.valor)}</td></tr>`).join(''):'<tr><td colspan="5" style="padding:16px;text-align:center;color:var(--tx3)">Nenhum lançamento</td></tr>'}
+    </table>`;
+  } else {
+    cont.innerHTML=`<div style="padding:24px;text-align:center;color:var(--tx2);font-size:13px">Relatório gerado em ${new Date().toLocaleString('pt-BR')}<br>Total de registros: ${DB[{equipe:'funcionarios',qualidade:'ncs',rdo:'rdos',compras:'compras'}[tipo]||'obras']?.length||0}</div>`;
+  }
+  toast('Relatório gerado ✓','ok');
+}
+
+// ── IA CAPTAÇÃO ───────────────────────────────────────────────────────
+var iaMsgs=[];
+function initIA(){
+  var div=document.getElementById('ia-msgs');if(!div)return;
+  div.innerHTML='';
+  var msg={role:'assistant',content:'Olá! Sou a IA de Captação da Alpha Obras, especialista em prospectar clientes para obras iForms ICF no RS.\n\nPosso te ajudar com:\n🎯 Perfis ideais de clientes\n📲 Scripts de abordagem (WhatsApp, e-mail, ligação)\n📊 Qualificação e score de leads\n⚔️ Argumentos iForms vs convencional\n📋 Roteiros de reunião\n\nComo posso ajudar?'};
+  iaMsgs=[msg];renderIAMsg(msg,false);
+}
+function renderIAMsg(msg,isUser){
+  var div=document.getElementById('ia-msgs');if(!div)return;
+  var d=document.createElement('div');
+  d.style.cssText=`display:flex;gap:8px;align-items:flex-start;${isUser?'flex-direction:row-reverse':''}`;
+  var avt=document.createElement('div');
+  avt.style.cssText=`width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;background:${isUser?'var(--tl)':'var(--pud)'};color:${isUser?'#0a0d14':'var(--pu)'};font-weight:700`;
+  avt.textContent=isUser?(session?.ini||'EU'):'IA';
+  var bubble=document.createElement('div');
+  bubble.style.cssText=`max-width:80%;padding:10px 13px;border-radius:${isUser?'12px 12px 4px 12px':'12px 12px 12px 4px'};font-size:13px;line-height:1.6;white-space:pre-wrap;background:${isUser?'var(--tl)':'var(--bg3)'};color:${isUser?'#0a0d14':'var(--tx)'};border:1px solid ${isUser?'var(--tl)':'var(--b1)'}`;
+  bubble.textContent=msg.content;
+  d.appendChild(avt);d.appendChild(bubble);
+  div.appendChild(d);div.scrollTop=div.scrollHeight;
+}
+async function enviarIA(){
+  var inp=document.getElementById('ia-inp');if(!inp)return;
+  var txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  var msg={role:'user',content:txt};
+  iaMsgs.push(msg);renderIAMsg(msg,true);
+  await chamarIA(txt);
+}
+async function perguntarIA(txt){
+  document.getElementById('ia-inp').value=txt;
+  await enviarIA();
+}
+var IA_SYSTEM=`Você é a IA de Captação da Alpha Obras, especializada em obras iForms ICF no Rio Grande do Sul (Soledade, Cruz Alta, Passo Fundo).
+
+DADOS iForms ICF:
+- iForms 12: 0,038 m³/m², 45dB, 0,35 W/m²K
+- iForms 18: 0,072 m³/m², 55dB, 0,29 W/m²K
+- Cura mínima: 72h por fiada
+- fck25, Slump 18±2, Brita 0, NBR 15.575
+
+Alpha Obras: Sede Soledade/RS, Filial Cruz Alta, Implantação Passo Fundo.
+Planos: Campo R$97/mês, Starter R$497/mês, Pro R$997/mês.
+
+Responda em português, de forma direta e prática. Crie scripts persuasivos. Foque no mercado RS.`;
+
+async function chamarIA(txt){
+  var div=document.getElementById('ia-msgs');
+  var typing=document.createElement('div');
+  typing.id='ia-typing';typing.style.cssText='display:flex;gap:6px;align-items:center;padding:10px 14px;background:var(--bg3);border-radius:12px 12px 12px 4px;width:fit-content;border:1px solid var(--b1)';
+  typing.innerHTML=['<div style="width:6px;height:6px;border-radius:50%;background:var(--pu);animation:bounce .8s infinite"></div>','<div style="width:6px;height:6px;border-radius:50%;background:var(--pu);animation:bounce .8s .15s infinite"></div>','<div style="width:6px;height:6px;border-radius:50%;background:var(--pu);animation:bounce .8s .3s infinite"></div>'].join('');
+  div.appendChild(typing);div.scrollTop=div.scrollHeight;
+  try{
+    var messages=iaMsgs.filter(m=>m.role==='user'||m.role==='assistant').map(m=>({role:m.role,content:m.content}));
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:IA_SYSTEM,messages})
+    });
+    var data=await res.json();
+    var resposta=data.content?.[0]?.text||'Desculpe, não consegui processar.';
+    typing.remove();
+    var msg={role:'assistant',content:resposta};
+    iaMsgs.push(msg);renderIAMsg(msg,false);
+  } catch(e){
+    typing.remove();
+    var fallback=getFallbackIA(txt);
+    var msg={role:'assistant',content:fallback};
+    iaMsgs.push(msg);renderIAMsg(msg,false);
+  }
+}
+function getFallbackIA(txt){
+  var t=txt.toLowerCase();
+  if(t.includes('whatsapp')||t.includes('script'))return'📲 Script WhatsApp:\n\n"Olá [Nome]! Sou da Alpha Obras, especialista em iForms ICF aqui no RS. Nosso sistema construtivo entrega paredes com 55dB de isolamento e 50% menos custo de climatização.\n\n✅ 3x mais eficiente que alvenaria\n✅ 50% mais rápido\n✅ NBR 15.575 garantida\n\nPostaria te enviar um comparativo? Em qual cidade você está construindo?"';
+  if(t.includes('argumento')||t.includes('vs'))return'⚔️ iForms ICF vs Convencional:\n\n• Velocidade: 50% mais rápido\n• Isolamento: 55dB vs 35dB\n• Térmica: 0,29 vs 2,0+ W/m²K\n• Resíduos: ≈0% vs 15-20%\n• Custo climatização: -50%\n• Incêndio: não propaga\n• NBR 15.575: garantida\n\n💡 Argumento principal: "Com iForms ICF, seu cliente economiza R$ 400-800/mês em energia por 30 anos."';
+  if(t.includes('perfil')||t.includes('cliente'))return'🎯 Perfis ideais para iForms ICF no RS:\n\n1. Incorporadoras médias (R$ 1-5M) — melhor ROI\n2. Construtoras que querem diferencial técnico\n3. Prefeituras (licitação ESG/sustentabilidade)\n4. Particulares classe A/B — valorizam qualidade\n\n📍 Regiões quentes: Passo Fundo, Cruz Alta, Soledade e região.';
+  return'Olá! Sou a IA de Captação da Alpha Obras. Posso ajudar com:\n• Scripts de abordagem (WhatsApp, e-mail, ligação)\n• Perfis ideais de clientes para iForms ICF no RS\n• Argumentos iForms vs convencional\n• Qualificação de leads\n\nQual aspecto da captação você quer explorar?';
+}
+
+// ── CONFIGURAÇÕES ─────────────────────────────────────────────────────
+function salvarConfig(){
+  var ids=['cfg-emp','cfg-cid','cfg-est','cfg-cnpj','cfg-eng','cfg-cura','cfg-fck','cfg-slump','cfg-i12','cfg-i18','cfg-prod'];
+  var cfg={};
+  ids.forEach(id=>{var el=document.getElementById(id);if(el)cfg[id]=el.value;});
+  localStorage.setItem('ao3_cfg',JSON.stringify(cfg));
+  if(cfg['cfg-cid'])document.getElementById('sb-sub').textContent='iForms ICF · '+cfg['cfg-cid'];
+  toast('Configurações salvas ✓','ok');
+}
+function getLSJson(key){try{var s=localStorage.getItem(key);return s?JSON.parse(s):null;}catch(e){return null;}}
+
+// ── SUPABASE ──────────────────────────────────────────────────────────
+function setConn(ok,txt){
+  var d=document.getElementById('cdot');var t=document.getElementById('ctxt');
+  var c=ok?'var(--gn)':'var(--am)';
+  if(d)d.style.background=c;if(t){t.style.color=c;t.textContent=txt||(ok?'Sincronizado ✓':'Modo local');}
+}
+async function conectarSBsilent(url,key){
+  try{
+    var client=window.supabase?.createClient(url,key);if(!client)return;
+    var{data,error}=await client.from('obras').select('id').limit(1);
+    if(error)throw error;
+    sb=client;setConn(true);
+    await carregarDoSB();subscribeRealtime();
+  } catch(e){setConn(false);}
+}
+async function conectarSB(){
+  var url=V('sb-url');var key=V('sb-key');
+  if(!url||!key){toast('Preencha URL e KEY','wa');return;}
+  set('sb-msg','Conectando...');
+  localStorage.setItem('ao3_sb_url',url);localStorage.setItem('ao3_sb_key',key);
+  try{
+    if(!window.supabase){toast('Supabase SDK não carregado','er');return;}
+    var client=window.supabase.createClient(url,key);
+    var{data,error}=await client.from('obras').select('id').limit(1);
+    if(error)throw error;
+    sb=client;setConn(true);
+    document.getElementById('sb-badge').textContent='✓ Conectado';
+    document.getElementById('sb-badge').style.cssText='background:var(--gnd);color:var(--gn)';
+    set('sb-msg','✅ Conectado — sincronização ativa em todos os dispositivos');
+    await carregarDoSB();subscribeRealtime();
+    toast('Supabase conectado ✓','ok');
+  } catch(e){
+    sb=null;setConn(false);
+    set('sb-msg','❌ Falha: '+e.message);
+    document.getElementById('sb-badge').textContent='Erro';
+    document.getElementById('sb-badge').style.cssText='background:var(--rdd);color:var(--rd)';
+    toast('Erro ao conectar: '+e.message,'er');
+  }
+}
+function desconectarSB(){
+  sb=null;localStorage.removeItem('ao3_sb_url');localStorage.removeItem('ao3_sb_key');
+  setConn(false);setV('sb-url','');setV('sb-key','');
+  document.getElementById('sb-badge').textContent='Não conectado';
+  document.getElementById('sb-badge').style.cssText='background:var(--amd);color:var(--am)';
+  set('sb-msg','Desconectado — modo local ativo');
+  toast('Desconectado do Supabase');
+}
+async function carregarDoSB(){
+  if(!sb)return;
+  try{
+    var[obras,leads,ncs,rdos,lancs,funcs,cts,meds]=await Promise.all([
+      sb.from('obras').select('*').order('created_at',{ascending:false}),
+      sb.from('leads').select('*').order('created_at',{ascending:false}),
+      sb.from('ncs').select('*').order('created_at',{ascending:false}),
+      sb.from('rdos').select('*').order('created_at',{ascending:false}),
+      sb.from('lancamentos').select('*').order('created_at',{ascending:false}),
+      sb.from('profiles').select('*'),
+      sb.from('leads').select('*').limit(0),
+      sb.from('medicoes').select('*').order('created_at',{ascending:false}),
+    ]);
+    if(!obras.error)DB.obras=obras.data||[];
+    if(!leads.error)DB.leads=leads.data||[];
+    if(!ncs.error)DB.ncs=ncs.data||[];
+    if(!rdos.error)DB.rdos=rdos.data||[];
+    if(!lancs.error)DB.lancamentos=lancs.data||[];
+    if(!meds.error)DB.medicoes=meds.data||[];
+    saveDB();renderTudo();
+  } catch(e){console.warn('SB load:',e);}
+}
+function subscribeRealtime(){
+  if(!sb)return;
+  sb.channel('ao-rt').on('postgres_changes',{event:'*',schema:'public',table:'obras'},()=>carregarDoSB())
+    .on('postgres_changes',{event:'*',schema:'public',table:'leads'},()=>carregarDoSB())
+    .on('postgres_changes',{event:'*',schema:'public',table:'ncs'},()=>carregarDoSB())
+    .subscribe();
+}
+async function sbSave(tabela,item){
+  if(!sb)return;
+  try{var{id,...data}=item;await sb.from(tabela).upsert(item);}catch(e){console.warn('sbSave:',e);}
+}
+
+// ── EXCLUIR ITEM ──────────────────────────────────────────────────────
+var delCallback=null;
+function excluirItem(tabela,id,desc){
+  set('del-msg','Tem certeza que deseja excluir '+desc+'?');
+  delCallback=()=>{
+    DB[tabela]=DB[tabela].filter(x=>x.id!==id);
+    saveDB();renderTudo();fechar('m-del');
+    toast('Removido com sucesso','ok');
+    if(sb)sb.from(tabela).delete().eq('id',id).then(()=>{});
+  };
+  document.getElementById('del-btn').onclick=()=>{if(delCallback)delCallback();delCallback=null;};
+  abrirModal('del');
+}
+
+// ── MODAIS ────────────────────────────────────────────────────────────
+function abrirModal(tipo){
+  // Reset editId para novo item (exceto quando já foi setado por editar*)
+  if(!['obra','lead','lanc','contrato','compra','func','medicao'].some(t=>
+    document.getElementById('m-'+t+'-titulo')?.textContent?.includes('Editar')
+  )) editId=null;
+  var m=document.getElementById('m-'+tipo);
+  if(!m){toast('Modal "'+tipo+'" não encontrado'); return;}
+  m.classList.add('on');
+  setTimeout(()=>{var inp=m.querySelector('input:not([type=date]):not([type=range]):not([type=number])');if(inp&&!inp.value)inp.focus();},120);
+  // Pre-preencher select de obra
+  ['nc-obra','ct-obra','cp-obra','med-obra','lan-obra'].forEach(populateObraSelect);
+  if(tipo==='orc')calcOrc();
+  if(tipo==='unidade'){['un-nome','un-cid','un-resp','un-tel'].forEach(id=>setV(id,''));}
+}
+function fechar(id){
+  var m=document.getElementById(id);if(m)m.classList.remove('on');
+  // Reset títulos dos modais de edição
+  var titulos={
+    'o':'Nova obra iForms ICF','ld':'Novo lead','lan':'Novo lançamento',
+    'ct':'Novo contrato','cp':'Nova solicitação de compra','fn':'Novo funcionário','med':'Nova medição'
+  };
+  var prefix=id.replace('m-','').replace(/o(?:bra)?/,'o').charAt(0);
+  // Reset btn texts
+  var map={
+    'm-obra':['m-obra-titulo','o-btn','Nova obra iForms ICF','Cadastrar obra →'],
+    'm-lead':['m-lead-titulo','ld-btn','Novo lead','Salvar lead →'],
+    'm-lanc':['m-lanc-titulo','lan-btn','Novo lançamento','Salvar →'],
+    'm-contrato':['m-ct-titulo','ct-btn','Novo contrato','Salvar contrato →'],
+    'm-compra':['m-cp-titulo','cp-btn','Nova solicitação de compra','Solicitar →'],
+    'm-func':['m-fn-titulo','fn-btn','Novo funcionário','Adicionar →'],
+    'm-medicao':['m-med-titulo','med-btn','Nova medição','Salvar medição →'],
+  };
+  if(map[id]){
+    var[tid,bid,ttxt,btxt]=map[id];
+    set(tid,ttxt);var btn=document.getElementById(bid);if(btn)btn.textContent=btxt;
+  }
+  if(!['m-del','m-logout'].includes(id)) editId=null;
+}
+document.addEventListener('click',e=>{if(e.target.classList.contains('ov'))e.target.classList.remove('on');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.ov.on').forEach(m=>m.classList.remove('on'));});
+
+// ── HELPERS DOM ───────────────────────────────────────────────────────
+function V(id){var el=document.getElementById(id);return el?el.value:'';}
+function setV(id,v){var el=document.getElementById(id);if(el)el.value=v??'';}
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+var _tt;
+function toast(msg,tipo){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast on'+(tipo==='ok'?' ok':tipo==='er'?' er':tipo==='wa'?' wa':'');
+  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('on'),3000);
+}
+
+// ── ANIMAÇÃO BOUNCE ───────────────────────────────────────────────────
+var style=document.createElement('style');
+style.textContent='@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}';
+document.head.appendChild(style);
+
+// ── BOOT ──────────────────────────────────────────────────────────────
+loadDB();
+var sess=localStorage.getItem('ao3_sess');
+if(sess){
+  try{session=JSON.parse(sess);mostrarApp();}
+  catch(e){document.getElementById('login').style.display='flex';}
+} else {
+  document.getElementById('login').style.display='flex';
+}
+// Inicializar IA quando chegar na página
+document.addEventListener('DOMContentLoaded',()=>{
+  var pIA=document.getElementById('p-ia');
+  if(pIA){var obs=new MutationObserver(ms=>{ms.forEach(m=>{if(m.target.classList.contains('on')&&!document.getElementById('ia-msgs')?.children.length)initIA();})});obs.observe(pIA,{attributeFilter:['class']});}
+});
+
+// ── BACKUP E RESTAURAÇÃO ──────────────────────────────────────────────────────
+function exportarBackup(){
+  var dados={versao:'3.0',data_export:new Date().toISOString(),db:JSON.parse(JSON.stringify(DB)),cfg:getLSJson('ao3_cfg'),exportado_por:session?.nome||'—'};
+  var json=JSON.stringify(dados,null,2);
+  var blob=new Blob([json],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='alpha-obras-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  localStorage.setItem('ao3_last_backup',new Date().toLocaleString('pt-BR'));
+  var total=Object.entries(DB).filter(([k,v])=>Array.isArray(v)&&v.length).map(([k,v])=>v.length+' '+k).join(', ');
+  set('backup-status','✅ Exportado em '+new Date().toLocaleString('pt-BR')+' · '+total);
+  toast('Backup exportado com sucesso ✓','ok');
+}
+
+function restaurarBackup(inp){
+  var file=inp.files[0];
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var dados=JSON.parse(e.target.result);
+      if(!dados.db){toast('Arquivo inválido — não é um backup do Alpha Obras','er');return;}
+      var linhas=Object.entries(dados.db).filter(([k,v])=>Array.isArray(v)&&v.length).map(([k,v])=>k+': '+v.length+' registros').join('\n');
+      var dataStr=dados.data_export?new Date(dados.data_export).toLocaleString('pt-BR'):file.name;
+      set('del-msg','Restaurar backup de '+dataStr+'?\n\nIsso VAI SUBSTITUIR todos os dados atuais.\n\n'+linhas);
+      document.getElementById('del-btn').onclick=function(){
+        fechar('m-del');
+        var dbRestaurado=dados.db;
+        Object.keys(DB).forEach(k=>{DB[k]=Array.isArray(dbRestaurado[k])?dbRestaurado[k]:[];});
+        saveDB();
+        if(dados.cfg){
+          localStorage.setItem('ao3_cfg',JSON.stringify(dados.cfg));
+          Object.keys(dados.cfg).forEach(k=>{var el=document.getElementById(k);if(el)el.value=dados.cfg[k];});
+        }
+        renderTudo();
+        toast('Backup restaurado com sucesso ✓','ok');
+        set('backup-status','✅ Restaurado em '+new Date().toLocaleString('pt-BR'));
+      };
+      abrirModal('del');
+    }catch(err){toast('Erro ao ler arquivo: '+err.message,'er');}
+  };
+  reader.readAsText(file);
+  inp.value='';
+}
+
+function verResumoBackup(){
+  var div=document.getElementById('backup-resumo');
+  var items=document.getElementById('backup-items');
+  if(!div||!items)return;
+  div.style.display=(div.style.display==='none'||div.style.display==='')?'block':'none';
+  if(div.style.display==='none')return;
+  var NOMES={obras:'🏗 Obras',leads:'👥 Leads',ncs:'⚠ NCs',rdos:'📋 RDOs',checklists:'✅ Checklists',lancamentos:'💰 Lançamentos',contratos:'📄 Contratos',compras:'📦 Compras',funcionarios:'👷 Funcionários',medicoes:'📏 Medições',orcamentos:'📐 Orçamentos',unidades:'🌐 Unidades',fotos:'📸 Fotos'};
+  items.innerHTML=Object.entries(NOMES).map(([k,n])=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--b1)"><span style="color:var(--tx2)">${n}</span><span style="font-weight:600;color:${(DB[k]&&DB[k].length)?'var(--tl)':'var(--tx3)'}">${(DB[k]&&DB[k].length)||0}</span></div>`).join('');
+  var ultimo=localStorage.getItem('ao3_last_backup')||'nunca';
+  items.innerHTML+=`<div style="grid-column:span 2;padding-top:8px;font-size:11px;color:var(--tx3)">Último backup: ${ultimo}</div>`;
+}
+
+function limparDados(){
+  set('del-msg','⚠️ ATENÇÃO — Apagar TODOS os dados?\n\nObras, leads, RDOs, financeiro, equipes, tudo será removido.\n\nRecomendamos exportar um backup primeiro!');
+  document.getElementById('del-btn').onclick=function(){
+    fechar('m-del');
+    Object.keys(DB).forEach(k=>{DB[k]=[];});
+    saveDB();renderTudo();
+    toast('Todos os dados removidos','wa');
+    set('backup-status','Dados limpos em '+new Date().toLocaleString('pt-BR'));
+  };
+  abrirModal('del');
+}
+
+</script>
+</body>
+</html>
