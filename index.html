@@ -173,6 +173,7 @@ nav{flex:1;overflow-y:auto;padding:8px;}
     <nav id="nav">
       <div class="nav-sec">Principal</div>
       <div class="ni act" data-page="dashboard" id="ni-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Dashboard</div>
+      <div class="ni" data-page="ecossistema" id="ni-ecossistema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg> Ecossistema Alpha <span class="badge" style="background:rgba(0,203,168,.1);color:var(--tl)" id="nb-unid">0</span></div>
       <div class="ni" data-page="crm" id="ni-crm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> CRM / Leads <span class="badge" style="background:rgba(159,140,245,.1);color:var(--pu)" id="nb-leads">0</span></div>
       <div class="nav-sec">iForms ICF</div>
       <div class="ni" data-page="qualidade" id="ni-qualidade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Qualidade / NCs <span class="badge" style="background:rgba(224,92,92,.1);color:var(--rd)" id="nb-ncs">0</span></div>
@@ -241,7 +242,25 @@ nav{flex:1;overflow-y:auto;padding:8px;}
       </div>
 
       <!-- CRM -->
-      <div class="page" id="p-crm">
+            <!-- ECOSSISTEMA ALPHA -->
+      <div class="page" id="p-ecossistema">
+        <div class="row-head"><h2>Ecossistema Alpha Obras &#8212; RS</h2><button class="btn p" id="eco-nova-btn">+ Nova unidade</button></div>
+        <div class="kpi-grid">
+          <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Unidades ativas</div><div class="kpi-v" style="color:var(--tl)" id="eco-k-unid">0</div><div class="kpi-s">no RS</div></div>
+          <div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Obras consolidadas</div><div class="kpi-v" style="color:var(--gn)" id="eco-k-obras">0</div><div class="kpi-s">todas unidades</div></div>
+          <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Receita total RS</div><div class="kpi-v" style="color:var(--bl)" id="eco-k-receita">R$ 0</div><div class="kpi-s">contratos</div></div>
+          <div class="kpi" style="--kc:var(--pu)"><div class="kpi-l">Area em execucao</div><div class="kpi-v" style="color:var(--pu)" id="eco-k-area">0 m2</div><div class="kpi-s">iForms ICF</div></div>
+          <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Equipe total</div><div class="kpi-v" style="color:var(--am)" id="eco-k-eq">0</div><div class="kpi-s">funcionarios</div></div>
+        </div>
+        <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:12px">Unidades</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:22px" id="eco-grid"></div>
+        <div class="grid2">
+          <div class="panel"><div class="ph"><h3>&#127942; Ranking de produtividade</h3><span class="ph-badge" style="background:rgba(0,203,168,.1);color:var(--tl)">por receita</span></div><div id="eco-rank"></div></div>
+          <div class="panel"><div class="ph"><h3>&#128202; Comparativo de obras</h3></div><div class="pb" id="eco-chart"></div></div>
+        </div>
+      </div>
+
+<div class="page" id="p-crm">
         <div class="row-head"><h2>CRM — Leads</h2><button class="btn p" id="crm-novo">+ Novo lead</button></div>
         <div class="grid" id="leads-grid"></div>
       </div>
@@ -459,6 +478,25 @@ nav{flex:1;overflow-y:auto;padding:8px;}
   </div>
 </div>
 
+<!-- Modal Nova Unidade -->
+<div class="overlay" id="m-unid">
+  <div class="modal">
+    <div class="modal-head"><h2>Nova unidade Alpha</h2><div class="modal-close" id="m-unid-x">&#10005;</div></div>
+    <div class="modal-body">
+      <div class="field"><label>Nome da unidade *</label><input id="un-nome" placeholder="Ex: Filial Cruz Alta"></div>
+      <div class="grid2">
+        <div class="field"><label>Cidade</label><input id="un-cid" placeholder="Cruz Alta"></div>
+        <div class="field"><label>Tipo</label><select id="un-tipo"><option>Sede</option><option>Filial</option><option>Implantacao</option><option>Parceiro</option></select></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Responsavel</label><input id="un-resp" placeholder="Nome do responsavel"></div>
+        <div class="field"><label>Telefone</label><input id="un-tel" placeholder="(54) 9 9999-0000"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" id="m-unid-cancel">Cancelar</button><button class="btn p" id="m-unid-save">Adicionar unidade</button></div>
+  </div>
+</div>
+
 <div class="overlay" id="m-del">
   <div class="modal" style="width:360px"><div class="modal-head"><h2>Confirmar exclusão</h2><div class="modal-close" id="m-del-close">✕</div></div>
     <div class="modal-body"><p id="del-msg" style="font-size:13px;color:var(--tx2)">Tem certeza?</p></div>
@@ -472,7 +510,7 @@ nav{flex:1;overflow-y:auto;padding:8px;}
 // ALPHA OBRAS — Engine limpo e validado
 // Sem template literals aninhadas, sem problemas de aspas
 
-var DB = {obras:[],leads:[],ncs:[],rdos:[],lancamentos:[],compras:[],funcionarios:[],contratos:[],orcamentos:[]};
+var DB = {obras:[],leads:[],ncs:[],rdos:[],lancamentos:[],compras:[],funcionarios:[],contratos:[],orcamentos:[],unidades:[]};
 var session = null;
 var editId = null;
 var delFn = null;
@@ -544,6 +582,7 @@ function iniciarApp(){
 // NAVEGAÇÃO
 var NAV_CONF = {
   dashboard:    {t:'Dashboard'},
+  ecossistema:  {t:'Ecossistema Alpha'},
   crm:          {t:'CRM — Leads'},
   qualidade:    {t:'Qualidade iForms'},
   rdo:          {t:'Diário (RDO)'},
@@ -600,7 +639,8 @@ function atualizarKPIs(){
   ST('kpi-receita',mk(receita));
   ST('kpi-ncs',ncAb); ST('kpi-leads',DB.leads.length);
   ST('kpi-rdos',rdosHoje);
-  ST('nb-leads',DB.leads.length||''); ST('nb-ncs',ncAb||'');
+  ST('nb-leads',DB.leads.length||'');
+  var nbUnid=document.getElementById('nb-unid');if(nbUnid)nbUnid.textContent=DB.unidades.length||''; ST('nb-ncs',ncAb||'');
   ST('nb-compras',DB.compras.filter(function(c){return c.status==='Pendente';}).length||'');
   // Financeiro mini
   var ent=DB.lancamentos.filter(function(l){return l.tipo==='entrada';}).reduce(function(s,l){return s+(parseFloat(l.valor)||0);},0);
@@ -1132,6 +1172,13 @@ document.addEventListener('DOMContentLoaded',function(){
   try{var cfg=JSON.parse(localStorage.getItem('ao_cfg')||'{}');Object.keys(cfg).forEach(function(k){var el=document.getElementById(k);if(el)el.value=cfg[k];});}catch(e){}
 });
 
+// Ecossistema
+  document.getElementById('eco-nova-btn').addEventListener('click', function(){ abrirModal('unid'); });
+  document.getElementById('m-unid-x').addEventListener('click', function(){ fecharModal('unid'); });
+  document.getElementById('m-unid-cancel').addEventListener('click', function(){ fecharModal('unid'); });
+  document.getElementById('m-unid-save').addEventListener('click', salvarUnid);
+  document.getElementById('m-unid').addEventListener('click', function(e){ if(e.target===this) fecharModal('unid'); });
+
 // BOOT
 loadDB();
 var sess=localStorage.getItem('ao_sess');
@@ -1141,6 +1188,192 @@ if(sess){
 }else{
   document.addEventListener('DOMContentLoaded',function(){document.getElementById('login').style.display='flex';});
 }
+
+// ── ECOSSISTEMA ALPHA ────────────────────────────────────────────
+function salvarUnid(){
+  var nome=(document.getElementById('un-nome').value||'').trim();
+  if(!nome){showToast('Digite o nome da unidade','wa');return;}
+  var u={id:uid(),nome:nome,cidade:document.getElementById('un-cid').value,
+    tipo:document.getElementById('un-tipo').value,
+    responsavel:document.getElementById('un-resp').value,
+    telefone:document.getElementById('un-tel').value};
+  DB.unidades.unshift(u);saveDB();fecharModal('unid');
+  ['un-nome','un-cid','un-resp','un-tel'].forEach(function(id){document.getElementById(id).value='';});
+  renderEco();atualizarKPIs();showToast('Unidade adicionada: '+u.nome,'ok');
+}
+
+function renderEco(){
+  var g=document.getElementById('eco-grid');if(!g)return;
+  g.innerHTML='';
+  var receita=DB.obras.reduce(function(s,o){return s+(parseFloat(o.valor)||0);},0);
+  var area=DB.obras.reduce(function(s,o){return s+(parseFloat(o.area)||0);},0);
+  ['eco-k-unid','eco-k-obras','eco-k-receita','eco-k-area','eco-k-eq','nb-unid'].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;
+    if(id==='eco-k-unid'||id==='nb-unid')el.textContent=DB.unidades.length;
+    else if(id==='eco-k-obras')el.textContent=DB.obras.length;
+    else if(id==='eco-k-receita')el.textContent=mk(receita);
+    else if(id==='eco-k-area')el.textContent=area.toFixed(0)+' m2';
+    else if(id==='eco-k-eq')el.textContent=DB.funcionarios.length;
+  });
+
+  var TIPO_GRAD={'Sede':'linear-gradient(135deg,rgba(0,203,168,.12),rgba(0,203,168,.03))',
+    'Filial':'linear-gradient(135deg,rgba(91,156,246,.12),rgba(91,156,246,.03))',
+    'Implantacao':'linear-gradient(135deg,rgba(246,185,59,.12),rgba(246,185,59,.03))',
+    'Parceiro':'linear-gradient(135deg,rgba(159,140,245,.12),rgba(159,140,245,.03))'};
+  var TIPO_COR={'Sede':'var(--tl)','Filial':'var(--bl)','Implantacao':'var(--am)','Parceiro':'var(--pu)'};
+
+  if(!DB.unidades.length){
+    var em=document.createElement('div');em.className='empty';em.style.gridColumn='1/-1';
+    em.innerHTML='<div class="empty-ico">&#127760;</div><h3>Nenhuma unidade</h3><p>Adicione as unidades do ecossistema Alpha (Sede, Filiais, Implantacoes).</p>';
+    var btnEm=document.createElement('button');btnEm.className='btn p';btnEm.style.marginTop='8px';
+    btnEm.textContent='+ Adicionar primeira unidade';
+    btnEm.addEventListener('click',function(){abrirModal('unid');});
+    em.appendChild(btnEm);g.appendChild(em);
+  } else {
+    DB.unidades.forEach(function(u){
+      var obras_u=DB.obras.filter(function(o){return o.cidade===u.cidade||o.unidade===u.cidade;});
+      var ativas_u=obras_u.filter(function(o){return o.status==='Em execucao';}).length;
+      var receita_u=obras_u.reduce(function(s,o){return s+(parseFloat(o.valor)||0);},0);
+      var area_u=obras_u.reduce(function(s,o){return s+(parseFloat(o.area)||0);},0);
+      var prog_u=obras_u.length?Math.round(obras_u.reduce(function(s,o){return s+(parseFloat(o.progresso)||0);},0)/obras_u.length):0;
+      var nc_u=DB.ncs.filter(function(n){
+        var ob=DB.obras.find(function(o){return o.id===n.obra_id;});
+        return ob&&(ob.cidade===u.cidade||ob.unidade===u.cidade)&&n.status==='Aberta';
+      }).length;
+      var rdos_u=DB.rdos.filter(function(r){
+        var ob=DB.obras.find(function(o){return o.id===r.obra_id;});
+        return ob&&(ob.cidade===u.cidade||ob.unidade===u.cidade);
+      }).length;
+      var cor=TIPO_COR[u.tipo]||'var(--tl)';
+      var grad=TIPO_GRAD[u.tipo]||TIPO_GRAD['Sede'];
+      var ICOS={'Sede':'&#127968;','Filial':'&#127970;','Implantacao':'&#128736;','Parceiro':'&#129309;'};
+
+      var card=document.createElement('div');
+      card.style.cssText='background:'+grad+';border:1px solid rgba(255,255,255,.1);border-radius:13px;overflow:hidden;transition:transform .15s,box-shadow .15s;';
+      card.addEventListener('mouseenter',function(){this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.35)';});
+      card.addEventListener('mouseleave',function(){this.style.transform='';this.style.boxShadow='';});
+
+      // Header
+      var hd=document.createElement('div');
+      hd.style.cssText='padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,.06)';
+      var r1=document.createElement('div');
+      r1.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:6px';
+      var lft=document.createElement('div');lft.style.cssText='display:flex;align-items:center;gap:8px';
+      var iDiv=document.createElement('div');
+      iDiv.style.cssText='width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px';
+      iDiv.innerHTML=ICOS[u.tipo]||'&#127959;';
+      var nDiv=document.createElement('div');
+      var nd1=document.createElement('div');nd1.style.cssText='font-size:14px;font-weight:800';nd1.textContent=u.nome;
+      var nd2=document.createElement('div');nd2.style.cssText='font-size:10px;color:var(--tx3)';nd2.textContent=(u.cidade||'--')+' RS';
+      nDiv.appendChild(nd1);nDiv.appendChild(nd2);
+      lft.appendChild(iDiv);lft.appendChild(nDiv);
+      var badge=document.createElement('span');
+      badge.style.cssText='background:rgba(255,255,255,.08);color:'+cor+';font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px';
+      badge.textContent=u.tipo;
+      r1.appendChild(lft);r1.appendChild(badge);hd.appendChild(r1);
+      if(u.responsavel){var rEl=document.createElement('div');rEl.style.cssText='font-size:11px;color:var(--tx2)';rEl.textContent='Resp: '+u.responsavel;hd.appendChild(rEl);}
+      card.appendChild(hd);
+
+      // Metricas
+      var mt=document.createElement('div');
+      mt.style.cssText='padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.06)';
+      var g3=document.createElement('div');
+      g3.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px';
+      [{v:String(obras_u.length),l:'obras',c:cor},{v:mk(receita_u),l:'receita',c:'var(--gn)'},{v:area_u.toFixed(0),l:'m2',c:'var(--bl)'}].forEach(function(m){
+        var bx=document.createElement('div');bx.style.cssText='text-align:center;background:var(--bg2);border-radius:7px;padding:8px 4px';
+        var vd=document.createElement('div');vd.style.cssText='font-weight:800;font-size:'+(m.v.length>5?'12':'16')+'px;color:'+m.c;vd.textContent=m.v;
+        var ld=document.createElement('div');ld.style.cssText='font-size:9px;color:var(--tx3)';ld.textContent=m.l;
+        bx.appendChild(vd);bx.appendChild(ld);g3.appendChild(bx);
+      });
+      mt.appendChild(g3);
+      var pbr=document.createElement('div');pbr.style.cssText='display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:4px';
+      pbr.innerHTML='<span>Progresso medio</span><span style="color:'+cor+';font-weight:600">'+prog_u+'%</span>';
+      var pbt=document.createElement('div');pbt.style.cssText='height:5px;background:var(--bg4);border-radius:3px;overflow:hidden';
+      var pbf=document.createElement('div');pbf.style.cssText='height:100%;background:'+cor+';border-radius:3px;width:'+prog_u+'%;transition:width .5s';
+      pbt.appendChild(pbf);mt.appendChild(pbr);mt.appendChild(pbt);card.appendChild(mt);
+
+      // Footer
+      var ft=document.createElement('div');ft.style.cssText='padding:10px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:10px';
+      var bAti=document.createElement('span');bAti.style.cssText='background:rgba(0,203,168,.1);color:var(--tl);padding:1px 7px;border-radius:12px;font-weight:600';bAti.textContent=ativas_u+' ativas';ft.appendChild(bAti);
+      if(nc_u){var bNC=document.createElement('span');bNC.style.cssText='background:rgba(224,92,92,.1);color:var(--rd);padding:1px 7px;border-radius:12px;font-weight:600';bNC.textContent=nc_u+' NC';ft.appendChild(bNC);}
+      var rdo_el=document.createElement('span');rdo_el.style.cssText='color:var(--tx3)';rdo_el.textContent=rdos_u+' RDOs';ft.appendChild(rdo_el);
+      var bArea=document.createElement('div');bArea.style.cssText='margin-left:auto;display:flex;gap:6px';
+      var bVer=document.createElement('button');bVer.className='btn sm';bVer.textContent='Ver obras';
+      (function(cid){bVer.addEventListener('click',function(){filtrarPorUnidade(cid);});})(u.cidade);
+      var bDel=document.createElement('button');bDel.className='btn sm';bDel.textContent='X';bDel.style.color='var(--rd)';
+      (function(uid2,n){bDel.addEventListener('click',function(){
+        document.getElementById('del-msg').textContent='Excluir a unidade "'+n+'"?';
+        delFn=function(){DB.unidades=DB.unidades.filter(function(x){return x.id!==uid2;});saveDB();renderEco();atualizarKPIs();showToast('Unidade removida','ok');};
+        abrirModal('del');
+      });})(u.id,u.nome);
+      bArea.appendChild(bVer);bArea.appendChild(bDel);ft.appendChild(bArea);card.appendChild(ft);
+      g.appendChild(card);
+    });
+  }
+  var addC=document.createElement('div');addC.className='add-card';
+  addC.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova unidade</span>';
+  addC.addEventListener('click',function(){abrirModal('unid');});
+  g.appendChild(addC);
+  renderEcoRanking();renderEcoChart();
+}
+
+function renderEcoRanking(){
+  var div=document.getElementById('eco-rank');if(!div)return;
+  if(!DB.unidades.length){div.innerHTML='<div style="padding:16px;text-align:center;font-size:12px;color:var(--tx3)">Adicione unidades para ver o ranking</div>';return;}
+  var ranked=DB.unidades.map(function(u){
+    var obras_u=DB.obras.filter(function(o){return o.cidade===u.cidade||o.unidade===u.cidade;});
+    var receita_u=obras_u.reduce(function(s,o){return s+(parseFloat(o.valor)||0);},0);
+    var prog_u=obras_u.length?Math.round(obras_u.reduce(function(s,o){return s+(parseFloat(o.progresso)||0);},0)/obras_u.length):0;
+    var nc_u=DB.ncs.filter(function(n){var ob=DB.obras.find(function(o){return o.id===n.obra_id;});return ob&&(ob.cidade===u.cidade||ob.unidade===u.cidade)&&n.status==='Aberta';}).length;
+    return{u:u,receita:receita_u,prog:prog_u,nc:nc_u,score:(receita_u/1000)+(prog_u*100)-(nc_u*500)};
+  }).sort(function(a,b){return b.score-a.score;});
+  var maxR=Math.max.apply(null,ranked.map(function(r){return r.receita||1;}));
+  var medals=['#1','#2','#3'];var rcores=['var(--tl)','var(--bl)','var(--am)'];
+  var html='';
+  ranked.forEach(function(r,i){
+    html+='<div style="padding:11px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px">';
+    html+='<div style="font-size:18px;flex-shrink:0">'+medals[i]+'</div>';
+    html+='<div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px">'+r.u.nome+'</div>';
+    html+='<div style="font-size:10px;color:var(--tx3)">'+(r.u.cidade||'--')+' - '+r.prog+'% medio</div>';
+    html+='<div style="height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:5px"><div style="height:100%;background:'+(rcores[i]||'var(--tx3)')+';border-radius:2px;width:'+Math.round(r.receita/maxR*100)+'%;transition:width .6s"></div></div>';
+    html+='</div><div style="text-align:right;flex-shrink:0"><div style="font-weight:700;font-size:12px;color:var(--tl)">'+mk(r.receita)+'</div>';
+    html+='<div style="font-size:10px;color:'+(r.nc?'var(--rd)':'var(--gn)')+'">'+r.nc+' NC</div></div></div>';
+  });
+  div.innerHTML=html;
+}
+
+function renderEcoChart(){
+  var div=document.getElementById('eco-chart');if(!div)return;
+  if(!DB.unidades.length){div.innerHTML='<div style="text-align:center;padding:16px;font-size:12px;color:var(--tx3)">Adicione unidades para ver o comparativo</div>';return;}
+  var dados=DB.unidades.map(function(u){
+    var obras_u=DB.obras.filter(function(o){return o.cidade===u.cidade||o.unidade===u.cidade;});
+    return{nome:u.nome,ativas:obras_u.filter(function(o){return o.status==='Em execucao';}).length,
+      concl:obras_u.filter(function(o){return o.status==='Concluida';}).length,
+      atrasado:obras_u.filter(function(o){return o.status==='Atrasado';}).length,total:obras_u.length};
+  });
+  var maxT=Math.max.apply(null,dados.map(function(d){return d.total||1;}));
+  var html='<div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">';
+  html+='<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)"><div style="width:10px;height:10px;border-radius:2px;background:var(--tl)"></div>Em execucao</div>';
+  html+='<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)"><div style="width:10px;height:10px;border-radius:2px;background:var(--gn)"></div>Concluidas</div>';
+  html+='<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)"><div style="width:10px;height:10px;border-radius:2px;background:var(--rd)"></div>Atrasadas</div></div>';
+  dados.forEach(function(d){
+    html+='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="font-weight:600">'+d.nome+'</span><span style="color:var(--tx3)">'+d.total+' obra'+(d.total!==1?'s':'')+'</span></div>';
+    html+='<div style="display:flex;height:20px;background:var(--bg4);border-radius:4px;overflow:hidden;gap:1px">';
+    if(d.ativas) html+='<div style="width:'+Math.round(d.ativas/maxT*100)+'%;background:var(--tl);display:flex;align-items:center;justify-content:center"><span style="font-size:10px;font-weight:700;color:#0a0d14">'+d.ativas+'</span></div>';
+    if(d.concl)  html+='<div style="width:'+Math.round(d.concl/maxT*100)+'%;background:var(--gn)"></div>';
+    if(d.atrasado) html+='<div style="width:'+Math.round(d.atrasado/maxT*100)+'%;background:var(--rd)"></div>';
+    if(!d.total) html+='<div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--tx3)">sem obras</div>';
+    html+='</div></div>';
+  });
+  html+='<div style="border-top:1px solid var(--b1);padding-top:8px;display:flex;justify-content:space-between;font-size:11px;color:var(--tx2)"><span>Total: '+dados.reduce(function(s,d){return s+d.total;},0)+' obras</span><span style="color:var(--tl)">'+dados.reduce(function(s,d){return s+d.ativas;},0)+' ativas</span></div>';
+  div.innerHTML=html;
+}
+
+function filtrarPorUnidade(cidade){
+  ir('dashboard',document.querySelector('[data-page=dashboard]'));
+  setTimeout(function(){showToast('Obras de '+cidade,'ok');},120);
+}
+
 </script>
 </body>
 </html>
