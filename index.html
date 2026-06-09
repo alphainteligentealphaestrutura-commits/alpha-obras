@@ -1387,7 +1387,42 @@ var USUARIOS = carregarUsuarios();
 function loadDB(){
   try{var s=localStorage.getItem('ao_db');if(s){var d=JSON.parse(s);Object.keys(d).forEach(function(k){if(Array.isArray(d[k]))DB[k]=d[k];});}}catch(e){}
 }
-function saveDB(){try{localStorage.setItem('ao_db',JSON.stringify(DB));}catch(e){}}
+function saveDB(){
+  try{ localStorage.setItem('ao_db',JSON.stringify(DB)); }catch(e){}
+  // Push automatico ao Supabase
+  if(typeof sbClient !== 'undefined' && sbClient){
+    sbPushTudo();
+  }
+}
+
+// Envia todos os dados locais para o Supabase
+function sbPushTudo(){
+  if(!sbClient) return;
+  var MAPA = {
+    obras:       DB.obras,
+    leads:       DB.leads,
+    ncs:         DB.ncs,
+    rdos:        DB.rdos,
+    lancamentos: DB.lancamentos,
+    contratos:   DB.contratos,
+    compras:     DB.compras,
+    funcionarios:DB.funcionarios,
+    medicoes:    DB.medicoes,
+    orcamentos:  DB.orcamentos,
+    unidades:    DB.unidades,
+    fotos:       DB.fotos,
+    checklists:  DB.checklists
+  };
+  Object.keys(MAPA).forEach(function(tabela){
+    var dados = MAPA[tabela];
+    if(!dados || !dados.length) return;
+    sbClient.from(tabela).upsert(dados, {onConflict:'id'})
+    .then(function(res){
+      if(res.error) console.warn('Supabase push ['+tabela+']:', res.error.message);
+    })
+    .catch(function(e){ console.warn('Supabase push catch:', e); });
+  });
+}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
 function today(){return new Date().toISOString().slice(0,10);}
 function mk(v){v=parseFloat(v)||0;if(v>=1e6)return 'R$ '+(v/1e6).toFixed(1)+'M';if(v>=1000)return 'R$ '+(v/1000).toFixed(0)+'k';return 'R$ '+v.toFixed(0);}
