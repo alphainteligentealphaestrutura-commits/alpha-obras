@@ -1417,6 +1417,13 @@ var NAV_CONF = {
 };
 
 function ir(page){
+  // PIN check para Gestao Alpha
+  var GA_PAGES_CHECK = ['juridico','custos','arquivo'];
+  var roleCheck = (session && (session.role || session.r)) || '';
+  if(roleCheck === 'Administrador' && GA_PAGES_CHECK.indexOf(page) >= 0 && !pinDesbloqueado()){
+    solicitarPIN(page);
+    return;
+  }
   document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('act');});
   var ni=document.getElementById('ni-'+page);if(ni)ni.classList.add('act');
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('show');});
@@ -4676,17 +4683,7 @@ function salvarPIN(){
   });
 }
 
-// Interceptar navegacao para paginas restritas
-var _irOriginal = ir;
-function ir(page){
-  var role = (session && (session.role || session.r)) || '';
-  var isAdm = role === 'Administrador';
-  if(isAdm && GA_PAGES.indexOf(page) >= 0 && !pinDesbloqueado()){
-    solicitarPIN(page);
-    return;
-  }
-  _irOriginal(page);
-}
+// PIN check integrado ao ir() abaixo
 
 
 </script>
