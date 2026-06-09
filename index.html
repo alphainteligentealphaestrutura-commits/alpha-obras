@@ -218,6 +218,7 @@ nav{flex:1;overflow-y:auto;padding:8px;}
       <div class="ni" data-page="onboarding"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>Onboarding</div>
 
       <span class="nsec" style="color:var(--tl)">&#11044; Gestao Alpha</span>
+      <div class="ni" data-page="arquivo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>Arquivo Inteligente <span class="badge" style="background:rgba(91,156,246,.1);color:var(--bl)" id="nb-arq">0</span></div>
       <div class="ni" data-page="juridico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Area Juridica <span class="badge" style="background:rgba(246,185,59,.1);color:var(--am)">&#128274;</span></div>
       <div class="ni" data-page="custos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>Custos Alpha <span class="badge" style="background:rgba(246,185,59,.1);color:var(--am)">&#128274;</span></div>
       <div class="ni" data-page="configuracoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>Configuracoes</div>
@@ -832,26 +833,124 @@ nav{flex:1;overflow-y:auto;padding:8px;}
         <div id="onboarding-steps"></div>
       </div>
 
+      <!-- ARQUIVO INTELIGENTE -->
+      <div class="page" id="p-arquivo">
+        <div class="row-head">
+          <h2>Arquivo Inteligente</h2>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <select id="arq-filtro-cat" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none">
+              <option value="">Todas categorias</option>
+              <option>Obras</option><option>Juridico</option><option>Financeiro</option>
+              <option>Equipe</option><option>Contratos</option><option>Outros</option>
+            </select>
+            <label class="btn p" style="cursor:pointer">
+              &#128193; Adicionar arquivo
+              <input type="file" id="arq-inp" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" multiple style="display:none">
+            </label>
+          </div>
+        </div>
+        <!-- Drop Zone -->
+        <div id="arq-drop" style="border:2px dashed var(--b2);border-radius:12px;padding:28px;text-align:center;margin-bottom:16px;transition:all .2s;cursor:pointer">
+          <div style="font-size:32px;margin-bottom:8px">&#128229;</div>
+          <div style="font-size:14px;font-weight:600;color:var(--tx2)">Arraste fotos ou PDFs aqui</div>
+          <div style="font-size:12px;color:var(--tx3);margin-top:4px">Imagens, PDFs, Word, Excel — max 5MB por arquivo</div>
+        </div>
+        <!-- KPIs -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:16px">
+          <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Total arquivos</div><div class="kpi-v" style="color:var(--bl)" id="arq-k-tot">0</div></div>
+          <div class="kpi" style="--kc:var(--pu)"><div class="kpi-l">Imagens</div><div class="kpi-v" style="color:var(--pu)" id="arq-k-img">0</div></div>
+          <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">PDFs</div><div class="kpi-v" style="color:var(--rd)" id="arq-k-pdf">0</div></div>
+          <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Juridico</div><div class="kpi-v" style="color:var(--tl)" id="arq-k-jur">0</div></div>
+          <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Financeiro</div><div class="kpi-v" style="color:var(--am)" id="arq-k-fin">0</div></div>
+        </div>
+        <!-- Grafico + Lista -->
+        <div class="grid2">
+          <div class="panel"><div class="ph"><h3>&#128202; Por categoria</h3></div><div class="pb" id="arq-chart"></div></div>
+          <div class="panel"><div class="ph"><h3>&#128337; Recentes</h3></div><div id="arq-recentes" style="max-height:200px;overflow-y:auto"></div></div>
+        </div>
+        <!-- Grid de arquivos -->
+        <div style="margin-top:16px">
+          <div class="sh"><h2 id="arq-titulo">Todos os arquivos</h2><span style="font-size:11px;color:var(--tx3)" id="arq-count"></span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="arq-grid"></div>
+        </div>
+      </div>
+
       <!-- AREA JURIDICA -->
       <div class="page" id="p-juridico">
-        <div class="row-head"><h2>Area Juridica</h2><span style="background:rgba(246,185,59,.1);color:var(--am);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px">&#128274; Plano Pro</span></div>
-        <div class="panel" style="max-width:560px;margin:0 auto">
-          <div class="pb" style="text-align:center;padding:40px 20px">
-            <div style="font-size:48px;margin-bottom:16px">&#9878;&#65039;</div>
-            <div style="font-family:var(--f2,sans-serif);font-size:18px;font-weight:700;margin-bottom:8px">Gestao Juridica</div>
-            <div style="font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:20px">Contratos juridicos, notificacoes, clausulas de garantia iForms ICF, modelos prontos e acompanhamento de processos.</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;text-align:left">
-              <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:12px"><div style="color:var(--tl);font-weight:600;margin-bottom:3px">&#128196; Modelos de contrato</div><div style="color:var(--tx2)">iForms ICF otimizados</div></div>
-              <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:12px"><div style="color:var(--tl);font-weight:600;margin-bottom:3px">&#128276; Notificacoes</div><div style="color:var(--tx2)">Extrajudiciais automaticas</div></div>
-              <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:12px"><div style="color:var(--tl);font-weight:600;margin-bottom:3px">&#9878;&#65039; Garantias</div><div style="color:var(--tx2)">Clausulas especificas ICF</div></div>
-              <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:12px"><div style="color:var(--am);font-weight:600;margin-bottom:3px">&#128274; Plano Pro</div><div style="color:var(--tx2)">R$ 997/mes</div></div>
+        <div class="row-head">
+          <h2>Area Juridica</h2>
+          <button class="btn p" id="jur-novo-btn">+ Novo documento</button>
+        </div>
+        <!-- KPIs -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+          <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Total documentos</div><div class="kpi-v" style="color:var(--bl)" id="jur-k-tot">0</div></div>
+          <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Contratos ativos</div><div class="kpi-v" style="color:var(--am)" id="jur-k-ct">0</div></div>
+          <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">Pendentes</div><div class="kpi-v" style="color:var(--rd)" id="jur-k-pend">0</div></div>
+          <div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Concluidos</div><div class="kpi-v" style="color:var(--gn)" id="jur-k-ok">0</div></div>
+        </div>
+        <!-- Filtros -->
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+          <select id="jur-filtro" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none">
+            <option value="">Todos os tipos</option>
+            <option>Contrato</option><option>Notificacao</option><option>Garantia</option>
+            <option>Processo</option><option>Certidao</option><option>Outro</option>
+          </select>
+          <select id="jur-filtro-stat" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none">
+            <option value="">Todos os status</option>
+            <option>Ativo</option><option>Pendente</option><option>Concluido</option><option>Arquivado</option>
+          </select>
+        </div>
+        <div class="grid" id="jur-grid"></div>
+      </div>
+
+      <!-- CUSTOS ALPHA -->
+      <div class="page" id="p-custos">
+        <div class="row-head">
+          <h2>Custos Alpha</h2>
+          <div style="display:flex;gap:8px">
+            <select id="cst-mes" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none" id="cst-filtro-mes"></select>
+            <button class="btn p" id="cst-novo-btn">+ Novo custo</button>
+          </div>
+        </div>
+        <!-- KPIs -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px">
+          <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">Total mensal</div><div class="kpi-v" style="color:var(--rd)" id="cst-k-tot">R$ 0</div><div class="kpi-s">mes atual</div></div>
+          <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Fixos</div><div class="kpi-v" style="color:var(--am)" id="cst-k-fix">R$ 0</div><div class="kpi-s">recorrentes</div></div>
+          <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Variaveis</div><div class="kpi-v" style="color:var(--bl)" id="cst-k-var">R$ 0</div><div class="kpi-s">avulsos</div></div>
+          <div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Pagos</div><div class="kpi-v" style="color:var(--gn)" id="cst-k-pag">0</div><div class="kpi-s">quitados</div></div>
+          <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">Pendentes</div><div class="kpi-v" style="color:var(--rd)" id="cst-k-pend">0</div><div class="kpi-s">a pagar</div></div>
+        </div>
+        <!-- Layout: categorias + lista -->
+        <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start">
+          <!-- Painel categorias -->
+          <div>
+            <div class="panel" style="margin-bottom:14px">
+              <div class="ph"><h3>&#128202; Por categoria</h3></div>
+              <div id="cst-cats-chart"></div>
             </div>
-            <button class="btn p" style="justify-content:center">Fazer upgrade para Pro</button>
+            <div class="panel">
+              <div class="ph"><h3>&#128197; Evolucao mensal</h3></div>
+              <div class="pb" id="cst-evolucao"></div>
+            </div>
+          </div>
+          <!-- Lista de custos -->
+          <div>
+            <div class="panel">
+              <div class="ph">
+                <h3>Lancamentos</h3>
+                <select id="cst-filtro-cat" style="background:var(--bg3);border:1px solid var(--b2);border-radius:7px;padding:4px 10px;color:var(--tx);font-size:11px;outline:none">
+                  <option value="">Todas categorias</option>
+                  <option>Infraestrutura</option><option>Financeiro</option><option>Equipe</option>
+                  <option>Operacional</option><option>Administrativo</option><option>Outros</option>
+                </select>
+              </div>
+              <div id="cst-lista" style="max-height:500px;overflow-y:auto"></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- CUSTOS ALPHA -->
+
       <div class="page" id="p-custos">
         <div class="row-head"><h2>Custos Alpha</h2><span style="background:rgba(246,185,59,.1);color:var(--am);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px">&#128274; Plano Pro</span></div>
         <div class="panel" style="max-width:560px;margin:0 auto">
@@ -1094,6 +1193,76 @@ nav{flex:1;overflow-y:auto;padding:8px;}
   </div>
 </div>
 
+<!-- Modal Documento Juridico -->
+<div class="overlay" id="m-jur">
+  <div class="modal">
+    <div class="modal-head"><h2 id="m-jur-titulo">Novo documento juridico</h2><div class="modal-close" id="m-jur-x">&#10005;</div></div>
+    <div class="modal-body">
+      <div class="field"><label>Titulo *</label><input id="jur-titulo" placeholder="Ex: Contrato empreitada — Residencial Silva"></div>
+      <div class="grid2">
+        <div class="field"><label>Tipo</label>
+          <select id="jur-tipo"><option>Contrato</option><option>Notificacao</option><option>Garantia</option><option>Processo</option><option>Certidao</option><option>Outro</option></select>
+        </div>
+        <div class="field"><label>Status</label>
+          <select id="jur-status"><option>Ativo</option><option>Pendente</option><option>Concluido</option><option>Arquivado</option></select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Parte envolvida</label><input id="jur-parte" placeholder="Nome do cliente ou empresa"></div>
+        <div class="field"><label>Data do documento</label><input type="date" id="jur-data"></div>
+      </div>
+      <div class="field"><label>Vencimento / prazo</label><input type="date" id="jur-venc"></div>
+      <div class="field"><label>Descricao / observacoes</label><textarea id="jur-desc" rows="3" placeholder="Detalhes, clausulas importantes, notas..."></textarea></div>
+      <div class="field"><label>Anexar arquivo (PDF, imagem)</label>
+        <label class="btn" style="cursor:pointer;width:100%;justify-content:center">
+          &#128206; Selecionar arquivo
+          <input type="file" id="jur-arq" accept=".pdf,image/*,.doc,.docx" style="display:none">
+        </label>
+        <div id="jur-arq-nome" style="font-size:11px;color:var(--tl);margin-top:4px"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" id="m-jur-cancel">Cancelar</button><button class="btn p" id="m-jur-save">Salvar documento</button></div>
+  </div>
+</div>
+
+<!-- Modal Custo Alpha -->
+<div class="overlay" id="m-cst">
+  <div class="modal">
+    <div class="modal-head"><h2 id="m-cst-titulo">Novo custo</h2><div class="modal-close" id="m-cst-x">&#10005;</div></div>
+    <div class="modal-body">
+      <div class="grid2">
+        <div class="field"><label>Categoria *</label>
+          <select id="cst-cat" onchange="atualizarSubcat()">
+            <option>Infraestrutura</option><option>Financeiro</option><option>Equipe</option>
+            <option>Operacional</option><option>Administrativo</option><option>Outros</option>
+          </select>
+        </div>
+        <div class="field"><label>Tipo de custo *</label>
+          <select id="cst-subcat"></select>
+        </div>
+      </div>
+      <div class="field"><label>Descricao *</label><input id="cst-desc" placeholder="Ex: Aluguel escritorio Soledade — Junho/2026"></div>
+      <div class="grid2">
+        <div class="field"><label>Valor (R$) *</label><input type="number" id="cst-valor" placeholder="0" step="10"></div>
+        <div class="field"><label>Competencia</label><input type="month" id="cst-comp"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Vencimento</label><input type="date" id="cst-venc"></div>
+        <div class="field"><label>Status</label>
+          <select id="cst-status"><option>Pendente</option><option>Pago</option><option>Atrasado</option></select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Custo fixo (recorrente)?</label>
+          <select id="cst-fixo"><option value="0">Avulso</option><option value="1">Fixo mensal</option></select>
+        </div>
+        <div class="field"><label>Documento / referencia</label><input id="cst-ref" placeholder="Nr boleto, NF, etc"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" id="m-cst-cancel">Cancelar</button><button class="btn p" id="m-cst-save">Salvar custo</button></div>
+  </div>
+</div>
+
 <div class="overlay" id="m-del">
   <div class="modal" style="width:360px"><div class="modal-head"><h2>Confirmar exclusão</h2><div class="modal-close" id="m-del-close">✕</div></div>
     <div class="modal-body"><p id="del-msg" style="font-size:13px;color:var(--tx2)">Tem certeza?</p></div>
@@ -1107,7 +1276,7 @@ nav{flex:1;overflow-y:auto;padding:8px;}
 // ALPHA OBRAS — Engine limpo e validado
 // Sem template literals aninhadas, sem problemas de aspas
 
-var DB = {obras:[],leads:[],ncs:[],rdos:[],lancamentos:[],compras:[],funcionarios:[],contratos:[],orcamentos:[],unidades:[],medicoes:[],fotos:[],checklists:[]};
+var DB = {obras:[],leads:[],ncs:[],rdos:[],lancamentos:[],compras:[],funcionarios:[],contratos:[],orcamentos:[],unidades:[],medicoes:[],fotos:[],checklists:[],custos_alpha:[],juridico_docs:[],arquivo_alpha:[]};
 var session = null;
 var editId = null;
 var delFn = null;
@@ -1182,6 +1351,21 @@ function iniciarApp(){
   document.getElementById('rdo-data').value=today();
   document.getElementById('lan-data').value=today();
   renderTudo();
+  // Controle de acesso: Gestao Alpha so para Admin
+  var isAdmin = session && session.r === 'Administrador';
+  var gestaoAlphaItems = ['juridico','custos','configuracoes'];
+  document.querySelectorAll('.ni[data-page]').forEach(function(ni){
+    var pg = ni.getAttribute('data-page');
+    if(pg === 'juridico' || pg === 'custos' || pg === 'arquivo'){
+      ni.style.display = isAdmin ? 'flex' : 'none';
+    }
+  });
+  // Ocultar o label "Gestao Alpha" para nao-admins
+  document.querySelectorAll('.nsec').forEach(function(sec){
+    if(sec.textContent.indexOf('Gestao Alpha') >= 0){
+      sec.style.display = isAdmin ? 'block' : 'none';
+    }
+  });
   showToast('Bem-vindo, '+session.nome.split(' ')[0]+'! 🚀','ok');
 }
 
@@ -1221,6 +1405,9 @@ function ir(page){
   if(page==='checklist')   { preencherSelectObras('ck-obra'); SV('ck-data',today()); renderCK(); renderCKHistorico(); atualizarCKBadge(); }
   if(page==='configuracoes'){ renderUsuarios(); }
   if(page==='bi')         { renderBI(); }
+  if(page==='juridico')   { renderJuridico(); }
+  if(page==='custos')     { initCstMes(); atualizarSubcat(); renderCustos(); }
+  if(page==='arquivo')    { renderArquivo(); }
   if(page==='onboarding')  { renderOnboarding(); }
   if(page==='relatorios')  { preencherSelectObras('rel-obra-filtro'); var ro=document.getElementById('rel-output'); if(ro) ro.style.display='none'; }
 }
@@ -1899,6 +2086,60 @@ document.addEventListener('DOMContentLoaded',function(){
   if(mUsrS){ mUsrS.addEventListener('click', salvarUsuario); }
   var mUsrOv = document.getElementById('m-usr');
   if(mUsrOv){ mUsrOv.addEventListener('click', function(e){ if(e.target===this){ fecharModal('usr'); usrEditId=null; } }); }
+
+  // Gestao Alpha — Juridico
+  var jurNovoBtn = document.getElementById('jur-novo-btn');
+  if(jurNovoBtn){ jurNovoBtn.addEventListener('click', function(){ jurArqData=null; document.getElementById('jur-arq-nome').textContent=''; abrirModal('jur'); }); }
+  var mJurX = document.getElementById('m-jur-x');
+  if(mJurX){ mJurX.addEventListener('click', function(){ fecharModal('jur'); jurEditId=null; jurArqData=null; }); }
+  var mJurC = document.getElementById('m-jur-cancel');
+  if(mJurC){ mJurC.addEventListener('click', function(){ fecharModal('jur'); jurEditId=null; jurArqData=null; }); }
+  var mJurS = document.getElementById('m-jur-save');
+  if(mJurS){ mJurS.addEventListener('click', salvarJuridico); }
+  var mJurOv = document.getElementById('m-jur');
+  if(mJurOv){ mJurOv.addEventListener('click', function(e){ if(e.target===this){ fecharModal('jur'); } }); }
+  var jurArqInp = document.getElementById('jur-arq');
+  if(jurArqInp){ jurArqInp.addEventListener('change', function(){
+    var file=this.files[0]; if(!file)return;
+    var r=new FileReader(); r.onload=function(e){jurArqData=e.target.result;};
+    r.readAsDataURL(file);
+    document.getElementById('jur-arq-nome').textContent='Selecionado: '+file.name;
+  }); }
+  var jFiltro = document.getElementById('jur-filtro');
+  if(jFiltro){ jFiltro.addEventListener('change', renderJuridico); }
+  var jFiltroS = document.getElementById('jur-filtro-stat');
+  if(jFiltroS){ jFiltroS.addEventListener('change', renderJuridico); }
+
+  // Gestao Alpha — Custos
+  var cstNovoBtn = document.getElementById('cst-novo-btn');
+  if(cstNovoBtn){ cstNovoBtn.addEventListener('click', function(){ atualizarSubcat(); abrirModal('cst'); }); }
+  var mCstX = document.getElementById('m-cst-x');
+  if(mCstX){ mCstX.addEventListener('click', function(){ fecharModal('cst'); cstEditId=null; }); }
+  var mCstC = document.getElementById('m-cst-cancel');
+  if(mCstC){ mCstC.addEventListener('click', function(){ fecharModal('cst'); cstEditId=null; }); }
+  var mCstS = document.getElementById('m-cst-save');
+  if(mCstS){ mCstS.addEventListener('click', salvarCusto); }
+  var mCstOv = document.getElementById('m-cst');
+  if(mCstOv){ mCstOv.addEventListener('click', function(e){ if(e.target===this){ fecharModal('cst'); } }); }
+  var cstCat = document.getElementById('cst-cat');
+  if(cstCat){ cstCat.addEventListener('change', atualizarSubcat); }
+  var cstMes = document.getElementById('cst-mes');
+  if(cstMes){ cstMes.addEventListener('change', renderCustos); }
+  var cstFCat = document.getElementById('cst-filtro-cat');
+  if(cstFCat){ cstFCat.addEventListener('change', renderCustos); }
+
+  // Gestao Alpha — Arquivo
+  var arqInp = document.getElementById('arq-inp');
+  if(arqInp){ arqInp.addEventListener('change', function(){ processarArquivos(this.files); this.value=''; }); }
+  var arqDrop = document.getElementById('arq-drop');
+  if(arqDrop){
+    arqDrop.addEventListener('dragover', function(e){ e.preventDefault(); this.style.borderColor='var(--tl)'; this.style.background='var(--tld)'; });
+    arqDrop.addEventListener('dragleave', function(){ this.style.borderColor='var(--b2)'; this.style.background=''; });
+    arqDrop.addEventListener('drop', function(e){ e.preventDefault(); this.style.borderColor='var(--b2)'; this.style.background=''; processarArquivos(e.dataTransfer.files); });
+    arqDrop.addEventListener('click', function(){ document.getElementById('arq-inp').click(); });
+  }
+  var arqFCat = document.getElementById('arq-filtro-cat');
+  if(arqFCat){ arqFCat.addEventListener('change', renderArquivo); }
 
 // BOOT
 loadDB();
@@ -3895,6 +4136,426 @@ function renderOnboarding(){
       var link=el.getAttribute('data-link');
       if(link) ir(link);
     });
+  });
+}
+
+
+
+// ── GESTAO ALPHA — AREA JURIDICA ─────────────────────────────────
+var jurEditId = null;
+var jurArqData = null;
+
+var JUR_SUBCATS = {
+  tipo_cor: {'Contrato':'var(--bl)','Notificacao':'var(--am)','Garantia':'var(--tl)','Processo':'var(--rd)','Certidao':'var(--gn)','Outro':'var(--tx2)'},
+  stat_cor: {'Ativo':'var(--gn)','Pendente':'var(--am)','Concluido':'var(--tl)','Arquivado':'var(--tx3)'}
+};
+
+function renderJuridico(){
+  var g = document.getElementById('jur-grid');
+  if(!g) return;
+  var filtTipo = document.getElementById('jur-filtro') ? document.getElementById('jur-filtro').value : '';
+  var filtStat = document.getElementById('jur-filtro-stat') ? document.getElementById('jur-filtro-stat').value : '';
+  var list = DB.juridico_docs.filter(function(d){
+    if(filtTipo && d.tipo !== filtTipo) return false;
+    if(filtStat && d.status !== filtStat) return false;
+    return true;
+  });
+  // KPIs
+  var el = function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+  el('jur-k-tot', DB.juridico_docs.length);
+  el('jur-k-ct',  DB.juridico_docs.filter(function(d){return d.tipo==='Contrato'&&d.status==='Ativo';}).length);
+  el('jur-k-pend',DB.juridico_docs.filter(function(d){return d.status==='Pendente';}).length);
+  el('jur-k-ok',  DB.juridico_docs.filter(function(d){return d.status==='Concluido';}).length);
+  g.innerHTML = '';
+  if(!list.length){
+    var em = document.createElement('div'); em.className='empty';
+    em.innerHTML='<div class="empty-ico">&#9878;&#65039;</div><h3>Nenhum documento</h3><p>Cadastre contratos, notificacoes, garantias e certidoes da Alpha Obras.</p>';
+    var btn=document.createElement('button');btn.className='btn p';btn.style.marginTop='8px';btn.textContent='+ Adicionar primeiro documento';
+    btn.addEventListener('click',function(){abrirModal('jur');});
+    em.appendChild(btn);g.appendChild(em);
+  } else {
+    list.forEach(function(d){
+      var c=document.createElement('div');c.className='card';
+      var tc=JUR_SUBCATS.tipo_cor[d.tipo]||'var(--tx2)';
+      var sc=JUR_SUBCATS.stat_cor[d.status]||'var(--tx3)';
+      var top=document.createElement('div');top.className='card-top';
+      var nm=document.createElement('span');nm.className='card-name';nm.textContent=d.titulo;
+      var bd=document.createElement('span');bd.className='card-badge';bd.style.color=tc;bd.style.background='rgba(0,0,0,.15)';bd.textContent=d.tipo;
+      top.appendChild(nm);top.appendChild(bd);
+      var body=document.createElement('div');body.className='card-body';
+      body.innerHTML='<div class="cr"><span>Parte</span><span>'+(d.parte||'—')+'</span></div>'+
+        '<div class="cr"><span>Data</span><span>'+fd(d.data)+'</span></div>'+
+        '<div class="cr"><span>Vencimento</span><span style="color:'+(d.venc&&d.venc<today()?'var(--rd)':'var(--tx)')+'">'+fd(d.venc)+'</span></div>'+
+        '<div class="cr"><span>Status</span><span style="color:'+sc+';font-weight:600">'+d.status+'</span></div>'+
+        (d.desc?'<div style="font-size:10px;color:var(--tx3);margin-top:5px;border-top:1px solid var(--b1);padding-top:5px">'+d.desc+'</div>':'');
+      var acts=document.createElement('div');acts.className='card-actions';
+      if(d.arquivo){
+        var btnV=document.createElement('button');btnV.className='btn sm';btnV.textContent='&#128194; Ver arquivo';
+        (function(arq){btnV.addEventListener('click',function(){
+          if(arq.startsWith('data:image')){
+            abrirFotoFullscreen(arq);
+          } else {
+            var a=document.createElement('a');a.href=arq;a.download='documento';a.click();
+          }
+        });})(d.arquivo);
+        acts.appendChild(btnV);
+      }
+      // Status rapido
+      var statusOpts=['Ativo','Pendente','Concluido','Arquivado'];
+      var idx=statusOpts.indexOf(d.status);
+      if(idx < statusOpts.length-1){
+        var btnAdv=document.createElement('button');btnAdv.className='btn sm';btnAdv.textContent='&#8594; '+statusOpts[idx+1];btnAdv.style.color=JUR_SUBCATS.stat_cor[statusOpts[idx+1]];
+        (function(doc,prox){btnAdv.addEventListener('click',function(){doc.status=prox;saveDB();renderJuridico();showToast('Status: '+prox,'ok');});})(d,statusOpts[idx+1]);
+        acts.appendChild(btnAdv);
+      }
+      var btnEd=document.createElement('button');btnEd.className='btn sm';btnEd.textContent='&#9999;';
+      (function(doc){btnEd.addEventListener('click',function(){editarJuridico(doc.id);});})(d);
+      var btnDel=document.createElement('button');btnDel.className='btn sm';btnDel.textContent='&#128465;';btnDel.style.color='var(--rd)';
+      (function(did,dtit){btnDel.addEventListener('click',function(){
+        document.getElementById('del-msg').textContent='Excluir "'+dtit+'"?';
+        delFn=function(){DB.juridico_docs=DB.juridico_docs.filter(function(x){return x.id!==did;});saveDB();renderJuridico();showToast('Removido','ok');};
+        abrirModal('del');
+      });})(d.id,d.titulo);
+      acts.appendChild(btnEd);acts.appendChild(btnDel);
+      c.appendChild(top);c.appendChild(body);c.appendChild(acts);g.appendChild(c);
+    });
+  }
+  g.appendChild(mkAddCard(function(){abrirModal('jur');}));
+}
+
+function salvarJuridico(){
+  var titulo=document.getElementById('jur-titulo').value.trim();
+  if(!titulo){showToast('Digite o titulo','wa');return;}
+  var d={
+    id:jurEditId||uid(), titulo:titulo,
+    tipo:document.getElementById('jur-tipo').value,
+    status:document.getElementById('jur-status').value,
+    parte:document.getElementById('jur-parte').value,
+    data:document.getElementById('jur-data').value,
+    venc:document.getElementById('jur-venc').value,
+    desc:document.getElementById('jur-desc').value,
+    arquivo:jurArqData||null
+  };
+  if(jurEditId){
+    var idx=DB.juridico_docs.findIndex(function(x){return x.id===jurEditId;});
+    if(idx>=0){if(!jurArqData)d.arquivo=DB.juridico_docs[idx].arquivo;DB.juridico_docs[idx]=d;}
+  } else {
+    DB.juridico_docs.unshift(d);
+  }
+  saveDB();fecharModal('jur');jurEditId=null;jurArqData=null;
+  document.getElementById('jur-arq-nome').textContent='';
+  renderJuridico();showToast('Documento salvo ✓','ok');
+}
+
+function editarJuridico(id){
+  var d=DB.juridico_docs.find(function(x){return x.id===id;});if(!d)return;
+  jurEditId=id;jurArqData=null;
+  document.getElementById('m-jur-titulo').textContent='Editar documento';
+  document.getElementById('jur-titulo').value=d.titulo||'';
+  document.getElementById('jur-tipo').value=d.tipo||'Contrato';
+  document.getElementById('jur-status').value=d.status||'Ativo';
+  document.getElementById('jur-parte').value=d.parte||'';
+  document.getElementById('jur-data').value=d.data||'';
+  document.getElementById('jur-venc').value=d.venc||'';
+  document.getElementById('jur-desc').value=d.desc||'';
+  document.getElementById('jur-arq-nome').textContent=d.arquivo?'Arquivo existente (substituir para atualizar)':'';
+  abrirModal('jur');
+}
+
+// ── CUSTOS ALPHA ──────────────────────────────────────────────────
+var cstEditId = null;
+
+var CST_SUBCATS = {
+  'Infraestrutura': ['Aluguel','Agua','Luz / Energia','Internet','Condominio','IPTU','Manutencao predial','Limpeza','Seguranca'],
+  'Financeiro':     ['Cartao de credito','Boleto bancario','Emprestimo / Financiamento','IOF / Tarifas','Contabilidade fiscal','Pro-labore socio'],
+  'Equipe':         ['Salario CLT','Beneficios (VA/VR)','FGTS','INSS patronal','Pro-labore','Comissao','Terceirizado / MEI','Treinamento'],
+  'Operacional':    ['Software / SaaS','Equipamento TI','Veiculo / Combustivel','Manutencao equipamento','Material de escritorio','Telefone / Celular'],
+  'Administrativo': ['Contabilidade','Juridico / Advocacia','Marketing / Publicidade','Certificacao / Registro','Licenca / Alvara','Seguro'],
+  'Outros':         ['Outros (especificar)']
+};
+
+var CST_CORES = {
+  'Infraestrutura':'var(--bl)','Financeiro':'var(--rd)','Equipe':'var(--pu)',
+  'Operacional':'var(--am)','Administrativo':'var(--tl)','Outros':'var(--tx2)'
+};
+
+function atualizarSubcat(){
+  var cat=document.getElementById('cst-cat').value;
+  var sub=document.getElementById('cst-subcat');if(!sub)return;
+  sub.innerHTML='';
+  (CST_SUBCATS[cat]||['Outros']).forEach(function(s){
+    var opt=document.createElement('option');opt.value=s;opt.textContent=s;sub.appendChild(opt);
+  });
+}
+
+function renderCustos(){
+  var mes=document.getElementById('cst-mes')?document.getElementById('cst-mes').value:'';
+  var cat=document.getElementById('cst-filtro-cat')?document.getElementById('cst-filtro-cat').value:'';
+  var list=DB.custos_alpha.filter(function(c){
+    if(mes&&c.comp&&c.comp!==mes)return false;
+    if(cat&&c.cat!==cat)return false;
+    return true;
+  });
+  var tot  =list.reduce(function(s,c){return s+(parseFloat(c.valor)||0);},0);
+  var fix  =list.filter(function(c){return c.fixo==='1'||c.fixo===1;}).reduce(function(s,c){return s+(parseFloat(c.valor)||0);},0);
+  var vrv  =tot-fix;
+  var pag  =list.filter(function(c){return c.status==='Pago';}).length;
+  var pend =list.filter(function(c){return c.status==='Pendente'||c.status==='Atrasado';}).length;
+  var el=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+  el('cst-k-tot',mk(tot));el('cst-k-fix',mk(fix));el('cst-k-var',mk(vrv));
+  el('cst-k-pag',pag);el('cst-k-pend',pend);
+  // Chart categorias
+  renderCstCats(list);
+  renderCstEvolucao();
+  // Lista
+  renderCstLista(list);
+}
+
+function renderCstCats(list){
+  var div=document.getElementById('cst-cats-chart');if(!div)return;
+  var cats={};
+  list.forEach(function(c){cats[c.cat]=(cats[c.cat]||0)+(parseFloat(c.valor)||0);});
+  if(!Object.keys(cats).length){div.innerHTML='<div style="padding:14px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum lancamento</div>';return;}
+  var total=Object.values(cats).reduce(function(s,v){return s+v;},0)||1;
+  var html='';
+  Object.entries(cats).sort(function(a,b){return b[1]-a[1];}).forEach(function(kv){
+    var cor=CST_CORES[kv[0]]||'var(--tx2)';
+    var pct=Math.round(kv[1]/total*100);
+    html+='<div style="padding:10px 16px;border-bottom:1px solid var(--b1)">';
+    html+='<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">';
+    html+='<span style="font-weight:600;color:'+cor+'">'+kv[0]+'</span>';
+    html+='<span style="font-weight:700">'+mk(kv[1])+'<span style="color:var(--tx3);font-size:10px"> ('+pct+'%)</span></span></div>';
+    html+='<div style="height:5px;background:var(--bg4);border-radius:3px;overflow:hidden">';
+    html+='<div style="height:100%;width:'+pct+'%;background:'+cor+';border-radius:3px;transition:width .6s"></div></div></div>';
+  });
+  div.innerHTML=html;
+}
+
+function renderCstEvolucao(){
+  var div=document.getElementById('cst-evolucao');if(!div)return;
+  var meses={};
+  DB.custos_alpha.forEach(function(c){if(c.comp)meses[c.comp]=(meses[c.comp]||0)+(parseFloat(c.valor)||0);});
+  var keys=Object.keys(meses).sort().slice(-6);
+  if(!keys.length){div.innerHTML='<div style="color:var(--tx3);font-size:12px;text-align:center;padding:10px">Sem dados</div>';return;}
+  var maxV=Math.max.apply(null,keys.map(function(k){return meses[k];}));
+  var html='<div style="display:flex;align-items:flex-end;gap:4px;height:70px;margin-bottom:5px">';
+  keys.forEach(function(k){
+    var pct=Math.round(meses[k]/maxV*100);
+    html+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">';
+    html+='<div style="font-size:9px;color:var(--rd)">'+mk(meses[k])+'</div>';
+    html+='<div style="width:100%;background:var(--rd);border-radius:3px 3px 0 0;height:'+pct+'%"></div></div>';
+  });
+  html+='</div><div style="display:flex;gap:4px">';
+  keys.forEach(function(k){html+='<div style="flex:1;text-align:center;font-size:9px;color:var(--tx3)">'+k.slice(5)+'</div>';});
+  html+='</div>';
+  div.innerHTML=html;
+}
+
+function renderCstLista(list){
+  var div=document.getElementById('cst-lista');if(!div)return;
+  if(!list.length){div.innerHTML='<div style="padding:16px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum lancamento para este filtro</div>';return;}
+  var grouped={};
+  list.forEach(function(c){grouped[c.cat]=grouped[c.cat]||[];grouped[c.cat].push(c);});
+  var html='';
+  Object.keys(CST_CORES).forEach(function(cat){
+    if(!grouped[cat]||!grouped[cat].length)return;
+    var cor=CST_CORES[cat];
+    html+='<div style="padding:8px 16px;background:var(--bg3);font-size:11px;font-weight:700;color:'+cor+';border-bottom:1px solid var(--b1)">'+cat+'</div>';
+    grouped[cat].sort(function(a,b){return (a.venc||'')>(b.venc||'')?1:-1;}).forEach(function(c){
+      var stCor={'Pago':'var(--gn)','Pendente':'var(--am)','Atrasado':'var(--rd)'}[c.status]||'var(--tx3)';
+      html+='<div style="padding:9px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;font-size:12px" data-cst-id="'+c.id+'">';
+      html+='<div style="width:6px;height:6px;border-radius:50%;background:'+stCor+';flex-shrink:0"></div>';
+      html+='<div style="flex:1;min-width:0"><div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+c.desc+'</div>';
+      html+='<div style="color:var(--tx3);font-size:10px">'+c.subcat+(c.comp?' · '+c.comp:'')+(c.fixo==='1'?' · Fixo':'')+' · Vence: '+fd(c.venc)+'</div></div>';
+      html+='<div style="text-align:right;flex-shrink:0"><div style="font-weight:700;color:var(--rd)">'+mk(c.valor)+'</div>';
+      html+='<div style="font-size:10px;color:'+stCor+'">'+c.status+'</div></div>';
+      html+='<div style="display:flex;gap:4px;flex-shrink:0">';
+      if(c.status==='Pendente'){html+='<button class="btn sm" style="color:var(--gn);padding:3px 7px" data-cst-pag="'+c.id+'">&#10003;</button>';}
+      html+='<button class="btn sm" style="color:var(--rd);padding:3px 7px" data-cst-del="'+c.id+'" data-cst-desc="'+c.desc+'">&#128465;</button>';
+      html+='</div></div>';
+    });
+  });
+  div.innerHTML=html;
+  // Eventos inline via delegation
+  div.querySelectorAll('[data-cst-pag]').forEach(function(btn){
+    var cid=btn.getAttribute('data-cst-pag');
+    btn.addEventListener('click',function(){
+      var c=DB.custos_alpha.find(function(x){return x.id===cid;});
+      if(c){c.status='Pago';saveDB();renderCustos();showToast('Marcado como pago ✓','ok');}
+    });
+  });
+  div.querySelectorAll('[data-cst-del]').forEach(function(btn){
+    var cid=btn.getAttribute('data-cst-del');
+    var cdesc=btn.getAttribute('data-cst-desc');
+    btn.addEventListener('click',function(){
+      document.getElementById('del-msg').textContent='Excluir "'+cdesc+'"?';
+      delFn=function(){DB.custos_alpha=DB.custos_alpha.filter(function(x){return x.id!==cid;});saveDB();renderCustos();showToast('Removido','ok');};
+      abrirModal('del');
+    });
+  });
+}
+
+function salvarCusto(){
+  var desc=document.getElementById('cst-desc').value.trim();
+  var val=document.getElementById('cst-valor').value;
+  if(!desc||!val){showToast('Preencha descricao e valor','wa');return;}
+  var c={
+    id:cstEditId||uid(),
+    cat:document.getElementById('cst-cat').value,
+    subcat:document.getElementById('cst-subcat').value,
+    desc:desc, valor:parseFloat(val)||0,
+    comp:document.getElementById('cst-comp').value,
+    venc:document.getElementById('cst-venc').value,
+    status:document.getElementById('cst-status').value,
+    fixo:document.getElementById('cst-fixo').value,
+    ref:document.getElementById('cst-ref').value
+  };
+  if(cstEditId){var idx=DB.custos_alpha.findIndex(function(x){return x.id===cstEditId;});if(idx>=0)DB.custos_alpha[idx]=c;}
+  else DB.custos_alpha.unshift(c);
+  saveDB();fecharModal('cst');cstEditId=null;renderCustos();showToast('Custo salvo ✓','ok');
+}
+
+// Inicializar select de meses do filtro
+function initCstMes(){
+  var sel=document.getElementById('cst-mes');if(!sel)return;
+  sel.innerHTML='';
+  var opt0=document.createElement('option');opt0.value='';opt0.textContent='Todos os meses';sel.appendChild(opt0);
+  var hoje=new Date();
+  for(var i=5;i>=0;i--){
+    var d=new Date(hoje.getFullYear(),hoje.getMonth()-i,1);
+    var v=d.getFullYear()+'-'+(String(d.getMonth()+1).padStart(2,'0'));
+    var opt=document.createElement('option');opt.value=v;opt.textContent=v.slice(5)+'/'+v.slice(0,4);
+    if(i===0)opt.selected=true;
+    sel.appendChild(opt);
+  }
+  // Preencher competencia do modal com mes atual
+  var cmp=document.getElementById('cst-comp');
+  if(cmp)cmp.value=hoje.getFullYear()+'-'+(String(hoje.getMonth()+1).padStart(2,'0'));
+}
+
+// ── ARQUIVO INTELIGENTE ───────────────────────────────────────────
+var ARQ_CATS = ['Obras','Juridico','Financeiro','Equipe','Contratos','Outros'];
+
+function detectarCategoria(nome){
+  var n=nome.toLowerCase();
+  if(n.indexOf('obra')>=0||n.indexOf('rdo')>=0||n.indexOf('medicao')>=0)return 'Obras';
+  if(n.indexOf('contrat')>=0||n.indexOf('juridic')>=0||n.indexOf('notif')>=0)return 'Juridico';
+  if(n.indexOf('nf')>=0||n.indexOf('nota')>=0||n.indexOf('boleto')>=0||n.indexOf('financ')>=0)return 'Financeiro';
+  if(n.indexOf('func')>=0||n.indexOf('equipe')>=0||n.indexOf('clt')>=0)return 'Equipe';
+  if(n.indexOf('ct')>=0||n.indexOf('acordo')>=0)return 'Contratos';
+  return 'Outros';
+}
+
+function processarArquivos(files){
+  Array.from(files).forEach(function(file){
+    if(file.size > 5*1024*1024){showToast(file.name+' muito grande (max 5MB)','wa');return;}
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var cat=detectarCategoria(file.name);
+      var tipo=file.type.indexOf('image')>=0?'imagem':file.type.indexOf('pdf')>=0?'pdf':'documento';
+      var arq={
+        id:uid(), nome:file.name, tipo:tipo, cat:cat,
+        url:e.target.result, tamanho:file.size,
+        created:new Date().toISOString()
+      };
+      DB.arquivo_alpha.unshift(arq);
+      saveDB();renderArquivo();
+      showToast('Arquivo adicionado: '+cat,'ok');
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderArquivo(){
+  var filtCat=document.getElementById('arq-filtro-cat')?document.getElementById('arq-filtro-cat').value:'';
+  var list=filtCat?DB.arquivo_alpha.filter(function(a){return a.cat===filtCat;}):DB.arquivo_alpha;
+  // KPIs
+  var el=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+  el('arq-k-tot',DB.arquivo_alpha.length);
+  el('arq-k-img',DB.arquivo_alpha.filter(function(a){return a.tipo==='imagem';}).length);
+  el('arq-k-pdf',DB.arquivo_alpha.filter(function(a){return a.tipo==='pdf';}).length);
+  el('arq-k-jur',DB.arquivo_alpha.filter(function(a){return a.cat==='Juridico';}).length);
+  el('arq-k-fin',DB.arquivo_alpha.filter(function(a){return a.cat==='Financeiro';}).length);
+  var nb=document.getElementById('nb-arq');if(nb)nb.textContent=DB.arquivo_alpha.length||'';
+  el('arq-titulo',filtCat?filtCat:'Todos os arquivos');
+  el('arq-count','('+list.length+' arquivo'+(list.length!==1?'s':'')+')');
+  // Recentes
+  var rec=document.getElementById('arq-recentes');
+  if(rec){
+    var html='';
+    DB.arquivo_alpha.slice(0,5).forEach(function(a){
+      var ico={'imagem':'&#128247;','pdf':'&#128196;','documento':'&#128196;'}[a.tipo]||'&#128193;';
+      var dt=a.created?new Date(a.created).toLocaleDateString('pt-BR'):'';
+      html+='<div style="padding:8px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px;font-size:12px">';
+      html+=ico+'<div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+a.nome+'</div>';
+      html+='<div style="font-size:10px;color:var(--tx3)">'+dt+'</div></div>';
+    });
+    rec.innerHTML=html||'<div style="padding:14px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum arquivo</div>';
+  }
+  // Chart por categoria
+  var chartDiv=document.getElementById('arq-chart');
+  if(chartDiv){
+    var cats={};
+    DB.arquivo_alpha.forEach(function(a){cats[a.cat]=(cats[a.cat]||0)+1;});
+    var ARQ_CORES={'Obras':'var(--tl)','Juridico':'var(--bl)','Financeiro':'var(--gn)','Equipe':'var(--pu)','Contratos':'var(--am)','Outros':'var(--tx3)'};
+    var maxC=Math.max.apply(null,Object.values(cats).concat([1]));
+    var html2='';
+    ARQ_CATS.forEach(function(cat){
+      var count=cats[cat]||0;
+      var cor=ARQ_CORES[cat];
+      html2+='<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">';
+      html2+='<span style="color:'+cor+';font-weight:600">'+cat+'</span><span style="color:var(--tx3)">'+count+'</span></div>';
+      html2+='<div style="height:5px;background:var(--bg4);border-radius:3px;overflow:hidden">';
+      html2+='<div style="height:100%;width:'+Math.round(count/maxC*100)+'%;background:'+cor+';border-radius:3px;transition:width .6s"></div></div></div>';
+    });
+    chartDiv.innerHTML=html2||'<div style="color:var(--tx3);font-size:12px;text-align:center;padding:10px">Sem arquivos</div>';
+  }
+  // Grid de arquivos
+  var g=document.getElementById('arq-grid');
+  if(!g)return;
+  g.innerHTML='';
+  if(!list.length){
+    var em=document.createElement('div');em.style.cssText='grid-column:1/-1;text-align:center;padding:40px;color:var(--tx3)';
+    em.innerHTML='&#128193; Nenhum arquivo. Arraste ou clique em "Adicionar arquivo" acima.';
+    g.appendChild(em);return;
+  }
+  list.forEach(function(a){
+    var card=document.createElement('div');
+    card.style.cssText='background:var(--bg2);border:1px solid var(--b1);border-radius:10px;overflow:hidden;transition:all .15s;cursor:pointer';
+    card.addEventListener('mouseenter',function(){this.style.borderColor='var(--b2)';this.style.transform='translateY(-2px)';});
+    card.addEventListener('mouseleave',function(){this.style.borderColor='var(--b1)';this.style.transform='';});
+    var ARQ_CORES2={'Obras':'var(--tl)','Juridico':'var(--bl)','Financeiro':'var(--gn)','Equipe':'var(--pu)','Contratos':'var(--am)','Outros':'var(--tx3)'};
+    var corCat=ARQ_CORES2[a.cat]||'var(--tx3)';
+    var preview='';
+    if(a.tipo==='imagem'){
+      preview='<img src="'+a.url+'" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block" loading="lazy" alt="'+a.nome+'">';
+    } else {
+      var ico={'pdf':'&#128196;','documento':'&#128196;'}[a.tipo]||'&#128193;';
+      preview='<div style="width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:var(--bg3);font-size:40px">'+ico+'</div>';
+    }
+    var info='<div style="padding:8px 10px">';
+    info+='<div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px" title="'+a.nome+'">'+a.nome+'</div>';
+    info+='<div style="display:flex;justify-content:space-between;align-items:center">';
+    info+='<span style="font-size:10px;color:'+corCat+';font-weight:600;background:rgba(0,0,0,.15);padding:1px 6px;border-radius:20px">'+a.cat+'</span>';
+    info+='<div style="display:flex;gap:4px">';
+    info+='<button style="background:none;border:none;cursor:pointer;color:var(--tl);font-size:13px" title="Ver" data-arq-view="'+a.id+'">&#128065;</button>';
+    info+='<button style="background:none;border:none;cursor:pointer;color:var(--rd);font-size:13px" title="Excluir" data-arq-del="'+a.id+'">&#128465;</button>';
+    info+='</div></div></div>';
+    card.innerHTML=preview+info;
+    (function(arq){
+      card.querySelector('[data-arq-view]').addEventListener('click',function(e){
+        e.stopPropagation();
+        if(arq.tipo==='imagem'){abrirFotoFullscreen(arq.url);}
+        else{var a2=document.createElement('a');a2.href=arq.url;a2.download=arq.nome;a2.click();}
+      });
+      card.querySelector('[data-arq-del]').addEventListener('click',function(e){
+        e.stopPropagation();
+        document.getElementById('del-msg').textContent='Excluir "'+arq.nome+'"?';
+        delFn=function(){DB.arquivo_alpha=DB.arquivo_alpha.filter(function(x){return x.id!==arq.id;});saveDB();renderArquivo();showToast('Removido','ok');};
+        abrirModal('del');
+      });
+    })(a);
+    g.appendChild(card);
   });
 }
 
