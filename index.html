@@ -135,6 +135,18 @@ nav{flex:1;overflow-y:auto;padding:8px;}
 @media(max-width:900px){.dash-main{grid-template-columns:1fr;}}
 .side-panel{display:flex;flex-direction:column;gap:12px;}
 .actions-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
+
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
+
+@media print {
+  .sb, .topbar, .row-head, #rel-output .ph div { display:none!important; }
+  .pages { overflow:visible!important; }
+  .page { display:block!important; }
+  #rel-corpo { font-size:11pt; }
+  table { border-collapse:collapse; width:100%; }
+  th,td { border:1px solid #ccc; padding:5px 8px; }
+}
+.rel-card:hover { border-color:var(--tl)!important; transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.3); }
 </style>
 </head>
 <body>
@@ -185,6 +197,13 @@ nav{flex:1;overflow-y:auto;padding:8px;}
       <div class="ni" data-page="equipes" id="ni-equipes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Equipes</div>
       <div class="ni" data-page="contratos" id="ni-contratos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg> Contratos</div>
       <div class="nav-sec">Crescimento</div>
+      <div class="ni" data-page="portal" id="ni-portal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Portal do Cliente</div>
+      <div class="ni" data-page="fotos" id="ni-fotos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg> Fotos com GPS</div>
+      <div class="ni" data-page="checklist" id="ni-checklist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg> Checklist iForms <span class="badge" style="background:rgba(61,214,140,.1);color:var(--gn)" id="nb-ck">0</span></div>
+      <div class="ni" data-page="medicoes" id="ni-medicoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg> Medicoes <span class="badge" style="background:rgba(61,214,140,.1);color:var(--gn)" id="nb-med">0</span></div>
+      <div class="ni" data-page="cronograma" id="ni-cronograma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg> Cronograma</div>
+      <div class="ni" data-page="ia" id="ni-ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/></svg> IA de Captacao <span class="badge" style="background:rgba(159,140,245,.1);color:var(--pu)">&#128161;</span></div>
+      <div class="ni" data-page="relatorios" id="ni-relatorios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Relatorios</div>
       <div class="ni" data-page="configuracoes" id="ni-configuracoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg> Configurações</div>
     </nav>
     <div class="sb-user" id="btn-logout">
@@ -332,7 +351,301 @@ nav{flex:1;overflow-y:auto;padding:8px;}
       </div>
 
       <!-- CONFIGURAÇÕES -->
-      <div class="page" id="p-configuracoes">
+            <!-- PORTAL DO CLIENTE -->
+      <div class="page" id="p-portal">
+        <div class="row-head">
+          <h2>Portal do Cliente</h2>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="portal-obra" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 14px;color:var(--tx);font-size:13px;outline:none;min-width:240px">
+              <option value="">Selecione a obra...</option>
+            </select>
+            <button class="btn" id="portal-print-btn">&#128424; Imprimir</button>
+          </div>
+        </div>
+        <div id="portal-body"></div>
+      </div>
+
+      <!-- FOTOS GPS -->
+      <div class="page" id="p-fotos">
+        <div class="row-head">
+          <h2>Fotos com GPS</h2>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <select id="f-fotos-obra" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none">
+              <option value="">Todas as obras</option>
+            </select>
+            <label class="btn p" style="cursor:pointer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+              Capturar foto
+              <input type="file" accept="image/*" capture="environment" id="foto-inp" multiple style="display:none">
+            </label>
+          </div>
+        </div>
+        <!-- Status GPS -->
+        <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:10px;padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:12px">
+          <div id="gps-dot" style="width:8px;height:8px;border-radius:50%;background:var(--am);flex-shrink:0"></div>
+          <span id="gps-txt" style="color:var(--tx2);flex:1">Aguardando GPS...</span>
+          <button class="btn sm" id="gps-refresh">&#8635; Atualizar GPS</button>
+        </div>
+        <!-- Stats -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+          <div class="kpi" style="--kc:var(--pu)"><div class="kpi-l">Total fotos</div><div class="kpi-v" style="color:var(--pu)" id="ft-total">0</div><div class="kpi-s">registradas</div></div>
+          <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Com GPS</div><div class="kpi-v" style="color:var(--tl)" id="ft-gps">0</div><div class="kpi-s">geolocalizadas</div></div>
+          <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Obras cobertas</div><div class="kpi-v" style="color:var(--bl)" id="ft-obras">0</div><div class="kpi-s">com fotos</div></div>
+          <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Hoje</div><div class="kpi-v" style="color:var(--am)" id="ft-hoje">0</div><div class="kpi-s">fotos capturadas</div></div>
+        </div>
+        <!-- Galeria -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px" id="fotos-grid"></div>
+      </div>
+
+      <!-- IA DE CAPTACAO -->
+            <!-- CRONOGRAMA -->
+            <!-- MEDICOES -->
+            <!-- CHECKLIST IFORMS -->
+      <div class="page" id="p-checklist">
+        <div class="row-head"><h2>Checklist iForms ICF &mdash; 22 itens</h2>
+          <div style="display:flex;gap:8px">
+            <button class="btn" id="ck-limpar">&#10227; Limpar</button>
+            <button class="btn p" id="ck-salvar-btn">&#128190; Salvar inspeção</button>
+          </div>
+        </div>
+        <div class="grid2">
+          <!-- Painel esquerdo: dados + progresso + histórico -->
+          <div>
+            <div class="panel">
+              <div class="ph"><h3>Dados da inspeção</h3></div>
+              <div class="pb">
+                <div class="field"><label>Obra *</label><select id="ck-obra"><option value="">Selecione...</option></select></div>
+                <div class="grid2">
+                  <div class="field"><label>Data</label><input type="date" id="ck-data"></div>
+                  <div class="field"><label>Fiada inspecionada</label>
+                    <select id="ck-fiada">
+                      <option>F1</option><option>F2</option><option>F3</option>
+                      <option>F4</option><option>F5</option><option>F6</option>
+                      <option>Fundacao</option><option>Cobertura</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field"><label>Inspetor responsavel</label><input id="ck-insp" placeholder="Nome do inspetor"></div>
+              </div>
+            </div>
+            <!-- Progresso -->
+            <div class="panel" style="margin-top:14px">
+              <div class="ph"><h3>&#128200; Progresso da inspeção</h3></div>
+              <div class="pb">
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px">
+                  <span style="color:var(--tx2)">Itens aprovados</span>
+                  <span id="ck-placar" style="font-weight:700;color:var(--tl)">0 / 22</span>
+                </div>
+                <div style="height:10px;background:var(--bg4);border-radius:5px;overflow:hidden;margin-bottom:8px">
+                  <div id="ck-barra" style="height:100%;background:var(--tl);border-radius:5px;width:0%;transition:width .4s"></div>
+                </div>
+                <div id="ck-resultado" style="font-size:12px;color:var(--tx3);text-align:center"></div>
+              </div>
+            </div>
+            <!-- Histórico -->
+            <div class="panel" style="margin-top:14px">
+              <div class="ph"><h3>&#128203; Histórico de checklists</h3><span class="ph-badge" style="background:rgba(0,203,168,.1);color:var(--tl)" id="nb-ck-hist">0</span></div>
+              <div id="ck-hist" style="max-height:260px;overflow-y:auto"></div>
+            </div>
+          </div>
+          <!-- Painel direito: 22 itens -->
+          <div class="panel">
+            <div class="ph"><h3>&#9989; Itens de inspeção</h3>
+              <div style="display:flex;gap:6px">
+                <button class="btn sm" id="ck-all-ok" style="color:var(--gn)">&#9989; Todos OK</button>
+                <button class="btn sm" id="ck-nenhum" style="color:var(--rd)">&#10060; Nenhum</button>
+              </div>
+            </div>
+            <div id="ck-items-lista" style="padding:4px 0"></div>
+          </div>
+        </div>
+      </div>
+
+<div class="page" id="p-medicoes">
+        <div class="row-head"><h2>Medicoes</h2><button class="btn p" id="med-nova-btn">+ Nova medicao</button></div>
+        <!-- KPIs -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px">
+          <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Total medido</div><div class="kpi-v" style="color:var(--tl)" id="mk-tot">R$ 0</div><div class="kpi-s">todas obras</div></div>
+          <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Aguardando</div><div class="kpi-v" style="color:var(--am)" id="mk-ag">0</div><div class="kpi-s">aprovacao</div></div>
+          <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Aprovadas</div><div class="kpi-v" style="color:var(--bl)" id="mk-ap">0</div><div class="kpi-s">a receber</div></div>
+          <div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Pagas</div><div class="kpi-v" style="color:var(--gn)" id="mk-pg">0</div><div class="kpi-s">quitadas</div></div>
+          <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">Valor aprovado</div><div class="kpi-v" style="color:var(--rd)" id="mk-vapro">R$ 0</div><div class="kpi-s">a receber</div></div>
+        </div>
+        <!-- Filtro por obra -->
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+          <select id="f-med-obra" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none">
+            <option value="">Todas as obras</option>
+          </select>
+          <select id="f-med-stat" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none">
+            <option value="">Todos os status</option>
+            <option>Aguardando aprovacao</option>
+            <option>Aprovada</option>
+            <option>Paga</option>
+          </select>
+          <span style="font-size:12px;color:var(--tx3)" id="med-count"></span>
+        </div>
+        <!-- Grid de medicoes -->
+        <div class="grid" id="med-grid"></div>
+      </div>
+
+<div class="page" id="p-cronograma">
+        <div class="row-head"><h2>Cronograma iForms ICF</h2></div>
+        <!-- Selecionar obra -->
+        <div class="panel" style="margin-bottom:16px">
+          <div class="ph">
+            <h3>Selecionar obra</h3>
+            <select id="gantt-obra" style="background:var(--bg3);border:1px solid var(--b2);border-radius:7px;padding:5px 12px;color:var(--tx);font-size:12px;outline:none;min-width:220px">
+              <option value="">Escolha a obra...</option>
+            </select>
+          </div>
+        </div>
+        <!-- KPIs da obra selecionada -->
+        <div id="cron-kpis" style="display:none;margin-bottom:16px">
+          <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr)">
+            <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Progresso</div><div class="kpi-v" style="color:var(--tl)" id="ck-prog">0%</div><div class="kpi-s">geral</div></div>
+            <div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Fiada atual</div><div class="kpi-v" style="color:var(--gn)" id="ck-fat">F1</div><div class="kpi-s">em execucao</div></div>
+            <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">RDOs</div><div class="kpi-v" style="color:var(--bl)" id="ck-rdos">0</div><div class="kpi-s">registrados</div></div>
+            <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Dias inicio</div><div class="kpi-v" style="color:var(--am)" id="ck-dias">0</div><div class="kpi-s">de obra</div></div>
+            <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">NCs</div><div class="kpi-v" style="color:var(--rd)" id="ck-ncs">0</div><div class="kpi-s">abertas</div></div>
+          </div>
+        </div>
+        <!-- Gantt -->
+        <div class="panel">
+          <div class="ph"><h3>&#128202; Gantt por fiadas iForms</h3>
+            <span class="ph-badge" style="background:rgba(0,203,168,.1);color:var(--tl)" id="cron-sistema"></span>
+          </div>
+          <div id="gantt-area" style="overflow-x:auto;padding:16px"></div>
+        </div>
+        <!-- Legenda e datas dos RDOs -->
+        <div class="grid2" style="margin-top:14px">
+          <div class="panel">
+            <div class="ph"><h3>&#128197; Linha do tempo</h3></div>
+            <div id="cron-timeline" style="max-height:280px;overflow-y:auto"></div>
+          </div>
+          <div class="panel">
+            <div class="ph"><h3>&#128204; Legenda</h3></div>
+            <div class="pb" id="cron-legenda"></div>
+          </div>
+        </div>
+      </div>
+
+<div class="page" id="p-ia">
+        <div class="row-head">
+          <h2>IA de Captacao</h2>
+          <span style="background:rgba(159,140,245,.1);color:var(--pu);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px">Powered by Claude AI</span>
+        </div>
+        <div class="grid2">
+          <!-- Chat -->
+          <div class="panel" style="display:flex;flex-direction:column">
+            <div class="ph">
+              <h3>&#128172; Chat com IA</h3>
+              <span id="ia-status" style="font-size:10px;background:rgba(61,214,140,.1);color:var(--gn);padding:2px 8px;border-radius:20px;font-weight:600">&#9679; Online</span>
+            </div>
+            <div id="ia-msgs" style="flex:1;min-height:340px;max-height:420px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px"></div>
+            <div style="padding:10px;border-top:1px solid var(--b1);display:flex;gap:8px">
+              <textarea id="ia-inp" rows="2" placeholder="Pergunte sobre prospeccao, scripts WhatsApp, leads iForms..." style="flex:1;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:9px 12px;color:var(--tx);font-size:13px;outline:none;resize:none;font-family:var(--f)"></textarea>
+              <button class="btn p" id="ia-send" style="align-self:flex-end;height:40px;padding:0 16px">&#9654;</button>
+            </div>
+          </div>
+          <!-- Acoes rapidas -->
+          <div>
+            <div class="panel" style="margin-bottom:14px">
+              <div class="ph"><h3>&#9889; Acoes rapidas</h3></div>
+              <div class="pb" style="display:flex;flex-direction:column;gap:6px">
+                <button class="btn ia-quick" data-msg="Quais os perfis ideais de clientes para obras iForms ICF no Rio Grande do Sul?">&#127919; Perfis ideais no RS</button>
+                <button class="btn ia-quick" data-msg="Crie 3 scripts de WhatsApp para prospectar clientes iForms ICF">&#128242; Scripts WhatsApp</button>
+                <button class="btn ia-quick" data-msg="Liste os principais argumentos de venda iForms ICF vs alvenaria convencional com dados tecnicos">&#9876;&#65039; iForms vs convencional</button>
+                <button class="btn ia-quick" data-msg="Como qualificar um lead para saber se tem potencial para obra iForms ICF?">&#127775; Qualificar leads</button>
+                <button class="btn ia-quick" data-msg="Crie um roteiro de reuniao para apresentar o sistema iForms ICF para um incorporador">&#128203; Roteiro de reuniao</button>
+                <button class="btn ia-quick" data-msg="Quais as principais objecoes dos clientes sobre iForms ICF e como respondelas com argumentos tecnicos?">&#129300; Objecoes e respostas</button>
+                <button class="btn ia-quick" data-msg="Como precificar uma obra iForms ICF 18+12 de 200m2 no RS com BDI 28%?">&#128200; Precificacao iForms</button>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="ph"><h3>&#128218; Sobre o sistema iForms</h3></div>
+              <div class="pb" style="font-size:12px;line-height:1.8;color:var(--tx2)">
+                <div><strong style="color:var(--tl)">iForms ICF</strong> &mdash; Insulated Concrete Forms</div>
+                <div>Blocos EPS + concreto estrutural fck 25 MPa</div>
+                <div>Cura: 72h por fiada &nbsp;&middot;&nbsp; Slump 18&#177;2 cm</div>
+                <div>Isolamento: 55dB acustico</div>
+                <div>Velocidade: 50% mais rapido</div>
+                <div>Residuos: pratica zero</div>
+                <div style="margin-top:8px"><strong style="color:var(--tx)">Planos Alpha:</strong></div>
+                <div>Campo R$97 &nbsp;&middot;&nbsp; Starter R$497 &nbsp;&middot;&nbsp; Pro R$997</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATORIOS -->
+      <div class="page" id="p-relatorios">
+        <div class="row-head"><h2>Relatorios</h2>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="rel-obra-filtro" style="background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:7px 12px;color:var(--tx);font-size:12px;outline:none">
+              <option value="">Todas as obras</option>
+            </select>
+          </div>
+        </div>
+        <!-- Cards de tipos de relatorio -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px">
+          <div class="rel-card" data-rel="obras"     style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#128202;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px">Obras</div>
+            <div style="font-size:11px;color:var(--tx3)">Status e progresso</div>
+          </div>
+          <div class="rel-card" data-rel="financeiro" style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#128176;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px">Financeiro</div>
+            <div style="font-size:11px;color:var(--tx3)">Lancamentos e saldo</div>
+          </div>
+          <div class="rel-card" data-rel="medicoes" style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#128208;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px">Medicoes</div>
+            <div style="font-size:11px;color:var(--tx3)">Faturamento por obra</div>
+          </div>
+          <div class="rel-card" data-rel="qualidade" style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#9989;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px">Qualidade</div>
+            <div style="font-size:11px;color:var(--tx3)">NCs e checklists</div>
+          </div>
+          <div class="rel-card" data-rel="rdo" style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#128203;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px">RDOs</div>
+            <div style="font-size:11px;color:var(--tx3)">Diarios de obra</div>
+          </div>
+          <div class="rel-card" data-rel="equipes" style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#128119;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px">Equipes</div>
+            <div style="font-size:11px;color:var(--tx3)">Funcionarios e contratos</div>
+          </div>
+          <div class="rel-card" data-rel="compras" style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#128230;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px">Compras</div>
+            <div style="font-size:11px;color:var(--tx3)">Materiais solicitados</div>
+          </div>
+          <div class="rel-card" data-rel="completo" style="background:linear-gradient(135deg,rgba(0,203,168,.12),rgba(91,156,246,.08));border:1px solid rgba(0,203,168,.2);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s">
+            <div style="font-size:28px;margin-bottom:8px">&#128196;</div>
+            <div style="font-family:var(--f2,sans-serif);font-size:13px;font-weight:700;margin-bottom:3px;color:var(--tl)">Relatorio completo</div>
+            <div style="font-size:11px;color:var(--tx3)">Todos os dados</div>
+          </div>
+        </div>
+        <!-- Output do relatorio -->
+        <div id="rel-output" style="display:none">
+          <div class="panel">
+            <div class="ph">
+              <h3 id="rel-titulo">Relatorio</h3>
+              <div style="display:flex;gap:8px">
+                <button class="btn sm" id="rel-imprimir">&#128424;&#65039; Imprimir</button>
+                <button class="btn sm" id="rel-fechar" style="color:var(--rd)">&#10005; Fechar</button>
+              </div>
+            </div>
+            <div class="pb" id="rel-corpo"></div>
+          </div>
+        </div>
+      </div>
+
+<div class="page" id="p-configuracoes">
         <div class="row-head"><h2>Configurações</h2></div>
         <div class="grid2">
           <div>
@@ -497,6 +810,33 @@ nav{flex:1;overflow-y:auto;padding:8px;}
   </div>
 </div>
 
+<!-- Modal Nova Medicao -->
+<div class="overlay" id="m-med">
+  <div class="modal">
+    <div class="modal-head"><h2 id="m-med-titulo">Nova medicao</h2><div class="modal-close" id="m-med-x">&#10005;</div></div>
+    <div class="modal-body">
+      <div class="field"><label>Obra *</label><select id="med-obra"><option value="">Selecione...</option></select></div>
+      <div class="grid2">
+        <div class="field"><label>Numero da medicao</label><input type="number" id="med-num" value="1" min="1"></div>
+        <div class="field"><label>Periodo de referencia</label><input id="med-periodo" placeholder="Ex: Maio/2026 - F3 e F4"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Valor (R$) *</label><input type="number" id="med-valor" placeholder="0" step="100"></div>
+        <div class="field"><label>Vencimento</label><input type="date" id="med-venc"></div>
+      </div>
+      <div class="field"><label>Status</label>
+        <select id="med-status">
+          <option>Aguardando aprovacao</option>
+          <option>Aprovada</option>
+          <option>Paga</option>
+        </select>
+      </div>
+      <div class="field"><label>Descricao dos servicos</label><textarea id="med-desc" rows="3" placeholder="Servicos executados nesta medicao..."></textarea></div>
+    </div>
+    <div class="modal-foot"><button class="btn" id="m-med-cancel">Cancelar</button><button class="btn p" id="m-med-save">Salvar medicao</button></div>
+  </div>
+</div>
+
 <div class="overlay" id="m-del">
   <div class="modal" style="width:360px"><div class="modal-head"><h2>Confirmar exclusão</h2><div class="modal-close" id="m-del-close">✕</div></div>
     <div class="modal-body"><p id="del-msg" style="font-size:13px;color:var(--tx2)">Tem certeza?</p></div>
@@ -510,7 +850,7 @@ nav{flex:1;overflow-y:auto;padding:8px;}
 // ALPHA OBRAS — Engine limpo e validado
 // Sem template literals aninhadas, sem problemas de aspas
 
-var DB = {obras:[],leads:[],ncs:[],rdos:[],lancamentos:[],compras:[],funcionarios:[],contratos:[],orcamentos:[],unidades:[]};
+var DB = {obras:[],leads:[],ncs:[],rdos:[],lancamentos:[],compras:[],funcionarios:[],contratos:[],orcamentos:[],unidades:[],medicoes:[],fotos:[],checklists:[]};
 var session = null;
 var editId = null;
 var delFn = null;
@@ -1179,6 +1519,98 @@ document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('m-unid-save').addEventListener('click', salvarUnid);
   document.getElementById('m-unid').addEventListener('click', function(e){ if(e.target===this) fecharModal('unid'); });
 
+  // Portal do Cliente
+  var portalSel = document.getElementById('portal-obra');
+  if(portalSel){
+    portalSel.addEventListener('change', function(){
+      preencherSelectPortal();
+      renderPortal();
+    });
+  }
+  var portalPrint = document.getElementById('portal-print-btn');
+  if(portalPrint){ portalPrint.addEventListener('click', function(){ window.print(); }); }
+
+  // Fotos GPS
+  var fotoInp = document.getElementById('foto-inp');
+  if(fotoInp){ fotoInp.addEventListener('change', function(){ processarFotos(this); }); }
+  var gpsRefresh = document.getElementById('gps-refresh');
+  if(gpsRefresh){ gpsRefresh.addEventListener('click', obterGPS); }
+  var fFotosObra = document.getElementById('f-fotos-obra');
+  if(fFotosObra){ fFotosObra.addEventListener('change', renderFotos); }
+
+  // IA de Captacao
+  var iaSend = document.getElementById('ia-send');
+  if(iaSend){ iaSend.addEventListener('click', enviarIA); }
+  var iaInp = document.getElementById('ia-inp');
+  if(iaInp){
+    iaInp.addEventListener('keydown', function(e){
+      if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); enviarIA(); }
+    });
+  }
+  document.querySelectorAll('.ia-quick').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var msg = btn.getAttribute('data-msg');
+      if(!msg) return;
+      iaMsgs.push({role:'user', content:msg});
+      renderIAMsgs();
+      chamarAPI(msg);
+    });
+  });
+
+  // Cronograma
+  var ganttSel = document.getElementById('gantt-obra');
+  if(ganttSel){ ganttSel.addEventListener('change', renderGantt); }
+
+  // Medicoes
+  var medNovaBtn = document.getElementById('med-nova-btn');
+  if(medNovaBtn){ medNovaBtn.addEventListener('click', function(){ preencherMedObras(); abrirModal('med'); }); }
+  var mMedX = document.getElementById('m-med-x');
+  if(mMedX){ mMedX.addEventListener('click', function(){ fecharModal('med'); medEditId=null; }); }
+  var mMedC = document.getElementById('m-med-cancel');
+  if(mMedC){ mMedC.addEventListener('click', function(){ fecharModal('med'); medEditId=null; }); }
+  var mMedS = document.getElementById('m-med-save');
+  if(mMedS){ mMedS.addEventListener('click', salvarMed); }
+  var mMedOv = document.getElementById('m-med');
+  if(mMedOv){ mMedOv.addEventListener('click', function(e){ if(e.target===this){ fecharModal('med'); medEditId=null; } }); }
+  var fMedObra = document.getElementById('f-med-obra');
+  if(fMedObra){ fMedObra.addEventListener('change', renderMedicoes); }
+  var fMedStat = document.getElementById('f-med-stat');
+  if(fMedStat){ fMedStat.addEventListener('change', renderMedicoes); }
+
+  // Checklist
+  var ckSalvar = document.getElementById('ck-salvar-btn');
+  if(ckSalvar){ ckSalvar.addEventListener('click', salvarChecklist); }
+  var ckLimpar = document.getElementById('ck-limpar');
+  if(ckLimpar){ ckLimpar.addEventListener('click', limparChecklist); }
+  var ckAllOk = document.getElementById('ck-all-ok');
+  if(ckAllOk){ ckAllOk.addEventListener('click', function(){
+    CK_ITENS.forEach(function(_,i){ ckState[i]=true; });
+    renderCK();
+    showToast('Todos os 22 itens marcados OK','ok');
+  }); }
+  var ckNenhum = document.getElementById('ck-nenhum');
+  if(ckNenhum){ ckNenhum.addEventListener('click', limparChecklist); }
+
+  // Relatorios
+  document.querySelectorAll('.rel-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var tipo = card.getAttribute('data-rel');
+      if(tipo) gerarRelatorio(tipo);
+    });
+  });
+  var relImpr = document.getElementById('rel-imprimir');
+  if(relImpr){ relImpr.addEventListener('click', function(){ window.print(); }); }
+  var relFech = document.getElementById('rel-fechar');
+  if(relFech){ relFech.addEventListener('click', function(){
+    var out = document.getElementById('rel-output');
+    if(out) out.style.display='none';
+  }); }
+  var relFiltro = document.getElementById('rel-obra-filtro');
+  if(relFiltro){ relFiltro.addEventListener('change', function(){
+    var out = document.getElementById('rel-output');
+    if(out) out.style.display='none';
+  }); }
+
 // BOOT
 loadDB();
 var sess=localStorage.getItem('ao_sess');
@@ -1373,6 +1805,1491 @@ function filtrarPorUnidade(cidade){
   ir('dashboard',document.querySelector('[data-page=dashboard]'));
   setTimeout(function(){showToast('Obras de '+cidade,'ok');},120);
 }
+
+
+// ── PORTAL DO CLIENTE ────────────────────────────────────────────
+function preencherSelectPortal(){
+  var sel = document.getElementById('portal-obra');
+  if(!sel) return;
+  var v = sel.value;
+  while(sel.options.length > 1) sel.remove(1);
+  DB.obras.forEach(function(o){
+    var opt = document.createElement('option');
+    opt.value = o.id;
+    opt.textContent = o.nome;
+    sel.appendChild(opt);
+  });
+  if(v) sel.value = v;
+}
+
+function renderPortal(){
+  preencherSelectPortal();
+  var div = document.getElementById('portal-body');
+  if(!div) return;
+  var obraId = document.getElementById('portal-obra').value;
+
+  if(!obraId){
+    div.innerHTML = '<div class="empty" style="margin-top:20px"><div class="empty-ico">&#128100;</div><h3>Selecione uma obra</h3><p>Escolha a obra acima para ver o portal completo do cliente com timeline, fotos, financeiro e qualidade.</p></div>';
+    return;
+  }
+
+  var obra = DB.obras.find(function(o){ return o.id === obraId; });
+  if(!obra) return;
+
+  var rdosO  = DB.rdos.filter(function(r){ return r.obra_id === obraId; });
+  var fotosO = DB.fotos ? DB.fotos.filter(function(f){ return f.obra_id === obraId; }) : [];
+  var medO   = DB.medicoes ? DB.medicoes.filter(function(m){ return m.obra_id === obraId; }) : [];
+  var ncO    = DB.ncs.filter(function(n){ return n.obra_id === obraId; });
+
+  var prog   = parseFloat(obra.progresso) || 0;
+  var nF     = parseInt(obra.n_fiadas) || 6;
+  var fAt    = Math.max(1, Math.ceil(prog / 100 * nF));
+  var totMed = medO.reduce(function(s,m){ return s + (parseFloat(m.valor)||0); }, 0);
+  var ncAb   = ncO.filter(function(n){ return n.status === 'Aberta'; }).length;
+
+  // Anel SVG de progresso
+  var circ = 2 * Math.PI * 40;
+  var dash = circ * (1 - prog / 100);
+  var corProg = prog >= 80 ? 'var(--gn)' : prog >= 40 ? 'var(--am)' : 'var(--tl)';
+
+  // Header
+  var headerHTML = '<div style="background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--b2);border-radius:14px;padding:20px;margin-bottom:14px">';
+  headerHTML += '<div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">';
+  headerHTML += '<div style="flex:1;min-width:200px">';
+  headerHTML += '<div style="font-size:18px;font-weight:800;margin-bottom:4px">' + obra.nome + '</div>';
+  headerHTML += '<div style="font-size:12px;color:var(--tx2);margin-bottom:14px">';
+  headerHTML += (obra.cliente ? obra.cliente + ' &nbsp;&middot;&nbsp; ' : '') + (obra.sistema||'iForms') + ' &nbsp;&middot;&nbsp; ' + (obra.cidade||'&mdash;') + '</div>';
+  headerHTML += '<div style="display:flex;gap:20px;flex-wrap:wrap;font-size:12px">';
+  headerHTML += '<div><span style="color:var(--tx3);display:block;font-size:10px">Area</span><strong>' + (obra.area ? obra.area + ' m2' : '&mdash;') + '</strong></div>';
+  headerHTML += '<div><span style="color:var(--tx3);display:block;font-size:10px">Inicio</span><strong>' + fd(obra.data_ini) + '</strong></div>';
+  headerHTML += '<div><span style="color:var(--tx3);display:block;font-size:10px">Entrega</span><strong>' + fd(obra.data_prev) + '</strong></div>';
+  headerHTML += '<div><span style="color:var(--tx3);display:block;font-size:10px">Valor</span><strong style="color:var(--tl)">' + mk(obra.valor) + '</strong></div>';
+  headerHTML += '</div></div>';
+
+  // Anel SVG
+  headerHTML += '<div style="text-align:center;flex-shrink:0">';
+  headerHTML += '<svg viewBox="0 0 100 100" style="width:90px;height:90px;transform:rotate(-90deg)">';
+  headerHTML += '<circle cx="50" cy="50" r="40" fill="none" stroke="var(--bg4)" stroke-width="9"/>';
+  headerHTML += '<circle cx="50" cy="50" r="40" fill="none" stroke="' + corProg + '" stroke-width="9" stroke-dasharray="' + circ.toFixed(1) + '" stroke-dashoffset="' + dash.toFixed(1) + '" stroke-linecap="round"/>';
+  headerHTML += '</svg>';
+  headerHTML += '<div style="font-size:20px;font-weight:900;color:' + corProg + ';margin-top:-70px;position:relative;z-index:1">' + prog + '%</div>';
+  headerHTML += '<div style="font-size:9px;color:var(--tx3);margin-top:52px">concluido</div>';
+  headerHTML += '</div></div>';
+
+  // Barra de fiadas
+  headerHTML += '<div style="margin-top:16px">';
+  headerHTML += '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:5px"><span>Fiadas iForms</span><span>' + fAt + ' / ' + nF + '</span></div>';
+  headerHTML += '<div style="display:grid;grid-template-columns:repeat(' + nF + ',1fr);gap:3px">';
+  for(var fi = 0; fi < nF; fi++){
+    var pct = fi < fAt - 1 ? 100 : fi === fAt - 1 ? Math.round((prog / 100 * nF - fi) * 100) : 0;
+    var bg  = pct === 100 ? 'var(--tl)' : pct > 0 ? 'var(--am)' : 'var(--bg4)';
+    var tc  = pct > 0 ? 'var(--tl)' : 'var(--tx3)';
+    headerHTML += '<div style="text-align:center"><div style="height:6px;background:' + bg + ';border-radius:3px;margin-bottom:3px"></div>';
+    headerHTML += '<div style="font-size:9px;color:' + tc + '">F' + (fi+1) + '</div></div>';
+  }
+  headerHTML += '</div></div></div>';
+
+  // KPIs rapidos
+  var kpiHTML = '<div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:14px">';
+  kpiHTML += '<div class="kpi" style="--kc:' + corProg + '"><div class="kpi-l">Progresso</div><div class="kpi-v" style="color:' + corProg + '">' + prog + '%</div><div class="kpi-s">' + obra.status + '</div></div>';
+  kpiHTML += '<div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">RDOs</div><div class="kpi-v" style="color:var(--bl)">' + rdosO.length + '</div><div class="kpi-s">diarios</div></div>';
+  kpiHTML += '<div class="kpi" style="--kc:var(--pu)"><div class="kpi-l">Fotos</div><div class="kpi-v" style="color:var(--pu)">' + fotosO.length + '</div><div class="kpi-s">registradas</div></div>';
+  kpiHTML += '<div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Medido</div><div class="kpi-v" style="color:var(--gn)">' + mk(totMed) + '</div><div class="kpi-s">medicoes</div></div>';
+  kpiHTML += '<div class="kpi" style="--kc:' + (ncAb ? 'var(--rd)' : 'var(--gn)') + '"><div class="kpi-l">NCs</div><div class="kpi-v" style="color:' + (ncAb ? 'var(--rd)' : 'var(--gn)') + '">' + ncO.length + '</div><div class="kpi-s">' + ncAb + ' aberta' + (ncAb !== 1 ? 's' : '') + '</div></div>';
+  kpiHTML += '</div>';
+
+  // Abas
+  var tabsHTML = '<div style="display:flex;border-bottom:1px solid var(--b1);margin-bottom:16px;overflow-x:auto" id="portal-tabs">';
+  var tabsList = [
+    {k:'timeline',  l:'&#128203; Timeline'},
+    {k:'fiadas',    l:'&#129513; Fiadas'},
+    {k:'financeiro',l:'&#128176; Financeiro'},
+    {k:'qualidade', l:'&#9989; Qualidade'}
+  ];
+  tabsList.forEach(function(t, i){
+    tabsHTML += '<div class="ptab' + (i===0?' ptab-act':'') + '" data-tab="' + t.k + '" style="padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid ' + (i===0?'var(--tl)':'transparent') + ';color:' + (i===0?'var(--tl)':'var(--tx2)') + ';transition:all .15s;white-space:nowrap">' + t.l + '</div>';
+  });
+  tabsHTML += '</div>';
+  tabsHTML += '<div id="portal-tab-content"></div>';
+
+  div.innerHTML = headerHTML + kpiHTML + tabsHTML;
+
+  // Event listeners nas abas
+  var tabs = div.querySelectorAll('[data-tab]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.style.borderBottomColor = 'transparent';
+        t.style.color = 'var(--tx2)';
+      });
+      tab.style.borderBottomColor = 'var(--tl)';
+      tab.style.color = 'var(--tl)';
+      renderPortalTab(tab.getAttribute('data-tab'), obra, rdosO, fotosO, medO, ncO, nF, fAt);
+    });
+  });
+
+  // Renderizar primeira aba
+  renderPortalTab('timeline', obra, rdosO, fotosO, medO, ncO, nF, fAt);
+}
+
+function renderPortalTab(tab, obra, rdosO, fotosO, medO, ncO, nF, fAt){
+  var div = document.getElementById('portal-tab-content');
+  if(!div) return;
+
+  if(tab === 'timeline'){
+    if(!rdosO.length){
+      div.innerHTML = '<div class="empty"><div class="empty-ico">&#128203;</div><h3>Nenhum RDO</h3><p>A timeline sera preenchida conforme os diarios de obra forem registrados.</p></div>';
+      return;
+    }
+    var h = '<div style="position:relative;padding-left:20px">';
+    rdosO.forEach(function(r, i){
+      var cCl = r.clima && r.clima.indexOf('Chuva') >= 0 ? 'var(--bl)' : r.clima && r.clima.indexOf('Ensolarado') >= 0 ? 'var(--am)' : 'var(--tx2)';
+      h += '<div style="display:flex;gap:14px;margin-bottom:12px">';
+      h += '<div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">';
+      h += '<div style="width:10px;height:10px;border-radius:50%;background:var(--tl);margin-top:4px;flex-shrink:0"></div>';
+      if(i < rdosO.length - 1) h += '<div style="width:2px;flex:1;background:var(--b1);min-height:24px;margin-top:2px"></div>';
+      h += '</div>';
+      h += '<div style="flex:1;background:var(--bg2);border:1px solid var(--b1);border-radius:9px;padding:11px 14px;margin-bottom:2px">';
+      h += '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">';
+      h += '<span style="font-weight:600">' + fd(r.data) + '</span>';
+      h += '<span style="color:' + cCl + '">' + (r.clima||'') + '</span></div>';
+      h += '<div style="font-size:11px;color:var(--tx2);margin-bottom:3px">';
+      if(r.fiada) h += '<span style="background:var(--tld);color:var(--tl);padding:1px 8px;border-radius:12px;font-size:10px;font-weight:600;margin-right:6px">' + r.fiada + '</span>';
+      h += r.funcionarios + ' func. &nbsp;&middot;&nbsp; ' + r.horas + 'h</div>';
+      if(r.etapas) h += '<div style="font-size:12px;color:var(--tx)">' + r.etapas + '</div>';
+      if(r.obs)    h += '<div style="font-size:11px;color:var(--tx3);font-style:italic;margin-top:2px">' + r.obs + '</div>';
+      h += '</div></div>';
+    });
+    h += '</div>';
+    div.innerHTML = h;
+
+  } else if(tab === 'fiadas'){
+    var h2 = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">';
+    h2 += '<tr style="background:var(--bg3)">';
+    h2 += '<th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--b1);color:var(--tx2)">Fiada</th>';
+    h2 += '<th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--b1);color:var(--tx2)">Status</th>';
+    h2 += '<th style="padding:9px 12px;border-bottom:1px solid var(--b1);color:var(--tx2)">Concretagem</th>';
+    h2 += '<th style="padding:9px 12px;border-bottom:1px solid var(--b1);color:var(--tx2)">Liberacao 72h</th>';
+    h2 += '<th style="padding:9px 12px;border-bottom:1px solid var(--b1);color:var(--tx2)">Equipe</th></tr>';
+    for(var fi2 = 0; fi2 < nF; fi2++){
+      var fn  = 'F' + (fi2 + 1);
+      var rdoF = rdosO.filter(function(r){ return r.fiada && r.fiada.indexOf(fn) >= 0; }).slice(-1)[0];
+      var dtConc = rdoF ? rdoF.data : null;
+      var dtLib  = dtConc ? (function(d){
+        var dt = new Date(d + 'T12:00:00');
+        dt.setDate(dt.getDate() + 3);
+        return dt.toLocaleDateString('pt-BR');
+      })(dtConc) : '&mdash;';
+      var st   = fi2 < fAt - 1 ? 'Concluida' : fi2 === fAt - 1 ? 'Em execucao' : 'Aguardando';
+      var stCor = {'Concluida':'var(--gn)','Em execucao':'var(--am)','Aguardando':'var(--tx3)'}[st];
+      var stBg  = {'Concluida':'rgba(61,214,140,.1)','Em execucao':'rgba(246,185,59,.1)','Aguardando':'var(--bg4)'}[st];
+      h2 += '<tr style="border-bottom:1px solid var(--b1)">';
+      h2 += '<td style="padding:9px 12px;font-weight:600">Fiada ' + (fi2+1) + '</td>';
+      h2 += '<td style="padding:9px 12px"><span style="background:' + stBg + ';color:' + stCor + ';padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600">' + st + '</span></td>';
+      h2 += '<td style="padding:9px 12px;color:var(--tx2)">' + fd(dtConc) + '</td>';
+      h2 += '<td style="padding:9px 12px;color:' + (st==='Em execucao'?'var(--am)':'var(--tx2)') + '">' + dtLib + '</td>';
+      h2 += '<td style="padding:9px 12px;color:var(--tx3)">' + (rdoF ? rdoF.funcionarios + ' func.' : '&mdash;') + '</td></tr>';
+    }
+    h2 += '</table></div>';
+    h2 += '<div style="margin-top:12px;background:var(--tld);border:1px solid var(--tlb);border-radius:9px;padding:10px 14px;font-size:12px;color:var(--tx2)">';
+    h2 += '&#8505;&#65039; Sistema <strong style="color:var(--tl)">' + (obra.sistema||'iForms') + '</strong> &nbsp;&middot;&nbsp; Cura minima: <strong>72 horas</strong> por fiada &nbsp;&middot;&nbsp; fck 25 MPa</div>';
+    div.innerHTML = h2;
+
+  } else if(tab === 'financeiro'){
+    var totPago  = medO.filter(function(m){ return m.status === 'Paga'; }).reduce(function(s,m){ return s+(parseFloat(m.valor)||0); },0);
+    var totMed2  = medO.reduce(function(s,m){ return s+(parseFloat(m.valor)||0); },0);
+    var pctMed   = obra.valor && totMed2 ? Math.round(totMed2 / parseFloat(obra.valor) * 100) : 0;
+    var saldoCont = (parseFloat(obra.valor)||0) - totMed2;
+
+    var h3 = '<div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px">';
+    h3 += '<div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Total medido</div><div class="kpi-v" style="color:var(--tl)">' + mk(totMed2) + '</div><div class="kpi-s">de ' + mk(obra.valor) + '</div></div>';
+    h3 += '<div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Pago</div><div class="kpi-v" style="color:var(--gn)">' + mk(totPago) + '</div><div class="kpi-s">quitado</div></div>';
+    h3 += '<div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Saldo</div><div class="kpi-v" style="color:var(--bl)">' + mk(saldoCont) + '</div><div class="kpi-s">a faturar</div></div>';
+    h3 += '</div>';
+    h3 += '<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);margin-bottom:4px"><span>Evolucao financeira</span><span style="color:var(--tl)">' + pctMed + '%</span></div>';
+    h3 += '<div style="height:12px;background:var(--bg4);border-radius:6px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--gn),var(--tl));border-radius:6px;width:' + pctMed + '%;transition:width .6s"></div></div></div>';
+
+    if(!medO.length){
+      h3 += '<div class="empty"><div class="empty-ico">&#128176;</div><h3>Nenhuma medicao</h3><p>As medicoes aparecem conforme registradas no modulo Financeiro.</p></div>';
+    } else {
+      h3 += '<table style="width:100%;border-collapse:collapse;font-size:12px">';
+      h3 += '<tr style="background:var(--bg3)"><th style="padding:8px 12px;text-align:left;border-bottom:1px solid var(--b1);color:var(--tx2)">Medicao</th><th style="padding:8px 12px;border-bottom:1px solid var(--b1);color:var(--tx2)">Periodo</th><th style="padding:8px 12px;text-align:right;border-bottom:1px solid var(--b1);color:var(--tx2)">Valor</th><th style="padding:8px 12px;border-bottom:1px solid var(--b1);color:var(--tx2)">Status</th><th style="padding:8px 12px;border-bottom:1px solid var(--b1);color:var(--tx2)">Vencto</th></tr>';
+      medO.forEach(function(m){
+        var mc = corS ? corS(m.status) : '#7a8aa0';
+        var mb = bgS ? bgS(m.status) : 'rgba(70,85,106,.15)';
+        h3 += '<tr style="border-bottom:1px solid var(--b1)">';
+        h3 += '<td style="padding:8px 12px;font-weight:600">Med. ' + (m.numero||'') + '</td>';
+        h3 += '<td style="padding:8px 12px;color:var(--tx2)">' + (m.periodo||'&mdash;') + '</td>';
+        h3 += '<td style="padding:8px 12px;text-align:right;font-weight:700;color:var(--tl)">' + mk(m.valor) + '</td>';
+        h3 += '<td style="padding:8px 12px"><span style="background:' + mb + ';color:' + mc + ';padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600">' + m.status + '</span></td>';
+        h3 += '<td style="padding:8px 12px;color:var(--tx3)">' + fd(m.vencimento) + '</td></tr>';
+      });
+      h3 += '</table>';
+    }
+    div.innerHTML = h3;
+
+  } else if(tab === 'qualidade'){
+    var ncAb2 = ncO.filter(function(n){ return n.status === 'Aberta'; }).length;
+    var ncFe2 = ncO.filter(function(n){ return n.status === 'Fechada'; }).length;
+
+    var h4 = '<div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px">';
+    h4 += '<div class="kpi" style="--kc:' + (ncAb2?'var(--rd)':'var(--gn)') + '"><div class="kpi-l">Abertas</div><div class="kpi-v" style="color:' + (ncAb2?'var(--rd)':'var(--gn)') + '">' + ncAb2 + '</div><div class="kpi-s">' + (ncAb2?'atencao':'tudo ok') + '</div></div>';
+    h4 += '<div class="kpi" style="--kc:var(--gn)"><div class="kpi-l">Fechadas</div><div class="kpi-v" style="color:var(--gn)">' + ncFe2 + '</div></div>';
+    h4 += '<div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Total NCs</div><div class="kpi-v" style="color:var(--tl)">' + ncO.length + '</div></div>';
+    h4 += '</div>';
+
+    if(!ncO.length){
+      h4 += '<div class="empty"><div class="empty-ico">&#9989;</div><h3>Sem NCs</h3><p>Nenhuma nao conformidade registrada nesta obra.</p></div>';
+    } else {
+      ncO.forEach(function(n){
+        var nc = corS ? corS(n.status) : '#e05c5c';
+        h4 += '<div style="background:var(--bg2);border:1px solid var(--b1);border-radius:9px;padding:11px 14px;margin-bottom:8px;display:flex;gap:10px">';
+        h4 += '<div style="width:8px;height:8px;border-radius:50%;background:' + nc + ';flex-shrink:0;margin-top:5px"></div>';
+        h4 += '<div style="flex:1"><div style="font-weight:600;font-size:13px;margin-bottom:2px">' + n.titulo + '</div>';
+        h4 += '<div style="font-size:11px;color:var(--tx3)">' + (n.tipo||'') + ' &middot; ' + (n.fiada||'') + ' &middot; <span style="color:' + nc + '">' + n.status + '</span></div>';
+        if(n.acao) h4 += '<div style="font-size:11px;color:var(--tx2);margin-top:3px">Acao: ' + n.acao + '</div>';
+        h4 += '</div></div>';
+      });
+    }
+    div.innerHTML = h4;
+  }
+}
+
+
+
+// ── FOTOS COM GPS ────────────────────────────────────────────────
+var gpsCoords = null;
+
+function obterGPS(){
+  var dot = document.getElementById('gps-dot');
+  var txt = document.getElementById('gps-txt');
+  if(!navigator.geolocation){
+    if(txt) txt.textContent = 'GPS nao disponivel neste navegador';
+    return;
+  }
+  if(dot) dot.style.background = 'var(--am)';
+  if(txt){ txt.textContent = 'Obtendo localizacao...'; txt.style.color = 'var(--tx2)'; }
+
+  navigator.geolocation.getCurrentPosition(
+    function(p){
+      gpsCoords = {
+        lat: p.coords.latitude,
+        lng: p.coords.longitude,
+        acc: Math.round(p.coords.accuracy)
+      };
+      if(dot) dot.style.background = 'var(--gn)';
+      if(txt){
+        txt.style.color = 'var(--gn)';
+        txt.textContent = 'GPS ativo  ' + gpsCoords.lat.toFixed(5) + ', ' + gpsCoords.lng.toFixed(5) + '  (precisao: ' + gpsCoords.acc + 'm)';
+      }
+    },
+    function(err){
+      // Fallback para Soledade/RS se permissao negada
+      gpsCoords = { lat: -28.8123, lng: -52.5094, acc: 999 };
+      if(dot) dot.style.background = 'var(--am)';
+      if(txt){
+        txt.style.color = 'var(--am)';
+        txt.textContent = 'GPS: permissao negada  usando localizacao padrao (Soledade/RS)';
+      }
+    },
+    { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
+  );
+}
+
+function processarFotos(input){
+  var obraId = document.getElementById('f-fotos-obra') ?
+    document.getElementById('f-fotos-obra').value : '';
+  var files = Array.from(input.files);
+  if(!files.length) return;
+
+  var processados = 0;
+  files.forEach(function(file){
+    // Comprimir antes de salvar
+    var img = new Image();
+    var reader = new FileReader();
+    reader.onload = function(e){
+      img.onload = function(){
+        // Canvas para comprimir
+        var canvas = document.createElement('canvas');
+        var maxW = 800;
+        var scale = img.width > maxW ? maxW / img.width : 1;
+        canvas.width  = Math.round(img.width  * scale);
+        canvas.height = Math.round(img.height * scale);
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var dataUrl = canvas.toDataURL('image/jpeg', 0.72);
+
+        var f = {
+          id:      uid(),
+          obra_id: obraId || null,
+          url:     dataUrl,
+          lat:     gpsCoords ? gpsCoords.lat : 0,
+          lng:     gpsCoords ? gpsCoords.lng : 0,
+          acc:     gpsCoords ? gpsCoords.acc : 0,
+          nome:    file.name,
+          created: new Date().toISOString()
+        };
+        DB.fotos.unshift(f);
+        processados++;
+        if(processados === files.length){
+          saveDB();
+          renderFotos();
+          atualizarFotoStats();
+          showToast(files.length + ' foto' + (files.length>1?'s':'') + ' salva' + (files.length>1?'s':'') + ' com GPS', 'ok');
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderFotos(){
+  var g = document.getElementById('fotos-grid');
+  if(!g) return;
+  g.innerHTML = '';
+
+  // Preencher select de obras
+  var sel = document.getElementById('f-fotos-obra');
+  if(sel){
+    var v = sel.value;
+    while(sel.options.length > 1) sel.remove(1);
+    DB.obras.forEach(function(o){
+      var opt = document.createElement('option');
+      opt.value = o.id;
+      opt.textContent = o.nome;
+      sel.appendChild(opt);
+    });
+    if(v) sel.value = v;
+  }
+
+  var filtro = sel ? sel.value : '';
+  var list = filtro ?
+    DB.fotos.filter(function(f){ return f.obra_id === filtro; }) :
+    DB.fotos;
+
+  atualizarFotoStats();
+
+  if(!list.length){
+    var em = document.createElement('div');
+    em.style.cssText = 'grid-column:1/-1;text-align:center;padding:48px 20px';
+    em.innerHTML = '<div style="font-size:40px;margin-bottom:12px">&#128247;</div>';
+    em.innerHTML += '<div style="font-size:15px;font-weight:700;margin-bottom:6px">Nenhuma foto</div>';
+    em.innerHTML += '<div style="font-size:12px;color:var(--tx2);max-width:280px;margin:0 auto">Use o botao "Capturar foto" para tirar fotos diretamente pela camera do dispositivo com GPS automatico.</div>';
+    g.appendChild(em);
+    return;
+  }
+
+  list.forEach(function(f){
+    var ob = DB.obras.find(function(o){ return o.id === f.obra_id; });
+    var dt = f.created ?
+      new Date(f.created).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '&mdash;';
+
+    var card = document.createElement('div');
+    card.style.cssText = 'background:var(--bg2);border:1px solid var(--b1);border-radius:11px;overflow:hidden;transition:transform .15s,box-shadow .15s';
+    card.addEventListener('mouseenter', function(){ this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.3)'; });
+    card.addEventListener('mouseleave', function(){ this.style.transform='';this.style.boxShadow=''; });
+
+    // Imagem
+    var img = document.createElement('img');
+    img.src = f.url;
+    img.style.cssText = 'width:100%;aspect-ratio:4/3;object-fit:cover;display:block';
+    img.loading = 'lazy';
+    img.alt = 'Foto da obra';
+
+    // Abrir em fullscreen ao clicar
+    img.style.cursor = 'pointer';
+    (function(url){ img.addEventListener('click', function(){ abrirFotoFullscreen(url); }); })(f.url);
+
+    // Info
+    var info = document.createElement('div');
+    info.style.cssText = 'padding:9px 12px';
+
+    var obraEl = document.createElement('div');
+    obraEl.style.cssText = 'font-weight:600;font-size:12px;color:var(--tl);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+    obraEl.textContent = ob ? ob.nome : 'Obra nao vinculada';
+
+    var dtEl = document.createElement('div');
+    dtEl.style.cssText = 'font-size:11px;color:var(--tx3);margin-bottom:3px';
+    dtEl.textContent = dt;
+
+    var gpsEl = document.createElement('div');
+    gpsEl.style.cssText = 'font-size:10px;display:flex;align-items:center;gap:4px';
+    if(f.lat && f.acc < 500){
+      gpsEl.innerHTML = '<span style="color:var(--gn)">&#128205;</span><span style="color:var(--tx2)">' +
+        f.lat.toFixed(5) + ', ' + f.lng.toFixed(5) +
+        '</span><span style="color:var(--tx3)"> (' + f.acc + 'm)</span>';
+    } else {
+      gpsEl.innerHTML = '<span style="color:var(--am)">&#128205;</span><span style="color:var(--tx3)">GPS impreciso</span>';
+    }
+
+    // Botao excluir
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px solid var(--b1)';
+
+    var mapLink = document.createElement('a');
+    mapLink.href = 'https://www.google.com/maps?q=' + f.lat + ',' + f.lng;
+    mapLink.target = '_blank';
+    mapLink.style.cssText = 'font-size:10px;color:var(--bl);text-decoration:none';
+    mapLink.textContent = 'Ver no mapa';
+
+    var delBtn = document.createElement('button');
+    delBtn.className = 'btn sm';
+    delBtn.textContent = 'X';
+    delBtn.style.color = 'var(--rd)';
+    delBtn.style.padding = '3px 8px';
+    (function(fid){ delBtn.addEventListener('click', function(){
+      document.getElementById('del-msg').textContent = 'Excluir esta foto?';
+      delFn = function(){
+        DB.fotos = DB.fotos.filter(function(x){ return x.id !== fid; });
+        saveDB(); renderFotos(); showToast('Foto removida','ok');
+      };
+      abrirModal('del');
+    }); })(f.id);
+
+    actions.appendChild(mapLink);
+    actions.appendChild(delBtn);
+
+    info.appendChild(obraEl);
+    info.appendChild(dtEl);
+    info.appendChild(gpsEl);
+    info.appendChild(actions);
+
+    card.appendChild(img);
+    card.appendChild(info);
+    g.appendChild(card);
+  });
+}
+
+function atualizarFotoStats(){
+  var hoje = new Date().toISOString().slice(0,10);
+  var comGPS  = DB.fotos.filter(function(f){ return f.lat && f.acc < 500; }).length;
+  var obrasIds = {};
+  DB.fotos.forEach(function(f){ if(f.obra_id) obrasIds[f.obra_id] = 1; });
+  var qtHoje  = DB.fotos.filter(function(f){ return f.created && f.created.slice(0,10) === hoje; }).length;
+
+  var ftTot = document.getElementById('ft-total');
+  var ftGps = document.getElementById('ft-gps');
+  var ftOb  = document.getElementById('ft-obras');
+  var ftHj  = document.getElementById('ft-hoje');
+  if(ftTot) ftTot.textContent = DB.fotos.length;
+  if(ftGps) ftGps.textContent = comGPS;
+  if(ftOb)  ftOb.textContent  = Object.keys(obrasIds).length;
+  if(ftHj)  ftHj.textContent  = qtHoje;
+}
+
+function abrirFotoFullscreen(url){
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out';
+  var img = document.createElement('img');
+  img.src = url;
+  img.style.cssText = 'max-width:95vw;max-height:92vh;object-fit:contain;border-radius:8px';
+  var close = document.createElement('div');
+  close.style.cssText = 'position:fixed;top:20px;right:24px;color:#fff;font-size:24px;cursor:pointer;background:rgba(0,0,0,.5);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:10000';
+  close.textContent = 'X';
+  overlay.appendChild(img);
+  overlay.appendChild(close);
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', function(){ document.body.removeChild(overlay); });
+}
+
+
+
+// ── IA DE CAPTACAO ───────────────────────────────────────────────
+var iaMsgs = [];
+
+var IA_SYSTEM = 'Voce e a IA de Captacao da Alpha Obras, especialista em prospectar clientes para obras iForms ICF no Rio Grande do Sul (Soledade, Cruz Alta, Passo Fundo e regiao). Conhecimento tecnico: sistema iForms ICF (Insulated Concrete Forms), blocos EPS + concreto fck25, cura 72h por fiada, slump 18cm, 55dB isolamento acustico, 50% mais rapido que alvenaria, residuos zero. Planos Alpha: Campo R$97/mes, Starter R$497/mes, Pro R$997/mes. Responda sempre em portugues brasileiro, de forma direta, pratica e com dados tecnicos quando relevante.';
+
+var IA_FALLBACKS = {
+  'script':      '&#128242; Script WhatsApp para iForms ICF:\n\n"Ola [Nome]! Sou [Seu Nome] da Alpha Obras, especialistas em iForms ICF no RS.\n\nSeu projeto merece o que ha de mais avancado:\n&#9989; 50% mais rapido que alvenaria\n&#9989; Isolamento 55dB - silencio real\n&#9989; Concreto fck25 - resistencia comprovada\n&#9989; Residuos pratica zero\n\nPosso enviar um comparativo gratuito?\nQual cidade e o seu projeto?"\n\nDica: Personalize com o nome e a cidade do lead.',
+  'argumento':   '&#9876;&#65039; iForms ICF vs Alvenaria:\n\nVelocidade: 50% mais rapido (menos custo de MO)\nIsola: 55dB vs 35dB (diferencial de venda)\nTermica: 0,29 W/m2K vs 2,0+ (economia de 50% energia)\nResistencia: fck 25 MPa estrutural\nResiduos: <2% vs 15-20% (sustentabilidade)\nCurva: 72h por fiada (previsibilidade)\n\nFrase de fechamento:\n"Com iForms, seu cliente economiza R$500-900/mes em energia por 30 anos. O diferencial se paga sozinho."',
+  'perfil':      '&#127919; Perfis ideais no RS:\n\n1. Incorporadoras medias (5-20 casas/ano) - melhor ROI\n2. Construtoras que buscam diferencial tecnico\n3. Prefeituras e COHAB (ESG + agilidade)\n4. Clientes classe A/B (isolamento e conforto)\n5. Industriais e galpoes (velocidade)\n\nRegioes quentes: Passo Fundo, Cruz Alta, Soledade, Carazinho, Erechim\nAbordagem: foco em custo total de obra + economia energia',
+  'qualific':    '&#127775; Como qualificar um lead iForms ICF:\n\nPerguntas-chave:\n1. "Qual o tamanho do projeto?" (area m2)\n2. "Qual o prazo ideal de entrega?" (velocidade é diferencial)\n3. "Ja ouviu falar de ICF/iForms?" (nível educacao)\n4. "Qual o orcamento previsto?" (qualifica financeiro)\n5. "Prioriza economia de energia?" (qualifica interesse)\n\nLead quente: projeto >120m2, prazo apertado, aberto a novas tecnologias\nLead frio: ja decidiu material, sem flexibilidade de prazo',
+  'reuniao':     '&#128203; Roteiro de reuniao iForms ICF:\n\n1. Abertura (2 min): agradecer, alinhar pauta\n2. Diagnostico (5 min): tamanho, prazo, prioridades\n3. Apresentacao (10 min): o que e ICF, como funciona, numeros\n4. Comparativo (5 min): tabela ICF vs alvenaria\n5. Cases (3 min): obras realizadas em cidades proximas\n6. Proposta (5 min): area, sistema, valor estimado\n7. Fechamento: "Quando podemos iniciar o projeto?"\n\nMaterial: trazer fotos de obras acabadas',
+  'preco':       '&#128200; Precificacao iForms ICF 200m2 / BDI 28%:\n\nBase iForms 18+12: R$850/m2\nCusto direto: 200 x R$850 = R$170.000\nBDI 28%: R$47.600\nTotal: R$217.600 (R$1.088/m2)\n\nConcreto estimado: 200 x 0,11 = 22 m3\nPrazo estimado: 60-75 dias\n\nDiferencial: alvenaria similar custaria R$1.100-1.300/m2\ncom prazo 30-40% maior'
+};
+
+function getFallbackIA(msg){
+  var m = msg.toLowerCase();
+  if(m.indexOf('script') >= 0 || m.indexOf('whatsapp') >= 0) return IA_FALLBACKS['script'];
+  if(m.indexOf('argumento') >= 0 || m.indexOf('convencional') >= 0) return IA_FALLBACKS['argumento'];
+  if(m.indexOf('perfil') >= 0 || m.indexOf('cliente') >= 0) return IA_FALLBACKS['perfil'];
+  if(m.indexOf('qualific') >= 0 || m.indexOf('lead') >= 0) return IA_FALLBACKS['qualific'];
+  if(m.indexOf('reuniao') >= 0 || m.indexOf('roteiro') >= 0) return IA_FALLBACKS['reuniao'];
+  if(m.indexOf('preco') >= 0 || m.indexOf('precific') >= 0 || m.indexOf('orcamento') >= 0) return IA_FALLBACKS['preco'];
+  return 'Sou a IA de Captacao da Alpha Obras! Posso ajudar com:\n&#128242; Scripts WhatsApp\n&#127919; Perfis de clientes ideais\n&#9876;&#65039; iForms vs convencional\n&#128200; Precificacao\n&#128203; Roteiros de reuniao\n\nFaca sua pergunta!';
+}
+
+function initIA(){
+  iaMsgs = [];
+  renderIAMsgs();
+  var msgBoas = {
+    role: 'assistant',
+    content: 'Ola! Sou a IA de Captacao da Alpha Obras.\n\nEspecializada em:\n&#127919; Perfis ideais de clientes iForms ICF no RS\n&#128242; Scripts de abordagem (WhatsApp, ligacao)\n&#9876;&#65039; iForms ICF vs alvenaria convencional\n&#128203; Roteiros de reuniao e qualificacao\n&#128200; Precificacao e BDI\n\nUse os botoes de acao rapida ou escreva sua pergunta!'
+  };
+  iaMsgs.push(msgBoas);
+  renderIAMsgs();
+}
+
+function renderIAMsgs(){
+  var div = document.getElementById('ia-msgs');
+  if(!div) return;
+  div.innerHTML = '';
+  iaMsgs.forEach(function(m){
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;' + (m.role==='user' ? 'justify-content:flex-end' : 'justify-content:flex-start');
+    var bubble = document.createElement('div');
+    bubble.style.cssText = 'max-width:82%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.6;white-space:pre-wrap;' +
+      (m.role==='user' ?
+        'background:var(--tl);color:#0a0d14;border-radius:12px 12px 4px 12px;' :
+        'background:var(--bg3);border:1px solid var(--b1);border-radius:12px 12px 12px 4px;');
+    bubble.textContent = m.content;
+    wrap.appendChild(bubble);
+    div.appendChild(wrap);
+  });
+  div.scrollTop = div.scrollHeight;
+}
+
+function enviarIA(){
+  var inp = document.getElementById('ia-inp');
+  if(!inp) return;
+  var txt = inp.value.trim();
+  if(!txt) return;
+  inp.value = '';
+  iaMsgs.push({role:'user', content:txt});
+  renderIAMsgs();
+  chamarAPI(txt);
+}
+
+function chamarAPI(txt){
+  var div = document.getElementById('ia-msgs');
+  if(!div) return;
+
+  // Indicador de digitacao
+  var typing = document.createElement('div');
+  typing.style.cssText = 'display:flex;justify-content:flex-start';
+  typing.id = 'ia-typing';
+  var tb = document.createElement('div');
+  tb.style.cssText = 'background:var(--bg3);border:1px solid var(--b1);border-radius:12px;padding:10px 14px;display:flex;gap:5px;align-items:center';
+  for(var i=0; i<3; i++){
+    var dot = document.createElement('div');
+    dot.style.cssText = 'width:7px;height:7px;border-radius:50%;background:var(--pu);animation:pulse 1s ' + (i*0.2) + 's infinite';
+    tb.appendChild(dot);
+  }
+  typing.appendChild(tb);
+  div.appendChild(typing);
+  div.scrollTop = div.scrollHeight;
+
+  // Chamar API Claude
+  var msgs = iaMsgs.map(function(m){ return {role:m.role, content:m.content}; });
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 800,
+      system: IA_SYSTEM,
+      messages: msgs
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    var typEl = document.getElementById('ia-typing');
+    if(typEl) typEl.remove();
+    var resposta = (data.content && data.content[0] && data.content[0].text) ?
+      data.content[0].text : getFallbackIA(txt);
+    iaMsgs.push({role:'assistant', content:resposta});
+    renderIAMsgs();
+  })
+  .catch(function(){
+    var typEl = document.getElementById('ia-typing');
+    if(typEl) typEl.remove();
+    var fallback = getFallbackIA(txt);
+    iaMsgs.push({role:'assistant', content:fallback});
+    renderIAMsgs();
+  });
+}
+
+
+
+// ── CRONOGRAMA GANTT ─────────────────────────────────────────────
+function preencherGanttObra(){
+  var sel = document.getElementById('gantt-obra');
+  if(!sel) return;
+  var v = sel.value;
+  while(sel.options.length > 1) sel.remove(1);
+  DB.obras.forEach(function(o){
+    var opt = document.createElement('option');
+    opt.value = o.id; opt.textContent = o.nome;
+    sel.appendChild(opt);
+  });
+  if(v) sel.value = v;
+}
+
+function renderGantt(){
+  preencherGanttObra();
+  var obraId = document.getElementById('gantt-obra') ?
+    document.getElementById('gantt-obra').value : '';
+  var area   = document.getElementById('gantt-area');
+  var kpis   = document.getElementById('cron-kpis');
+  var sist   = document.getElementById('cron-sistema');
+  if(!area) return;
+
+  if(!obraId){
+    area.innerHTML = '<div style="text-align:center;padding:32px;color:var(--tx3);font-size:13px">&#128197; Selecione uma obra acima para ver o cronograma Gantt de fiadas</div>';
+    if(kpis) kpis.style.display = 'none';
+    renderCronLegenda(null);
+    renderCronTimeline([]);
+    return;
+  }
+
+  var obra   = DB.obras.find(function(o){ return o.id === obraId; });
+  if(!obra) return;
+
+  var nF     = parseInt(obra.n_fiadas) || 6;
+  var prog   = parseFloat(obra.progresso) || 0;
+  var fAt    = Math.max(1, Math.ceil(prog / 100 * nF));
+  var rdosO  = DB.rdos.filter(function(r){ return r.obra_id === obraId; });
+  var ncsO   = DB.ncs.filter(function(n){ return n.obra_id === obraId && n.status === 'Aberta'; });
+
+  // Calcular dias de obra
+  var diasObra = 0;
+  if(obra.data_ini){
+    var ini = new Date(obra.data_ini + 'T12:00:00');
+    diasObra = Math.round((Date.now() - ini.getTime()) / 86400000);
+  }
+
+  // KPIs
+  if(kpis) kpis.style.display = 'block';
+  var el = function(id){ return document.getElementById(id); };
+  if(el('ck-prog')) el('ck-prog').textContent = prog + '%';
+  if(el('ck-fat'))  el('ck-fat').textContent  = 'F' + fAt;
+  if(el('ck-rdos')) el('ck-rdos').textContent = rdosO.length;
+  if(el('ck-dias')) el('ck-dias').textContent = diasObra > 0 ? diasObra : '—';
+  if(el('ck-ncs'))  el('ck-ncs').textContent  = ncsO.length;
+  if(sist) sist.textContent = obra.sistema || 'iForms';
+
+  // Etapas do Gantt
+  var ETAPAS = [
+    {k:'montagem',    l:'Montagem blocos',  c:'#5b9cf6'},
+    {k:'armacao',     l:'Armacao CA-50',    c:'#f6b93b'},
+    {k:'instalacoes', l:'Instalacoes',      c:'#9f8cf5'},
+    {k:'concretagem', l:'Concretagem fck25',c:'#e05c5c'},
+    {k:'cura',        l:'Cura 72h',         c:'#00cba8'},
+    {k:'acabamento',  l:'Acabamento EPS',   c:'#3dd68c'}
+  ];
+
+  // Calcular datas de cada fiada com base nos RDOs
+  var fiadaDatas = {};
+  rdosO.forEach(function(r){
+    if(!r.fiada || !r.data) return;
+    for(var fi = 1; fi <= nF; fi++){
+      if(r.fiada.indexOf('F'+fi) >= 0){
+        if(!fiadaDatas['F'+fi]) fiadaDatas['F'+fi] = [];
+        fiadaDatas['F'+fi].push(r.data);
+      }
+    }
+  });
+
+  // Largura total do gantt
+  var COL_W  = 80; // px por fiada
+  var ROW_H  = 36;
+  var LABEL_W = 130;
+  var totalW  = LABEL_W + nF * COL_W + 20;
+
+  var html = '<div style="min-width:' + totalW + 'px">';
+
+  // Header: nomes das fiadas
+  html += '<div style="display:flex;margin-bottom:4px">';
+  html += '<div style="width:' + LABEL_W + 'px;flex-shrink:0"></div>';
+  for(var fi = 0; fi < nF; fi++){
+    var isAtual = (fi === fAt - 1);
+    var isDone  = (fi < fAt - 1);
+    html += '<div style="width:' + COL_W + 'px;text-align:center;font-size:11px;font-weight:600;color:' +
+      (isAtual ? 'var(--am)' : isDone ? 'var(--tl)' : 'var(--tx3)') + '">';
+    html += 'F' + (fi+1);
+    if(isAtual) html += ' &#9654;';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Linha de datas das fiadas
+  html += '<div style="display:flex;margin-bottom:10px">';
+  html += '<div style="width:' + LABEL_W + 'px;flex-shrink:0;font-size:10px;color:var(--tx3)">Fiada / data</div>';
+  for(var fi2 = 0; fi2 < nF; fi2++){
+    var fn2 = 'F' + (fi2+1);
+    var dts = fiadaDatas[fn2];
+    var dtStr = dts && dts.length ? fd(dts[0]) : '&mdash;';
+    html += '<div style="width:' + COL_W + 'px;text-align:center;font-size:10px;color:var(--tx3)">' + dtStr + '</div>';
+  }
+  html += '</div>';
+
+  // Linhas do Gantt por etapa
+  ETAPAS.forEach(function(et, etIdx){
+    html += '<div style="display:flex;align-items:center;margin-bottom:3px">';
+    html += '<div style="width:' + LABEL_W + 'px;flex-shrink:0;font-size:11px;color:var(--tx2);padding-right:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + et.l + '</div>';
+
+    for(var fi3 = 0; fi3 < nF; fi3++){
+      var isDone3  = fi3 < fAt - 1;
+      var isAtual3 = fi3 === fAt - 1;
+      var isWait   = fi3 > fAt - 1;
+
+      // Progresso dentro da fiada atual (baseado na etapa)
+      var pctEtapa = 0;
+      if(isDone3){
+        pctEtapa = 100;
+      } else if(isAtual3){
+        // Dividir o progresso da fiada pelas etapas
+        var progFiada = (prog / 100 * nF - fi3) * 100;
+        var etapaPct  = (progFiada / 100 * ETAPAS.length - etIdx) * 100;
+        pctEtapa = Math.max(0, Math.min(100, etapaPct));
+      }
+
+      var bgTrack = isWait ? 'var(--bg4)' : 'rgba(0,0,0,.2)';
+      var hasRDO  = fiadaDatas['F'+(fi3+1)] && fiadaDatas['F'+(fi3+1)].length > 0;
+
+      html += '<div style="width:' + COL_W + 'px;padding:0 3px">';
+      html += '<div style="height:' + ROW_H*0.6 + 'px;background:' + bgTrack + ';border-radius:4px;overflow:hidden;position:relative">';
+
+      if(!isWait){
+        html += '<div style="height:100%;width:' + pctEtapa + '%;background:' + et.c + ';border-radius:4px;transition:width .6s"></div>';
+      }
+
+      // Marcador de RDO
+      if(hasRDO && (isDone3 || isAtual3)){
+        html += '<div style="position:absolute;top:2px;right:3px;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.8"></div>';
+      }
+
+      html += '</div></div>';
+    }
+    html += '</div>';
+  });
+
+  // Linha de progresso total
+  html += '<div style="display:flex;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--b1)">';
+  html += '<div style="width:' + LABEL_W + 'px;flex-shrink:0;font-size:11px;font-weight:600;color:var(--tl)">Progresso total</div>';
+  for(var fi4 = 0; fi4 < nF; fi4++){
+    var isDoneT  = fi4 < fAt - 1;
+    var isAtualT = fi4 === fAt - 1;
+    var pctT     = isDoneT ? 100 : isAtualT ? Math.round((prog/100*nF - fi4)*100) : 0;
+    var bgT      = isDoneT ? 'var(--tl)' : isAtualT ? 'var(--am)' : 'var(--bg4)';
+    html += '<div style="width:' + COL_W + 'px;padding:0 3px">';
+    html += '<div style="height:8px;background:var(--bg4);border-radius:4px;overflow:hidden">';
+    if(pctT > 0) html += '<div style="height:100%;width:' + pctT + '%;background:' + bgT + ';border-radius:4px;transition:width .6s"></div>';
+    html += '</div>';
+    html += '<div style="text-align:center;font-size:9px;color:' + (pctT > 0 ? bgT : 'var(--tx3)') + ';margin-top:2px">' + (pctT > 0 ? pctT+'%' : '') + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Info cura
+  html += '<div style="margin-top:12px;background:var(--tld);border:1px solid rgba(0,203,168,.15);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--tx2);display:flex;gap:16px;flex-wrap:wrap">';
+  html += '<span>&#9200; Cura minima por fiada: <strong style="color:var(--tl)">72 horas</strong></span>';
+  html += '<span>&#127928; Concreto: <strong>fck 25 MPa</strong></span>';
+  html += '<span>&#128163; Slump: <strong>18 &#177; 2 cm</strong></span>';
+  if(obra.data_prev) html += '<span>&#127937; Entrega prevista: <strong>' + fd(obra.data_prev) + '</strong></span>';
+  html += '</div>';
+
+  html += '</div>'; // fim min-width div
+  area.innerHTML = html;
+
+  renderCronTimeline(rdosO);
+  renderCronLegenda(ETAPAS);
+}
+
+function renderCronTimeline(rdosO){
+  var div = document.getElementById('cron-timeline');
+  if(!div) return;
+  if(!rdosO || !rdosO.length){
+    div.innerHTML = '<div style="padding:14px 16px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum RDO registrado para esta obra</div>';
+    return;
+  }
+  var html = '';
+  rdosO.slice(0, 15).forEach(function(r){
+    html += '<div style="padding:9px 16px;border-bottom:1px solid var(--b1);font-size:12px">';
+    html += '<div style="display:flex;justify-content:space-between;margin-bottom:2px">';
+    html += '<span style="font-weight:600">' + fd(r.data) + '</span>';
+    html += '<span style="color:var(--tl);font-size:10px;font-weight:600">' + (r.fiada||'') + '</span>';
+    html += '</div>';
+    html += '<div style="color:var(--tx2)">' + r.funcionarios + ' func. &nbsp;&middot;&nbsp; ' + r.horas + 'h &nbsp;&middot;&nbsp; ' + r.clima + '</div>';
+    if(r.etapas) html += '<div style="color:var(--tx3);font-size:11px;margin-top:2px">' + r.etapas + '</div>';
+    html += '</div>';
+  });
+  div.innerHTML = html;
+}
+
+function renderCronLegenda(etapas){
+  var div = document.getElementById('cron-legenda');
+  if(!div) return;
+
+  var statusItems = [
+    {c:'var(--tl)',  l:'Concluida (100%)'},
+    {c:'var(--am)',  l:'Em execucao'},
+    {c:'var(--bg4)', l:'Aguardando'},
+    {c:'#fff',       l:'Marcador de RDO'}
+  ];
+
+  var html = '<div style="margin-bottom:12px">';
+  html += '<div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px">Status das fiadas</div>';
+  statusItems.forEach(function(s){
+    html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px">';
+    html += '<div style="width:16px;height:8px;border-radius:3px;background:' + s.c + ';flex-shrink:0"></div>';
+    html += '<span style="color:var(--tx2)">' + s.l + '</span></div>';
+  });
+  html += '</div>';
+
+  if(etapas && etapas.length){
+    html += '<div style="border-top:1px solid var(--b1);padding-top:10px">';
+    html += '<div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px">Etapas</div>';
+    etapas.forEach(function(et){
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px">';
+      html += '<div style="width:16px;height:8px;border-radius:3px;background:' + et.c + ';flex-shrink:0"></div>';
+      html += '<span style="color:var(--tx2)">' + et.l + '</span></div>';
+    });
+    html += '</div>';
+  }
+
+  div.innerHTML = html;
+}
+
+
+
+// ── MEDICOES ─────────────────────────────────────────────────────
+var medEditId = null;
+
+function preencherMedObras(){
+  ['med-obra','f-med-obra'].forEach(function(id){
+    var sel = document.getElementById(id);
+    if(!sel) return;
+    var v = sel.value;
+    while(sel.options.length > 1) sel.remove(1);
+    DB.obras.forEach(function(o){
+      var opt = document.createElement('option');
+      opt.value = o.id; opt.textContent = o.nome;
+      sel.appendChild(opt);
+    });
+    if(v) sel.value = v;
+  });
+}
+
+function salvarMed(){
+  var obra  = document.getElementById('med-obra').value;
+  var valor = document.getElementById('med-valor').value;
+  if(!obra)  { showToast('Selecione a obra','wa'); return; }
+  if(!valor) { showToast('Informe o valor','wa'); return; }
+
+  var m = {
+    id:       medEditId || uid(),
+    obra_id:  obra,
+    numero:   parseInt(document.getElementById('med-num').value) || 1,
+    periodo:  document.getElementById('med-periodo').value,
+    valor:    parseFloat(valor) || 0,
+    vencimento: document.getElementById('med-venc').value,
+    status:   document.getElementById('med-status').value,
+    descricao: document.getElementById('med-desc').value
+  };
+
+  if(medEditId){
+    var idx = DB.medicoes.findIndex(function(x){ return x.id === medEditId; });
+    if(idx >= 0) DB.medicoes[idx] = m;
+  } else {
+    DB.medicoes.unshift(m);
+  }
+
+  saveDB();
+  fecharModal('med');
+  medEditId = null;
+  renderMedicoes();
+  atualizarMedKPIs();
+  showToast((medEditId ? 'Medicao atualizada' : 'Medicao salva') + ' ✓', 'ok');
+}
+
+function editarMed(id){
+  var m = DB.medicoes.find(function(x){ return x.id === id; });
+  if(!m) return;
+  medEditId = id;
+  document.getElementById('m-med-titulo').textContent = 'Editar medicao';
+  preencherMedObras();
+  document.getElementById('med-obra').value    = m.obra_id;
+  document.getElementById('med-num').value     = m.numero;
+  document.getElementById('med-periodo').value = m.periodo;
+  document.getElementById('med-valor').value   = m.valor;
+  document.getElementById('med-venc').value    = m.vencimento;
+  document.getElementById('med-status').value  = m.status;
+  document.getElementById('med-desc').value    = m.descricao;
+  abrirModal('med');
+}
+
+function renderMedicoes(){
+  var g = document.getElementById('med-grid');
+  if(!g) return;
+  g.innerHTML = '';
+
+  preencherMedObras();
+
+  var filtObra = document.getElementById('f-med-obra') ?
+    document.getElementById('f-med-obra').value : '';
+  var filtStat = document.getElementById('f-med-stat') ?
+    document.getElementById('f-med-stat').value : '';
+
+  var list = DB.medicoes.filter(function(m){
+    if(filtObra && m.obra_id !== filtObra) return false;
+    if(filtStat && m.status  !== filtStat) return false;
+    return true;
+  });
+
+  var cnt = document.getElementById('med-count');
+  if(cnt) cnt.textContent = list.length + ' medicao' + (list.length !== 1 ? 'oes' : '');
+
+  if(!list.length){
+    var em = document.createElement('div');
+    em.className = 'empty';
+    em.innerHTML = '<div class="empty-ico">&#128208;</div><h3>Nenhuma medicao</h3><p>Registre as medicoes de avanco das obras para controlar o faturamento.</p>';
+    var btn = document.createElement('button');
+    btn.className = 'btn p'; btn.style.marginTop = '8px';
+    btn.textContent = '+ Criar primeira medicao';
+    btn.addEventListener('click', function(){ preencherMedObras(); abrirModal('med'); });
+    em.appendChild(btn);
+    g.appendChild(em);
+  } else {
+    list.forEach(function(m){
+      var ob  = DB.obras.find(function(o){ return o.id === m.obra_id; });
+      var cor = corStatus(m.status);
+      var bg  = bgStatus(m.status);
+
+      var card = document.createElement('div');
+      card.className = 'card';
+
+      // Topo
+      var top = document.createElement('div'); top.className = 'card-top';
+      var dot = document.createElement('div'); dot.className = 'card-dot'; dot.style.background = cor;
+      var nm  = document.createElement('span'); nm.className = 'card-name';
+      nm.textContent = 'Med. ' + (m.numero||'') + (m.periodo ? ' — ' + m.periodo : '');
+      var bd  = document.createElement('span'); bd.className = 'card-badge';
+      bd.style.color = cor; bd.style.background = bg; bd.textContent = m.status;
+      top.appendChild(dot); top.appendChild(nm); top.appendChild(bd);
+
+      // Corpo
+      var body = document.createElement('div'); body.className = 'card-body';
+      var obraStr = ob ? ob.nome : '—';
+      var contrato = ob ? parseFloat(ob.valor)||0 : 0;
+      var pctMed   = contrato ? Math.round(m.valor/contrato*100) : 0;
+      body.innerHTML =
+        '<div class="cr"><span>Obra</span><span style="color:var(--tl)">' + obraStr + '</span></div>' +
+        '<div class="cr"><span>Valor</span><span style="font-weight:700;color:' + cor + '">' + mk(m.valor) + '</span></div>' +
+        '<div class="cr"><span>Vencimento</span><span>' + fd(m.vencimento) + '</span></div>' +
+        (contrato ? '<div class="cr"><span>% do contrato</span><span style="color:var(--tl)">' + pctMed + '%</span></div>' : '') +
+        (m.descricao ? '<div style="font-size:10px;color:var(--tx3);margin-top:6px;border-top:1px solid var(--b1);padding-top:5px">' + m.descricao + '</div>' : '');
+
+      // Acoes
+      var acts = document.createElement('div'); acts.className = 'card-actions';
+
+      // Botao avancar status
+      var STATUS_SEQ = ['Aguardando aprovacao','Aprovada','Paga'];
+      var idx = STATUS_SEQ.indexOf(m.status);
+      if(idx < STATUS_SEQ.length - 1){
+        var labels = {'Aguardando aprovacao':'✓ Aprovar','Aprovada':'✓ Marcar paga'};
+        var cores  = {'Aguardando aprovacao':'color:var(--tl)','Aprovada':'color:var(--gn)'};
+        var btnAv = document.createElement('button');
+        btnAv.className = 'btn sm';
+        btnAv.textContent = labels[m.status] || 'Avancar';
+        btnAv.style.cssText = cores[m.status] || '';
+        (function(med, prox){
+          btnAv.addEventListener('click', function(){
+            med.status = prox;
+            saveDB();
+            renderMedicoes();
+            atualizarMedKPIs();
+            showToast('Status: ' + prox, 'ok');
+          });
+        })(m, STATUS_SEQ[idx+1]);
+        acts.appendChild(btnAv);
+      }
+
+      var btnEd = document.createElement('button');
+      btnEd.className = 'btn sm'; btnEd.textContent = '✏';
+      (function(mid){ btnEd.addEventListener('click', function(){ editarMed(mid); }); })(m.id);
+
+      var btnDel = document.createElement('button');
+      btnDel.className = 'btn sm'; btnDel.textContent = '🗑'; btnDel.style.color = 'var(--rd)';
+      (function(mid, mn){
+        btnDel.addEventListener('click', function(){
+          document.getElementById('del-msg').textContent = 'Excluir medicao ' + mn + '?';
+          delFn = function(){
+            DB.medicoes = DB.medicoes.filter(function(x){ return x.id !== mid; });
+            saveDB(); renderMedicoes(); atualizarMedKPIs(); showToast('Medicao removida','ok');
+          };
+          abrirModal('del');
+        });
+      })(m.id, 'Med. '+m.numero);
+
+      acts.appendChild(btnEd);
+      acts.appendChild(btnDel);
+      card.appendChild(top); card.appendChild(body); card.appendChild(acts);
+      g.appendChild(card);
+    });
+  }
+
+  // Add card
+  var add = document.createElement('div'); add.className = 'add-card';
+  add.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nova medicao</span>';
+  add.addEventListener('click', function(){ preencherMedObras(); abrirModal('med'); });
+  g.appendChild(add);
+
+  atualizarMedKPIs();
+}
+
+function atualizarMedKPIs(){
+  var tot   = DB.medicoes.reduce(function(s,m){ return s+(parseFloat(m.valor)||0); },0);
+  var ag    = DB.medicoes.filter(function(m){ return m.status==='Aguardando aprovacao'; }).length;
+  var ap    = DB.medicoes.filter(function(m){ return m.status==='Aprovada'; }).length;
+  var pg    = DB.medicoes.filter(function(m){ return m.status==='Paga'; }).length;
+  var vapro = DB.medicoes.filter(function(m){ return m.status==='Aprovada'; }).reduce(function(s,m){ return s+(parseFloat(m.valor)||0); },0);
+
+  var els = {
+    'mk-tot':mk(tot),'mk-ag':ag,'mk-ap':ap,'mk-pg':pg,'mk-vapro':mk(vapro),
+    'nb-med': DB.medicoes.length||''
+  };
+  Object.keys(els).forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.textContent = els[id];
+  });
+}
+
+// Helpers de cor usados no card (alias para evitar conflito)
+function corStatus(s){
+  var m={
+    'Aguardando aprovacao':'var(--am)','Aprovada':'var(--tl)','Paga':'var(--gn)',
+    'Em execucao':'var(--tl)','Concluida':'var(--gn)','Atrasado':'var(--rd)',
+    'Aberta':'var(--rd)','Fechada':'var(--gn)','Pendente':'var(--am)',
+    'Entregue':'var(--gn)','Normal':'var(--tx2)','Urgente':'var(--am)','Critico':'var(--rd)'
+  };
+  return m[s]||'var(--tx2)';
+}
+function bgStatus(s){
+  var m={
+    'Aguardando aprovacao':'rgba(246,185,59,.1)','Aprovada':'rgba(0,203,168,.1)','Paga':'rgba(61,214,140,.1)',
+    'Em execucao':'rgba(0,203,168,.1)','Concluida':'rgba(61,214,140,.1)','Atrasado':'rgba(224,92,92,.1)',
+    'Aberta':'rgba(224,92,92,.1)','Fechada':'rgba(61,214,140,.1)','Pendente':'rgba(246,185,59,.1)',
+    'Entregue':'rgba(61,214,140,.1)','Normal':'rgba(70,85,106,.15)','Urgente':'rgba(246,185,59,.1)','Critico':'rgba(224,92,92,.1)'
+  };
+  return m[s]||'rgba(70,85,106,.15)';
+}
+
+
+
+// ── CHECKLIST IFORMS ICF ─────────────────────────────────────────
+var ckState = {};
+
+var CK_ITENS = [
+  {c:'Preparo',     t:'Limpeza e nivelamento da base / fundacao'},
+  {c:'Preparo',     t:'Verificacao das dimensoes e cotas do projeto'},
+  {c:'Preparo',     t:'Locacao das paredes conforme planta baixa'},
+  {c:'Montagem',    t:'Assentamento da 1a camada de blocos alinhada'},
+  {c:'Montagem',    t:'Amarracao intercalada dos blocos (juntas desencontradas)'},
+  {c:'Montagem',    t:'Travamentos instalados a cada 1,25m de altura'},
+  {c:'Montagem',    t:'Escoramento externo instalado antes da concretagem'},
+  {c:'Armacao',     t:'Armacao vertical CA-50 fi6,3mm conforme projeto'},
+  {c:'Armacao',     t:'Armacao horizontal CA-60 a cada 3 fiadas'},
+  {c:'Armacao',     t:'Cobrimento minimo das barras: 25mm'},
+  {c:'Armacao',     t:'Estribos e ganchos de ancoragem corretos'},
+  {c:'Instalacoes', t:'Eletrodutos corrugados na face externa do EPS'},
+  {c:'Instalacoes', t:'Caixas eletricas fixadas corretamente'},
+  {c:'Instalacoes', t:'Rasgos hidraulicos apenas na face interna'},
+  {c:'Concretagem', t:'Concreto fck 25 MPa  Slump 18+-2 cm  Brita 0'},
+  {c:'Concretagem', t:'Lancamento em camadas de no maximo 0,50m'},
+  {c:'Concretagem', t:'Vibracao adequada na face externa do EPS'},
+  {c:'Concretagem', t:'Nivel maximo de lancamento: 2,00m por etapa'},
+  {c:'Cura',        t:'Inicio da cura imediatamente apos a concretagem'},
+  {c:'Cura',        t:'Tempo minimo de cura: 72 horas (3 dias)'},
+  {c:'Verificacao', t:'Prumo e nivel conferidos apos cada fiada'},
+  {c:'Verificacao', t:'Registro fotografico de cada etapa concluida'}
+];
+
+var CK_CORES = {
+  'Preparo':     {bg:'rgba(91,156,246,.1)',  c:'var(--bl)'},
+  'Montagem':    {bg:'rgba(246,185,59,.1)',   c:'var(--am)'},
+  'Armacao':     {bg:'rgba(159,140,245,.1)', c:'var(--pu)'},
+  'Instalacoes': {bg:'rgba(61,214,140,.1)',  c:'var(--gn)'},
+  'Concretagem': {bg:'rgba(224,92,92,.1)',   c:'var(--rd)'},
+  'Cura':        {bg:'rgba(0,203,168,.1)',   c:'var(--tl)'},
+  'Verificacao': {bg:'rgba(246,185,59,.1)',  c:'var(--am)'}
+};
+
+function renderCK(){
+  var lista = document.getElementById('ck-items-lista');
+  if(!lista) return;
+  lista.innerHTML = '';
+
+  var catAtual = '';
+  CK_ITENS.forEach(function(item, i){
+    // Separador de categoria
+    if(item.c !== catAtual){
+      catAtual = item.c;
+      var sep = document.createElement('div');
+      var cc  = CK_CORES[item.c] || {bg:'rgba(70,85,106,.15)',c:'var(--tx2)'};
+      sep.style.cssText = 'padding:6px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:' + cc.bg + ';color:' + cc.c + ';margin-bottom:0';
+      sep.textContent = item.c;
+      lista.appendChild(sep);
+    }
+
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:flex-start;gap:12px;padding:9px 16px;border-bottom:1px solid var(--b1);cursor:pointer;transition:background .12s';
+    row.addEventListener('mouseenter', function(){ this.style.background='var(--bg3)'; });
+    row.addEventListener('mouseleave', function(){ this.style.background=''; });
+
+    var box = document.createElement('div');
+    box.style.cssText = 'width:20px;height:20px;border-radius:5px;border:2px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;cursor:pointer';
+
+    var checkEl = document.createElement('div');
+    checkEl.style.cssText = 'width:10px;height:10px;border-radius:2px;background:#0a0d14;display:none';
+
+    box.appendChild(checkEl);
+
+    var txt = document.createElement('div');
+    txt.style.cssText = 'flex:1';
+    var tl = document.createElement('div');
+    tl.style.cssText = 'font-size:12px;line-height:1.5;transition:color .15s';
+    tl.textContent = item.t;
+    var num = document.createElement('div');
+    num.style.cssText = 'font-size:10px;color:var(--tx3);margin-top:1px';
+    num.textContent = 'Item ' + String(i+1).padStart(2,'0');
+    txt.appendChild(tl); txt.appendChild(num);
+
+    row.appendChild(box); row.appendChild(txt);
+
+    // Estado inicial
+    if(ckState[i]){
+      box.style.background   = 'var(--tl)';
+      box.style.borderColor  = 'var(--tl)';
+      checkEl.style.display  = 'block';
+      tl.style.color         = 'var(--tl)';
+      tl.style.textDecoration = 'none';
+    }
+
+    // Toggle ao clicar
+    (function(idx2, boxEl, checkEl2, tlEl){
+      function toggle(){
+        ckState[idx2] = !ckState[idx2];
+        if(ckState[idx2]){
+          boxEl.style.background  = 'var(--tl)';
+          boxEl.style.borderColor = 'var(--tl)';
+          checkEl2.style.display  = 'block';
+          tlEl.style.color        = 'var(--tl)';
+        } else {
+          boxEl.style.background  = '';
+          boxEl.style.borderColor = 'var(--b2)';
+          checkEl2.style.display  = 'none';
+          tlEl.style.color        = '';
+        }
+        atualizarCKProgresso();
+      }
+      row.addEventListener('click', toggle);
+    })(i, box, checkEl, tl);
+
+    lista.appendChild(row);
+  });
+  atualizarCKProgresso();
+}
+
+function atualizarCKProgresso(){
+  var ok  = Object.values(ckState).filter(Boolean).length;
+  var tot = CK_ITENS.length;
+  var pct = Math.round(ok / tot * 100);
+
+  var placar = document.getElementById('ck-placar');
+  var barra  = document.getElementById('ck-barra');
+  var res    = document.getElementById('ck-resultado');
+
+  if(placar) placar.textContent = ok + ' / ' + tot;
+  if(barra){
+    barra.style.width = pct + '%';
+    barra.style.background = pct === 100 ? 'var(--gn)' : pct >= 80 ? 'var(--tl)' : pct >= 50 ? 'var(--am)' : 'var(--rd)';
+  }
+  if(res){
+    if(pct === 100) res.innerHTML = '<span style="color:var(--gn);font-weight:600">&#9989; Inspeção APROVADA — todos os 22 itens OK!</span>';
+    else if(pct >= 80) res.innerHTML = '<span style="color:var(--tl)">&#9989; ' + ok + '/' + tot + ' itens OK &mdash; verificar os ' + (tot-ok) + ' restantes</span>';
+    else if(pct >= 50) res.innerHTML = '<span style="color:var(--am)">&#9888;&#65039; ' + ok + '/' + tot + ' itens &mdash; obra necessita atenção</span>';
+    else if(ok > 0)    res.innerHTML = '<span style="color:var(--rd)">&#10060; ' + ok + '/' + tot + ' &mdash; inspeção reprovada</span>';
+    else               res.innerHTML = '<span style="color:var(--tx3)">Marque os itens inspecionados acima</span>';
+  }
+}
+
+function salvarChecklist(){
+  var obraId = document.getElementById('ck-obra').value;
+  if(!obraId){ showToast('Selecione a obra','wa'); return; }
+  var ok = Object.values(ckState).filter(Boolean).length;
+  var ck = {
+    id:        uid(),
+    obra_id:   obraId,
+    data:      document.getElementById('ck-data').value,
+    fiada:     document.getElementById('ck-fiada').value,
+    inspetor:  document.getElementById('ck-insp').value,
+    itens:     CK_ITENS.map(function(_,i){ return ckState[i] ? 1 : 0; }),
+    aprovados: ok,
+    total:     CK_ITENS.length
+  };
+  DB.checklists.unshift(ck);
+  saveDB();
+  renderCKHistorico();
+  atualizarCKBadge();
+  showToast('Checklist salvo: ' + ok + '/' + CK_ITENS.length + ' itens ✓', 'ok');
+}
+
+function limparChecklist(){
+  ckState = {};
+  renderCK();
+  showToast('Checklist limpo','ok');
+}
+
+function renderCKHistorico(){
+  var div = document.getElementById('ck-hist');
+  var nb  = document.getElementById('nb-ck-hist');
+  if(!div) return;
+  if(nb) nb.textContent = DB.checklists.length;
+
+  if(!DB.checklists.length){
+    div.innerHTML = '<div style="padding:14px 16px;text-align:center;font-size:12px;color:var(--tx3)">Nenhum checklist salvo ainda</div>';
+    return;
+  }
+  var html = '';
+  DB.checklists.slice(0,10).forEach(function(ck){
+    var ob   = DB.obras.find(function(o){ return o.id === ck.obra_id; });
+    var pct  = Math.round(ck.aprovados / ck.total * 100);
+    var cor  = pct === 100 ? 'var(--gn)' : pct >= 80 ? 'var(--tl)' : pct >= 50 ? 'var(--am)' : 'var(--rd)';
+    html += '<div style="padding:9px 16px;border-bottom:1px solid var(--b1);font-size:12px">';
+    html += '<div style="display:flex;justify-content:space-between;margin-bottom:2px">';
+    html += '<span style="font-weight:600">' + fd(ck.data) + ' &nbsp;&middot;&nbsp; ' + ck.fiada + '</span>';
+    html += '<span style="color:' + cor + ';font-weight:700">' + ck.aprovados + '/' + ck.total + '</span></div>';
+    html += '<div style="color:var(--tx2)">' + (ob ? ob.nome : '—') + (ck.inspetor ? ' &nbsp;&middot;&nbsp; ' + ck.inspetor : '') + '</div>';
+    html += '<div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:5px">';
+    html += '<div style="height:100%;width:' + pct + '%;background:' + cor + ';border-radius:2px;transition:width .5s"></div></div>';
+    html += '</div>';
+  });
+  div.innerHTML = html;
+}
+
+function atualizarCKBadge(){
+  var nb = document.getElementById('nb-ck');
+  if(nb) nb.textContent = DB.checklists.length || '';
+}
+
+
+
+// ── RELATORIOS ────────────────────────────────────────────────────
+function gerarRelatorio(tipo){
+  var filtro  = document.getElementById('rel-obra-filtro') ?
+    document.getElementById('rel-obra-filtro').value : '';
+  var output  = document.getElementById('rel-output');
+  var corpo   = document.getElementById('rel-corpo');
+  var titulo  = document.getElementById('rel-titulo');
+  if(!output||!corpo) return;
+
+  output.style.display = 'block';
+  output.scrollIntoView({behavior:'smooth', block:'start'});
+
+  var dtGer = new Date().toLocaleString('pt-BR');
+  var subTit = filtro ?
+    (DB.obras.find(function(o){return o.id===filtro;})||{nome:''}).nome :
+    'Todas as obras';
+
+  var TITULOS = {
+    obras:'Relatorio de Obras', financeiro:'Relatorio Financeiro',
+    medicoes:'Relatorio de Medicoes', qualidade:'Relatorio de Qualidade',
+    rdo:'Relatorio de RDOs', equipes:'Relatorio de Equipes',
+    compras:'Relatorio de Compras', completo:'Relatorio Completo'
+  };
+  if(titulo) titulo.textContent = TITULOS[tipo] || 'Relatorio';
+
+  var html = '<div style="font-size:11px;color:var(--tx3);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--b1);display:flex;justify-content:space-between">';
+  html += '<span>Gerado em: ' + dtGer + '</span><span>Filtro: ' + subTit + '</span></div>';
+
+  if(tipo === 'obras' || tipo === 'completo'){
+    var lista = filtro ?
+      DB.obras.filter(function(o){return o.id===filtro;}) : DB.obras;
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--tl)">Obras (' + lista.length + ')</div>';
+    if(!lista.length){
+      html += '<div style="color:var(--tx3);font-size:12px;margin-bottom:16px">Nenhuma obra cadastrada</div>';
+    } else {
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--b1)">Obra</th><th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--b1)">Cliente</th><th style="padding:8px 10px;border-bottom:1px solid var(--b1)">Sistema</th><th style="padding:8px 10px;border-bottom:1px solid var(--b1)">Status</th><th style="padding:8px 10px;text-align:right;border-bottom:1px solid var(--b1)">Progresso</th><th style="padding:8px 10px;text-align:right;border-bottom:1px solid var(--b1)">Valor</th></tr></thead><tbody>';
+      lista.forEach(function(o){
+        var cor = o.status==='Em execucao'?'var(--tl)':o.status==='Atrasado'?'var(--rd)':o.status==='Concluida'?'var(--gn)':'var(--tx2)';
+        html += '<tr style="border-bottom:1px solid var(--b1)">';
+        html += '<td style="padding:8px 10px;font-weight:600">' + o.nome + '</td>';
+        html += '<td style="padding:8px 10px;color:var(--tx2)">' + (o.cliente||'—') + '</td>';
+        html += '<td style="padding:8px 10px;text-align:center">' + (o.sistema||'iForms') + '</td>';
+        html += '<td style="padding:8px 10px;text-align:center;color:' + cor + ';font-weight:600">' + o.status + '</td>';
+        html += '<td style="padding:8px 10px;text-align:right">' + (o.progresso||0) + '%</td>';
+        html += '<td style="padding:8px 10px;text-align:right;font-weight:700;color:var(--tl)">' + mk(o.valor) + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+  }
+
+  if(tipo === 'financeiro' || tipo === 'completo'){
+    var lancF = filtro ?
+      DB.lancamentos.filter(function(l){return l.obra_id===filtro;}) : DB.lancamentos;
+    var ent = lancF.filter(function(l){return l.tipo==='entrada';}).reduce(function(s,l){return s+(parseFloat(l.valor)||0);},0);
+    var sai = lancF.filter(function(l){return l.tipo==='saida';}).reduce(function(s,l){return s+(parseFloat(l.valor)||0);},0);
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--gn)">Financeiro</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">';
+    html += '<div style="background:var(--gnd);border-radius:8px;padding:10px;text-align:center"><div style="font-size:10px;color:var(--gn);font-weight:600;margin-bottom:3px">ENTRADAS</div><div style="font-weight:800;font-size:15px;color:var(--gn)">' + mk(ent) + '</div></div>';
+    html += '<div style="background:var(--rdd);border-radius:8px;padding:10px;text-align:center"><div style="font-size:10px;color:var(--rd);font-weight:600;margin-bottom:3px">SAIDAS</div><div style="font-weight:800;font-size:15px;color:var(--rd)">' + mk(sai) + '</div></div>';
+    html += '<div style="background:var(--tld);border-radius:8px;padding:10px;text-align:center"><div style="font-size:10px;color:var(--tl);font-weight:600;margin-bottom:3px">SALDO</div><div style="font-weight:800;font-size:15px;color:' + (ent-sai>=0?'var(--gn)':'var(--rd)') + '">' + mk(ent-sai) + '</div></div>';
+    html += '</div>';
+    if(lancF.length){
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Descricao</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Categoria</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Data</th><th style="padding:7px 10px;text-align:right;border-bottom:1px solid var(--b1)">Valor</th></tr></thead><tbody>';
+      lancF.slice(0,30).forEach(function(l){
+        var cor2 = l.tipo==='entrada'?'var(--gn)':'var(--rd)';
+        html += '<tr style="border-bottom:1px solid var(--b1)"><td style="padding:7px 10px">' + l.descricao + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2)">' + (l.categoria||'—') + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx3)">' + fd(l.data) + '</td>';
+        html += '<td style="padding:7px 10px;text-align:right;font-weight:600;color:' + cor2 + '">' + (l.tipo==='entrada'?'+':'-') + ' ' + mk(l.valor) + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+  }
+
+  if(tipo === 'medicoes' || tipo === 'completo'){
+    var medL = filtro ?
+      DB.medicoes.filter(function(m){return m.obra_id===filtro;}) : DB.medicoes;
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--bl)">Medicoes (' + medL.length + ')</div>';
+    if(medL.length){
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Obra</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Med.</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Periodo</th><th style="padding:7px 10px;text-align:right;border-bottom:1px solid var(--b1)">Valor</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Vencto</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Status</th></tr></thead><tbody>';
+      medL.forEach(function(m){
+        var ob = DB.obras.find(function(o){return o.id===m.obra_id;});
+        var cor3 = m.status==='Paga'?'var(--gn)':m.status==='Aprovada'?'var(--tl)':'var(--am)';
+        html += '<tr style="border-bottom:1px solid var(--b1)">';
+        html += '<td style="padding:7px 10px">' + (ob?ob.nome:'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + (m.numero||'') + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2)">' + (m.periodo||'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:right;font-weight:700;color:var(--tl)">' + mk(m.valor) + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx3)">' + fd(m.vencimento) + '</td>';
+        html += '<td style="padding:7px 10px;color:' + cor3 + ';font-weight:600">' + m.status + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+  }
+
+  if(tipo === 'qualidade' || tipo === 'completo'){
+    var ncsL = filtro ?
+      DB.ncs.filter(function(n){return n.obra_id===filtro;}) : DB.ncs;
+    var ncAb = ncsL.filter(function(n){return n.status==='Aberta';}).length;
+    var ncFe = ncsL.filter(function(n){return n.status==='Fechada';}).length;
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--rd)">Qualidade — NCs (' + ncsL.length + ')</div>';
+    html += '<div style="display:flex;gap:12px;margin-bottom:10px;font-size:12px">';
+    html += '<span style="color:var(--rd)">Abertas: ' + ncAb + '</span>';
+    html += '<span style="color:var(--gn)">Fechadas: ' + ncFe + '</span>';
+    html += '<span style="color:var(--tx2)">Total: ' + ncsL.length + '</span></div>';
+    if(ncsL.length){
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Titulo</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Tipo</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Fiada</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Gravidade</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Status</th></tr></thead><tbody>';
+      ncsL.forEach(function(n,i){
+        var cor4 = n.status==='Fechada'?'var(--gn)':'var(--rd)';
+        html += '<tr style="border-bottom:1px solid var(--b1)"><td style="padding:7px 10px">NC-' + String(i+1).padStart(3,'0') + ' ' + n.titulo + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2)">' + (n.tipo||'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + (n.fiada||'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + (n.gravidade||'—') + '</td>';
+        html += '<td style="padding:7px 10px;font-weight:600;color:' + cor4 + '">' + n.status + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    // Checklists
+    var cksL = filtro ?
+      DB.checklists.filter(function(c){return c.obra_id===filtro;}) : DB.checklists;
+    if(cksL.length){
+      html += '<div style="font-size:13px;font-weight:700;margin:10px 0 8px;color:var(--tl)">Checklists iForms (' + cksL.length + ')</div>';
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Data</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Fiada</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Inspetor</th><th style="padding:7px 10px;text-align:center;border-bottom:1px solid var(--b1)">Aprovados</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Resultado</th></tr></thead><tbody>';
+      cksL.forEach(function(ck){
+        var pct2 = Math.round(ck.aprovados/ck.total*100);
+        var cor5 = pct2===100?'var(--gn)':pct2>=80?'var(--tl)':'var(--rd)';
+        html += '<tr style="border-bottom:1px solid var(--b1)"><td style="padding:7px 10px">' + fd(ck.data) + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + ck.fiada + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2)">' + (ck.inspetor||'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center;font-weight:700;color:' + cor5 + '">' + ck.aprovados + '/' + ck.total + '</td>';
+        html += '<td style="padding:7px 10px;color:' + cor5 + ';font-weight:600">' + (pct2===100?'Aprovado':pct2>=80?'Regular':'Reprovado') + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+  }
+
+  if(tipo === 'rdo' || tipo === 'completo'){
+    var rdoL = filtro ?
+      DB.rdos.filter(function(r){return r.obra_id===filtro;}) : DB.rdos;
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--am)">RDOs (' + rdoL.length + ')</div>';
+    if(rdoL.length){
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Data</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Obra</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Fiada</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Clima</th><th style="padding:7px 10px;text-align:center;border-bottom:1px solid var(--b1)">Func.</th><th style="padding:7px 10px;text-align:center;border-bottom:1px solid var(--b1)">Horas</th><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Etapas</th></tr></thead><tbody>';
+      rdoL.slice(0,30).forEach(function(r){
+        var ob = DB.obras.find(function(o){return o.id===r.obra_id;});
+        html += '<tr style="border-bottom:1px solid var(--b1)"><td style="padding:7px 10px;font-weight:600">' + fd(r.data) + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tl)">' + (ob?ob.nome:'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + (r.fiada||'—') + '</td>';
+        html += '<td style="padding:7px 10px">' + (r.clima||'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + (r.funcionarios||0) + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + (r.horas||0) + 'h</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2);font-size:11px">' + (r.etapas||'—') + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+  }
+
+  if(tipo === 'equipes' || tipo === 'completo'){
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--pu)">Equipe (' + DB.funcionarios.length + ')</div>';
+    if(DB.funcionarios.length){
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Nome</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Cargo</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Regime</th><th style="padding:7px 10px;text-align:right;border-bottom:1px solid var(--b1)">Valor/hora</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Certificacao</th></tr></thead><tbody>';
+      DB.funcionarios.forEach(function(f){
+        html += '<tr style="border-bottom:1px solid var(--b1)"><td style="padding:7px 10px;font-weight:600">' + f.nome + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tl)">' + (f.cargo||'—') + '</td>';
+        html += '<td style="padding:7px 10px">' + (f.regime||'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:right">R$ ' + (f.valor_hora||0) + '/h</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2);font-size:11px">' + (f.certificacao||'—') + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    if(DB.contratos.length){
+      html += '<div style="font-size:12px;font-weight:700;margin:8px 0 8px;color:var(--bl)">Contratos (' + DB.contratos.length + ')</div>';
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Contratado</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Tipo</th><th style="padding:7px 10px;text-align:right;border-bottom:1px solid var(--b1)">Valor</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Regime</th></tr></thead><tbody>';
+      DB.contratos.forEach(function(c){
+        html += '<tr style="border-bottom:1px solid var(--b1)"><td style="padding:7px 10px;font-weight:600">' + c.contratado + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2)">' + (c.tipo||'—') + '</td>';
+        html += '<td style="padding:7px 10px;text-align:right;font-weight:700;color:var(--tl)">' + mk(c.valor) + '</td>';
+        html += '<td style="padding:7px 10px">' + (c.regime||'—') + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+  }
+
+  if(tipo === 'compras' || tipo === 'completo'){
+    var compL = filtro ?
+      DB.compras.filter(function(c){return c.obra_id===filtro;}) : DB.compras;
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--am)">Compras e materiais (' + compL.length + ')</div>';
+    if(compL.length){
+      html += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">';
+      html += '<thead><tr style="background:var(--bg3)"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid var(--b1)">Material</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Qtd.</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Urgencia</th><th style="padding:7px 10px;border-bottom:1px solid var(--b1)">Status</th></tr></thead><tbody>';
+      compL.forEach(function(c){
+        var cor6 = c.urgencia==='Critico'?'var(--rd)':c.urgencia==='Urgente'?'var(--am)':'var(--tx2)';
+        html += '<tr style="border-bottom:1px solid var(--b1)"><td style="padding:7px 10px;font-weight:600">' + c.material + '</td>';
+        html += '<td style="padding:7px 10px;text-align:center">' + (c.quantidade||'') + ' ' + (c.unidade||'') + '</td>';
+        html += '<td style="padding:7px 10px;color:' + cor6 + ';font-weight:600">' + (c.urgencia||'Normal') + '</td>';
+        html += '<td style="padding:7px 10px;color:var(--tx2)">' + c.status + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+  }
+
+  corpo.innerHTML = html;
+  showToast('Relatorio gerado ✓', 'ok');
+}
+
 
 </script>
 </body>
