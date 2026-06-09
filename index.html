@@ -1397,31 +1397,78 @@ function saveDB(){
 
 // Envia todos os dados locais para o Supabase
 function sbPushTudo(){
-  if(!sbClient) return;
+  if(!sbClient){console.log('sbPushTudo: sbClient nulo');return;}
   var MAPA = {
-    obras:       DB.obras,
-    leads:       DB.leads,
-    ncs:         DB.ncs,
-    rdos:        DB.rdos,
-    lancamentos: DB.lancamentos,
-    contratos:   DB.contratos,
-    compras:     DB.compras,
-    funcionarios:DB.funcionarios,
-    medicoes:    DB.medicoes,
-    orcamentos:  DB.orcamentos,
-    unidades:    DB.unidades,
-    fotos:       DB.fotos,
-    checklists:  DB.checklists
+    obras:        DB.obras,
+    leads:        DB.leads,
+    ncs:          DB.ncs,
+    rdos:         DB.rdos,
+    lancamentos:  DB.lancamentos,
+    contratos:    DB.contratos,
+    compras:      DB.compras,
+    funcionarios: DB.funcionarios,
+    medicoes:     DB.medicoes,
+    orcamentos:   DB.orcamentos,
+    unidades:     DB.unidades,
+    checklists:   DB.checklists
   };
-  Object.keys(MAPA).forEach(function(tabela){
+  var tabelas = Object.keys(MAPA);
+  var erros = [];
+  var feitos = 0;
+  tabelas.forEach(function(tabela){
     var dados = MAPA[tabela];
-    if(!dados || !dados.length) return;
-    sbClient.from(tabela).upsert(dados, {onConflict:'id'})
+    if(!dados || !dados.length){ feitos++; return; }
+    // Limpar campos undefined antes de enviar
+    var dadosLimpos = dados.map(function(item){
+      var limpo = {};
+      Object.keys(item).forEach(function(k){
+        if(item[k] !== undefined && item[k] !== null) limpo[k] = item[k];
+      });
+      return limpo;
+    });
+    sbClient.from(tabela).upsert(dadosLimpos, {onConflict:'id'})
     .then(function(res){
-      if(res.error) console.warn('Supabase push ['+tabela+']:', res.error.message);
+      feitos++;
+      if(res.error){
+        erros.push(tabela+': '+res.error.message);
+        console.warn('[SB push] '+tabela+':', res.error.message);
+      }
+      if(feitos === tabelas.length){
+        var msgEl = document.getElementById('sb-msg');
+        if(erros.length){
+          if(msgEl){ msgEl.style.color='var(--am)'; msgEl.textContent='⚠️ Alguns erros: '+erros[0]; }
+          console.warn('[SB] Erros no push:', erros);
+        } else {
+          var agora = new Date().toLocaleTimeString('pt-BR');
+          if(msgEl){ msgEl.style.color='var(--gn)'; msgEl.textContent='✅ Último sync: '+agora; }
+          var badgeEl = document.getElementById('sb-badge');
+          if(badgeEl){ badgeEl.textContent='✓ Conectado'; badgeEl.style.color='#3ecf8e'; }
+        }
+      }
     })
-    .catch(function(e){ console.warn('Supabase push catch:', e); });
+    .catch(function(e){
+      feitos++;
+      erros.push(tabela+': '+e.message);
+      console.warn('[SB push catch] '+tabela+':', e);
+    });
   });
+}
+
+// Push de um único registro (mais leve)
+function sbPush1(tabela, item){
+  if(!sbClient || !item || !item.id) return;
+  var limpo = {};
+  Object.keys(item).forEach(function(k){
+    if(item[k] !== undefined && item[k] !== null) limpo[k] = item[k];
+  });
+  sbClient.from(tabela).upsert([limpo], {onConflict:'id'})
+  .then(function(res){
+    if(res.error){
+      console.warn('[SB push1] '+tabela+':', res.error.message);
+      showToast('Supabase: '+res.error.message,'wa');
+    }
+  })
+  .catch(function(e){ console.warn('[SB push1 catch]', e); });
 }
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
 function today(){return new Date().toISOString().slice(0,10);}
@@ -1690,6 +1737,7 @@ function salvarObra(){
   if(editId){var idx=DB.obras.findIndex(function(x){return x.id===editId;});if(idx>=0)DB.obras[idx]=o;}
   else{DB.obras.unshift(o);}
   saveDB();fecharModal('obra');
+  sbPush1('obras',o);
   ['o-nome','o-cli','o-cid','o-area','o-fiad','o-val','o-ini','o-prev'].forEach(function(id){SV(id,'');});
   SV('o-prog','0');editId=null;
   renderTudo();preencherSelectObras('rdo-obra');preencherSelectObras('nc-obra');preencherSelectObras('cp-obra');preencherSelectObras('ct-obra');
@@ -1746,7 +1794,8 @@ function salvarLead(){
   var l={id:editId||uid(),nome:nome,telefone:V('ld-tel'),cidade:V('ld-cid'),tipo:V('ld-tipo'),valor:V('ld-val'),status:V('ld-stat'),acao:V('ld-acao'),obs:V('ld-obs')};
   if(editId){var idx=DB.leads.findIndex(function(x){return x.id===editId;});if(idx>=0)DB.leads[idx]=l;}
   else DB.leads.unshift(l);
-  saveDB();fecharModal('lead');editId=null;renderLeads();atualizarKPIs();showToast('Lead salvo ✓','ok');
+  saveDB();fecharModal('lead');
+  sbPush1('leads',l);editId=null;renderLeads();atualizarKPIs();showToast('Lead salvo ✓','ok');
 }
 function editarLead(id){var l=DB.leads.find(function(x){return x.id===id;});if(!l)return;editId=id;ST('m-lead-titulo','Editar lead');SV('ld-nome',l.nome);SV('ld-tel',l.telefone);SV('ld-cid',l.cidade);SV('ld-tipo',l.tipo);SV('ld-val',l.valor);SV('ld-stat',l.status);SV('ld-acao',l.acao);SV('ld-obs',l.obs);abrirModal('lead');}
 
@@ -1789,14 +1838,16 @@ function renderNCs(){
 function salvarNC(){
   var titulo=V('nc-titulo').trim();if(!titulo){showToast('Descreva a NC','wa');return;}
   DB.ncs.unshift({id:uid(),obra_id:V('nc-obra'),fiada:V('nc-fiada'),tipo:V('nc-tipo'),gravidade:V('nc-grav'),titulo:titulo,acao:V('nc-acao'),status:'Aberta'});
-  saveDB();fecharModal('nc');SV('nc-titulo','');SV('nc-acao','');renderNCs();atualizarKPIs();showToast('NC registrada ✓','ok');
+  saveDB();fecharModal('nc');
+  sbPush1('ncs',n);SV('nc-titulo','');SV('nc-acao','');renderNCs();atualizarKPIs();showToast('NC registrada ✓','ok');
 }
 
 // RDO
 function salvarRDO(){
   var obra=V('rdo-obra');if(!obra){showToast('Selecione a obra','wa');return;}
   DB.rdos.unshift({id:uid(),obra_id:obra,data:V('rdo-data'),clima:V('rdo-clima'),fiada:V('rdo-fiada'),funcionarios:parseInt(V('rdo-func'))||0,horas:parseFloat(V('rdo-horas'))||0,etapas:V('rdo-etapas'),obs:V('rdo-obs')});
-  saveDB();SV('rdo-obs','');SV('rdo-etapas','');SV('rdo-func','0');SV('rdo-horas','0');
+  saveDB();
+  sbPush1('rdos',r);SV('rdo-obs','');SV('rdo-etapas','');SV('rdo-func','0');SV('rdo-horas','0');
   renderRDOHistoricoFull();atualizarKPIs();showToast('RDO salvo ✓','ok');
 }
 
@@ -3398,6 +3449,7 @@ function salvarMed(){
   }
 
   saveDB();
+  sbPush1('medicoes',m);
   fecharModal('med');
   medEditId = null;
   renderMedicoes();
