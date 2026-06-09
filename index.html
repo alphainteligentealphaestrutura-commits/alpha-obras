@@ -149,6 +149,8 @@ nav{flex:1;overflow-y:auto;padding:8px;}
 }
 .rel-card:hover { border-color:var(--tl)!important; transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.3); }
 </style>
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -995,6 +997,58 @@ nav{flex:1;overflow-y:auto;padding:8px;}
                 </div>
                 <div id="usr-lista"></div>
               </div>
+              
+              <!-- PAINEL SUPABASE -->
+              <div class="panel" style="border-color:rgba(62,207,142,.3)">
+                <div class="ph" style="background:rgba(62,207,142,.06)">
+                  <h3 style="color:#3ecf8e">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;margin-right:6px"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                    Conexao Supabase
+                  </h3>
+                  <span id="sb-badge" style="font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;background:rgba(246,185,59,.1);color:var(--am)">Nao conectado</span>
+                </div>
+                <div class="panel-body">
+                  <div style="background:rgba(62,207,142,.08);border:1px solid rgba(62,207,142,.2);border-radius:9px;padding:11px 13px;margin-bottom:14px;font-size:12px;color:var(--tx2);line-height:1.6">
+                    &#9889; Conecte ao Supabase para <strong style="color:var(--tx)">sincronizar dados em tempo real</strong> entre todos os dispositivos e usuarios da equipe.
+                  </div>
+                  <div class="field">
+                    <label>URL do projeto</label>
+                    <input type="text" id="sb-url" placeholder="https://xxxxxxxxxx.supabase.co">
+                  </div>
+                  <div class="field">
+                    <label>Chave anon / public (eyJ...)</label>
+                    <input type="password" id="sb-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                  </div>
+                  <div style="display:flex;gap:8px;margin-bottom:10px">
+                    <button class="btn p" id="sb-conn-btn" style="background:#3ecf8e;border-color:#3ecf8e">&#9889; Conectar e sincronizar</button>
+                    <button class="btn" id="sb-disc-btn">Desconectar</button>
+                    <button class="btn" id="sb-sync-btn" style="display:none;color:#3ecf8e">&#8635; Sincronizar agora</button>
+                  </div>
+                  <div id="sb-msg" style="font-size:12px;color:var(--tx3)">Preencha a URL e KEY para conectar.</div>
+                </div>
+                <div class="panel-body" style="border-top:1px solid var(--b1);padding-top:12px">
+                  <div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Onde encontrar a URL e KEY</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+                    <div style="background:var(--bg3);border-radius:8px;padding:10px">
+                      <div style="font-weight:600;color:#3ecf8e;margin-bottom:4px">1. Acesse</div>
+                      <div style="color:var(--tx2)">app.supabase.com → seu projeto</div>
+                    </div>
+                    <div style="background:var(--bg3);border-radius:8px;padding:10px">
+                      <div style="font-weight:600;color:#3ecf8e;margin-bottom:4px">2. Vá em</div>
+                      <div style="color:var(--tx2)">Settings → API</div>
+                    </div>
+                    <div style="background:var(--bg3);border-radius:8px;padding:10px">
+                      <div style="font-weight:600;color:#3ecf8e;margin-bottom:4px">3. Copie</div>
+                      <div style="color:var(--tx2)">Project URL (https://...)</div>
+                    </div>
+                    <div style="background:var(--bg3);border-radius:8px;padding:10px">
+                      <div style="font-weight:600;color:#3ecf8e;margin-bottom:4px">4. Copie</div>
+                      <div style="color:var(--tx2)">anon / public key (eyJ...)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="panel" style="margin-top:14px;border-color:rgba(0,203,168,.2)">
                 <div class="ph" style="background:rgba(0,203,168,.04)"><h3 style="color:var(--tl)">&#128272; PIN da Gestao Alpha</h3></div>
                 <div class="pb">
@@ -1442,7 +1496,14 @@ function ir(page){
   if(page==='cronograma')  { preencherGanttObra(); renderGantt(); }
   if(page==='medicoes')    { preencherMedObras(); renderMedicoes(); }
   if(page==='checklist')   { preencherSelectObras('ck-obra'); SV('ck-data',today()); renderCK(); renderCKHistorico(); atualizarCKBadge(); }
-  if(page==='configuracoes'){ renderUsuarios(); }
+  if(page==='configuracoes'){
+    renderUsuarios();
+    var _u=localStorage.getItem('ao_sb_url');
+    var _k=localStorage.getItem('ao_sb_key');
+    if(_u){ var eu=document.getElementById('sb-url'); if(eu)eu.value=_u; }
+    if(_k){ var ek=document.getElementById('sb-key'); if(ek)ek.value=_k; }
+    if(sbClient) sbUIConectado(); else sbUIDesconectado();
+  }
   if(page==='bi')         { renderBI(); }
   if(page==='juridico')   { renderJuridico(); }
   if(page==='custos')     { initCstMes(); atualizarSubcat(); renderCustos(); }
@@ -2191,6 +2252,28 @@ document.addEventListener('DOMContentLoaded',function(){
   if(pinSalvar){ pinSalvar.addEventListener('click', salvarPIN); }
   var pinOv = document.getElementById('m-pin');
   if(pinOv){ pinOv.addEventListener('click', function(e){ if(e.target===this){ this.classList.remove('show'); pinPendingPage=null; } }); }
+
+  // Supabase
+  var sbConnBtn = document.getElementById('sb-conn-btn');
+  if(sbConnBtn){ sbConnBtn.addEventListener('click', function(){
+    var url = (document.getElementById('sb-url').value||'').trim();
+    var key = (document.getElementById('sb-key').value||'').trim();
+    sbConectar(url, key, false);
+  }); }
+  var sbDiscBtn = document.getElementById('sb-disc-btn');
+  if(sbDiscBtn){ sbDiscBtn.addEventListener('click', sbDesconectar); }
+  var sbSyncBtn = document.getElementById('sb-sync-btn');
+  if(sbSyncBtn){ sbSyncBtn.addEventListener('click', function(){ sbSincronizarTudo(true); }); }
+  // Reconectar automaticamente se credenciais salvas
+  var _sbUrl = localStorage.getItem('ao_sb_url');
+  var _sbKey = localStorage.getItem('ao_sb_key');
+  if(_sbUrl && _sbKey){
+    var sbUrlEl = document.getElementById('sb-url');
+    var sbKeyEl = document.getElementById('sb-key');
+    if(sbUrlEl) sbUrlEl.value = _sbUrl;
+    if(sbKeyEl) sbKeyEl.value = _sbKey;
+    setTimeout(function(){ sbConectar(_sbUrl, _sbKey, true); }, 800);
+  }
 
 // BOOT
 loadDB();
@@ -4684,6 +4767,142 @@ function salvarPIN(){
 }
 
 // PIN check integrado ao ir() abaixo
+
+
+
+// ── SUPABASE — CONEXÃO E SINCRONIZAÇÃO ────────────────────────────
+var sbClient = null;
+
+var TABELAS_SYNC = [
+  'obras','leads','ncs','rdos','lancamentos','contratos',
+  'compras','funcionarios','medicoes','orcamentos',
+  'unidades','fotos','checklists'
+];
+
+function sbConectar(url, key, silencioso){
+  if(!window.supabase){
+    if(!silencioso){
+      sbMsg('❌ SDK Supabase não carregado — verifique a conexão com internet', 'er');
+    }
+    return;
+  }
+  if(!url || !key){
+    sbMsg('⚠️ Preencha a URL e a chave anon antes de conectar', 'wa');
+    return;
+  }
+  if(!silencioso) sbMsg('🔄 Conectando...', 'ok');
+
+  try{
+    sbClient = window.supabase.createClient(url.trim(), key.trim());
+    // Testar a conexão
+    sbClient.from('obras').select('id').limit(1)
+    .then(function(res){
+      if(res.error){
+        sbClient = null;
+        sbMsg('❌ Erro: ' + res.error.message, 'er');
+        sbUIDesconectado();
+        return;
+      }
+      // Conexão OK
+      localStorage.setItem('ao_sb_url', url.trim());
+      localStorage.setItem('ao_sb_key', key.trim());
+      sbUIConectado();
+      if(!silencioso){
+        sbMsg('✅ Conectado! Sincronizando dados...', 'ok');
+        sbSincronizarTudo(true);
+      } else {
+        sbSincronizarTudo(false);
+      }
+    })
+    .catch(function(e){
+      sbClient = null;
+      sbMsg('❌ Falha na conexão: ' + e.message, 'er');
+      sbUIDesconectado();
+    });
+  } catch(e){
+    sbClient = null;
+    sbMsg('❌ Erro ao criar cliente: ' + e.message, 'er');
+  }
+}
+
+function sbDesconectar(){
+  sbClient = null;
+  localStorage.removeItem('ao_sb_url');
+  localStorage.removeItem('ao_sb_key');
+  sbUIDesconectado();
+  sbMsg('Desconectado — modo local ativo', 'ok');
+  showToast('Supabase desconectado', 'ok');
+}
+
+function sbUIConectado(){
+  var badge = document.getElementById('sb-badge');
+  var cdot  = document.getElementById('cdot');
+  var ctxt  = document.getElementById('ctxt');
+  var sync  = document.getElementById('sb-sync-btn');
+  if(badge){ badge.textContent='✓ Conectado'; badge.style.background='rgba(62,207,142,.12)'; badge.style.color='#3ecf8e'; }
+  if(cdot)  cdot.style.background = '#3ecf8e';
+  if(ctxt){ ctxt.style.color='#3ecf8e'; ctxt.textContent='Sincronizado ✓'; }
+  if(sync)  sync.style.display = 'inline-flex';
+}
+
+function sbUIDesconectado(){
+  var badge = document.getElementById('sb-badge');
+  var cdot  = document.getElementById('cdot');
+  var ctxt  = document.getElementById('ctxt');
+  var sync  = document.getElementById('sb-sync-btn');
+  if(badge){ badge.textContent='Não conectado'; badge.style.background='rgba(246,185,59,.1)'; badge.style.color='var(--am)'; }
+  if(cdot)  cdot.style.background = 'var(--am)';
+  if(ctxt){ ctxt.style.color='var(--am)'; ctxt.textContent='Modo local'; }
+  if(sync)  sync.style.display = 'none';
+}
+
+function sbMsg(txt, tipo){
+  var el = document.getElementById('sb-msg');
+  if(!el) return;
+  var cores = {ok:'var(--gn)', er:'var(--rd)', wa:'var(--am)'};
+  el.style.color = cores[tipo] || 'var(--tx3)';
+  el.textContent = txt;
+}
+
+// Sincronizar tudo: lê do Supabase e atualiza o DB local
+function sbSincronizarTudo(mostrarToast){
+  if(!sbClient) return;
+  var promises = TABELAS_SYNC.map(function(tabela){
+    return sbClient.from(tabela).select('*').order('created_at', {ascending:false});
+  });
+  Promise.all(promises).then(function(results){
+    var erros = 0;
+    results.forEach(function(res, i){
+      if(res.error){ erros++; return; }
+      if(res.data){ DB[TABELAS_SYNC[i]] = res.data; }
+    });
+    saveDB();
+    renderTudo();
+    if(mostrarToast){
+      var total = TABELAS_SYNC.reduce(function(s,t){return s+(DB[t]?DB[t].length:0);},0);
+      showToast('Sincronizado: '+total+' registros ✓', 'ok');
+      sbMsg('✅ Último sync: '+new Date().toLocaleTimeString('pt-BR'), 'ok');
+    }
+  }).catch(function(e){
+    sbMsg('⚠️ Erro ao sincronizar: '+e.message, 'wa');
+  });
+}
+
+// Salvar um registro no Supabase (upsert)
+function sbSalvar(tabela, item){
+  if(!sbClient || !item) return;
+  sbClient.from(tabela).upsert(item).then(function(res){
+    if(res.error) console.warn('SB upsert erro:', res.error.message);
+  }).catch(function(e){ console.warn('SB upsert catch:', e); });
+}
+
+// Excluir um registro do Supabase
+function sbExcluir(tabela, id){
+  if(!sbClient || !id) return;
+  sbClient.from(tabela).delete().eq('id', id).then(function(res){
+    if(res.error) console.warn('SB delete erro:', res.error.message);
+  });
+}
 
 
 </script>
