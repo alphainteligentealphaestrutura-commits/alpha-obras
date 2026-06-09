@@ -1418,11 +1418,23 @@ function sbPushTudo(){
   tabelas.forEach(function(tabela){
     var dados = MAPA[tabela];
     if(!dados || !dados.length){ feitos++; return; }
-    // Limpar campos undefined antes de enviar
+    // Limpar campos antes de enviar ao Supabase
+    var NUMERICOS = ['area','valor','progresso','n_fiadas','horas','funcionarios',
+      'm3_concreto','valor_hora','numero','aprovados','total','tamanho',
+      'lat','lng','acc','bdi','prazo','quantidade'];
     var dadosLimpos = dados.map(function(item){
       var limpo = {};
       Object.keys(item).forEach(function(k){
-        if(item[k] !== undefined && item[k] !== null) limpo[k] = item[k];
+        var v = item[k];
+        if(v === undefined) return;
+        // Campos numéricos: string vazia vira null
+        if(NUMERICOS.indexOf(k) >= 0){
+          limpo[k] = (v === '' || v === null) ? null : parseFloat(v)||0;
+        } else if(typeof v === 'string' && v === ''){
+          limpo[k] = null;
+        } else {
+          limpo[k] = v;
+        }
       });
       return limpo;
     });
@@ -1457,9 +1469,20 @@ function sbPushTudo(){
 // Push de um único registro (mais leve)
 function sbPush1(tabela, item){
   if(!sbClient || !item || !item.id) return;
+  var NUMERICOS2 = ['area','valor','progresso','n_fiadas','horas','funcionarios',
+    'm3_concreto','valor_hora','numero','aprovados','total','tamanho',
+    'lat','lng','acc','bdi','prazo','quantidade'];
   var limpo = {};
   Object.keys(item).forEach(function(k){
-    if(item[k] !== undefined && item[k] !== null) limpo[k] = item[k];
+    var v = item[k];
+    if(v === undefined) return;
+    if(NUMERICOS2.indexOf(k) >= 0){
+      limpo[k] = (v === '' || v === null) ? null : parseFloat(v)||0;
+    } else if(typeof v === 'string' && v === ''){
+      limpo[k] = null;
+    } else {
+      limpo[k] = v;
+    }
   });
   sbClient.from(tabela).upsert([limpo], {onConflict:'id'})
   .then(function(res){
