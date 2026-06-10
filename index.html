@@ -1387,10 +1387,11 @@ var USUARIOS = carregarUsuarios();
 function loadDB(){
   try{var s=localStorage.getItem('ao_db');if(s){var d=JSON.parse(s);Object.keys(d).forEach(function(k){if(Array.isArray(d[k]))DB[k]=d[k];});}}catch(e){}
 }
+var _sbSyncing = false;
 function saveDB(){
   try{ localStorage.setItem('ao_db',JSON.stringify(DB)); }catch(e){}
-  // Push automatico ao Supabase
-  if(typeof sbClient !== 'undefined' && sbClient){
+  // Push automatico ao Supabase (nao durante sync)
+  if(typeof sbClient !== 'undefined' && sbClient && !_sbSyncing){
     sbPushTudo();
   }
 }
@@ -4918,10 +4919,13 @@ function sbConectar(url, key, silencioso){
       localStorage.setItem('ao_sb_key', key.trim());
       sbUIConectado();
       if(!silencioso){
-        sbMsg('✅ Conectado! Sincronizando dados...', 'ok');
-        sbSincronizarTudo(true);
+        sbMsg('✅ Conectado! Enviando dados locais...', 'ok');
+        // Primeiro envia dados locais, depois sincroniza
+        sbPushTudo();
+        setTimeout(function(){ sbSincronizarTudo(true); }, 2000);
       } else {
-        sbSincronizarTudo(false);
+        sbPushTudo();
+        setTimeout(function(){ sbSincronizarTudo(false); }, 2000);
       }
     })
     .catch(function(e){
@@ -4946,8 +4950,8 @@ function sbDesconectar(){
 
 function sbUIConectado(){
   var badge = document.getElementById('sb-badge');
-  var cdot  = document.getElementById('cdot');
-  var ctxt  = document.getElementById('ctxt');
+  var cdot  = document.getElementById('conn-dot');
+  var ctxt  = document.getElementById('conn-txt');
   var sync  = document.getElementById('sb-sync-btn');
   if(badge){ badge.textContent='✓ Conectado'; badge.style.background='rgba(62,207,142,.12)'; badge.style.color='#3ecf8e'; }
   if(cdot)  cdot.style.background = '#3ecf8e';
@@ -4957,8 +4961,8 @@ function sbUIConectado(){
 
 function sbUIDesconectado(){
   var badge = document.getElementById('sb-badge');
-  var cdot  = document.getElementById('cdot');
-  var ctxt  = document.getElementById('ctxt');
+  var cdot  = document.getElementById('conn-dot');
+  var ctxt  = document.getElementById('conn-txt');
   var sync  = document.getElementById('sb-sync-btn');
   if(badge){ badge.textContent='Não conectado'; badge.style.background='rgba(246,185,59,.1)'; badge.style.color='var(--am)'; }
   if(cdot)  cdot.style.background = 'var(--am)';
@@ -4984,9 +4988,14 @@ function sbSincronizarTudo(mostrarToast){
     var erros = 0;
     results.forEach(function(res, i){
       if(res.error){ erros++; return; }
-      if(res.data){ DB[TABELAS_SYNC[i]] = res.data; }
+      // So sobrescreve se Supabase tem dados OU se local esta vazio
+      if(res.data && (res.data.length > 0 || !DB[TABELAS_SYNC[i]] || DB[TABELAS_SYNC[i]].length === 0)){
+        DB[TABELAS_SYNC[i]] = res.data;
+      }
     });
-    saveDB();
+    _sbSyncing = true;
+    try{ localStorage.setItem('ao_db',JSON.stringify(DB)); }catch(e){}
+    _sbSyncing = false;
     renderTudo();
     if(mostrarToast){
       var total = TABELAS_SYNC.reduce(function(s,t){return s+(DB[t]?DB[t].length:0);},0);
